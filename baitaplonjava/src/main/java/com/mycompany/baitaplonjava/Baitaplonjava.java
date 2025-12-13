@@ -12,6 +12,7 @@ public class Baitaplonjava {
 
     public static void main(String[] args) {
         System.out.println("Hellofghjk");
-
+        System.out.println("hell hehee");
+       
     }
 }
