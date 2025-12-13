@@ -11,7 +11,7 @@ package com.mycompany.baitaplonjava;
 public class Baitaplonjava {
 
     public static void main(String[] args) {
-        System.out.println("Hello World! Duy ahihi");
+        System.out.println("Hellofghjk");
 
     }
 }
