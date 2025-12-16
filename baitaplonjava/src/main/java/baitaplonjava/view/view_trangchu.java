@@ -21,6 +21,7 @@ public class view_trangchu extends JFrame {
     private JButton btnQuanLySach;
     private JButton btnDocGia;
     private JButton btnMuonTra;
+    private JButton btnTheloai;
     private JButton btnDangXuat;
     // Bạn có thể khai báo thêm các nút khác nếu cần xử lý sự kiện riêng biệt
     
@@ -71,7 +72,9 @@ public class view_trangchu extends JFrame {
         // Các nút chức năng khác (Chưa cần gán biến nếu chưa làm chức năng)
         pnlMenu.add(createStyledButton("QL Tác Giả", "✍️"));
         pnlMenu.add(createStyledButton("QL NXB", "🏢"));
-        pnlMenu.add(createStyledButton("QL Thể Loại", "🔖"));
+        //Nút: Thể loại
+        btnTheloai = createStyledButton("QL Thể Loại", "🔖");
+        pnlMenu.add(btnTheloai);
         pnlMenu.add(createStyledButton("QL Nhân Viên", "🆔"));
         pnlMenu.add(createStyledButton("Nhập Sách", "📥"));
         pnlMenu.add(createStyledButton("Thanh Lý", "📤"));
@@ -97,9 +100,6 @@ public class view_trangchu extends JFrame {
         this.add(lblFooter, BorderLayout.SOUTH);
     }
 
-    /**
-     * Hàm tạo nút thống nhất giao diện
-     */
     private JButton createStyledButton(String text, String icon) {
         // Sử dụng HTML để hiển thị Icon to ở trên và Text ở dưới
         JButton btn = new JButton("<html><center><span style='font-size:24px'>" + icon + "</span><br><span style='font-size:12px'>" + text + "</span></center></html>");
@@ -126,6 +126,11 @@ public class view_trangchu extends JFrame {
     public JButton getBtnMuonTra() {
         return btnMuonTra;
     }
+    
+    public JButton getBtnTheloai() {
+        return btnTheloai;
+    }
+
     
     public JButton getBtnDangXuat() {
         return btnDangXuat;
