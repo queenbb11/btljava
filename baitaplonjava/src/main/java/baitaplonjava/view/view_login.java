@@ -3,10 +3,10 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package baitaplonjava.view;
-import baitaplonjava.controller.controller_login;
-import baitaplonjava.view.view_login;
+
 import baitaplonjava.model.model_login;
 import java.awt.BorderLayout;
+import java.awt.FlowLayout; // Thêm import này
 import java.awt.event.ActionListener;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -20,52 +20,63 @@ import javax.swing.JTextField;
  *
  * @author ADMIN
  */
-public class view_login {
-
-    JFrame frame;
+public class view_login extends JFrame{
     JTextField tf_username;
     JPasswordField tf_password;
-    JLabel lbl_username, lbl_password;
     JButton btn_login;
-    controller_login LoginController;
+    // Bổ sung: Nút Đăng ký
+    JButton btn_register; 
+
     public view_login() {
-        frame = new JFrame();
-        frame.setLayout(new BorderLayout(5, 5));
-        frame.setSize(500, 500);
-        frame.setTitle("Dang nhap");
+        initUI();
+    }
+
+    private void initUI() {
+        this.setTitle("Đăng nhập");
+        this.setSize(400, 300);
+        this.setLocationRelativeTo(null);
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.setLayout(new BorderLayout(10, 10));
 
         tf_username = new JTextField();
         tf_password = new JPasswordField();
-        lbl_username = new JLabel("Username");
-        lbl_password = new JLabel("Password");
 
-        JPanel panel = new JPanel();
-        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-        frame.add(panel, BorderLayout.NORTH);
-        panel.add(lbl_username);
-        panel.add(tf_username);
+        // Panel chứa các trường nhập liệu
+        JPanel panelInput = new JPanel();
+        panelInput.setLayout(new BoxLayout(panelInput, BoxLayout.Y_AXIS));
 
-        panel.add(lbl_password);
-        panel.add(tf_password);
+        panelInput.add(new JLabel("Username"));
+        panelInput.add(tf_username);
+        panelInput.add(new JLabel("Password"));
+        panelInput.add(tf_password);
+
         btn_login = new JButton("Login");
-        frame.add(btn_login, BorderLayout.SOUTH);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setVisible(true);    
+        // Bổ sung: Khởi tạo nút Đăng ký
+        btn_register = new JButton("Đăng ký");
+
+        // Panel chứa các nút (để đặt chúng cạnh nhau)
+        JPanel panelButtons = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        panelButtons.add(btn_login);
+        panelButtons.add(btn_register); // Thêm nút Đăng ký vào panel nút
+
+        this.add(panelInput, BorderLayout.CENTER);
+        this.add(panelButtons, BorderLayout.SOUTH); // Thay thế btn_login bằng panelButtons
     }
+
     public model_login get_tk() {
-    model_login m = new model_login();
-    m.setUser(tf_username.getText());
-
-    char[] a = tf_password.getPassword();
-    m.setPass(new String(a));
-
-    return m;
+        return new model_login(
+            tf_username.getText(),
+            new String(tf_password.getPassword())
+        );
     }
-    public void check_login_listener(ActionListener a){
+
+    public void check_login_listener(ActionListener a) {
         btn_login.addActionListener(a);
     }
-
-    public void close() {
-        frame.dispose();
+    
+    // Bổ sung: Phương thức để gán sự kiện cho nút Đăng ký
+    public void register_listener(ActionListener a) {
+        btn_register.addActionListener(a);
     }
+    
 }
