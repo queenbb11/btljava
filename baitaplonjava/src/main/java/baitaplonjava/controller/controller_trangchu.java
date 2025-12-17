@@ -4,6 +4,7 @@ import baitaplonjava.view.view_trangchu;
 // Bổ sung các import cần thiết
 import baitaplonjava.view.view_theloai; 
 import baitaplonjava.view.view_login;    
+import baitaplonjava.view.view_nhanvien;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JOptionPane;
@@ -12,6 +13,7 @@ public class controller_trangchu implements ActionListener {
     
     private view_trangchu viewHome;
     private view_theloai viewTheloai; 
+    private view_nhanvien viewNhanvien;
 
     public controller_trangchu(view_trangchu viewHome) {
         this.viewHome = viewHome;
@@ -25,6 +27,8 @@ public class controller_trangchu implements ActionListener {
         this.viewHome.getBtnQuanLySach().addActionListener(this);
         // Bổ sung: QL Thể Loại
         this.viewHome.getBtnTheloai().addActionListener(this); 
+        // Bổ sung: QL Nhan vien 
+        this.viewHome.getBtnNhanvien().addActionListener(this); 
         // Bổ sung: Đăng Xuất
         this.viewHome.getBtnDangXuat().addActionListener(this);    
         // Bạn có thể thêm các nút khác vào đây
@@ -43,7 +47,22 @@ public class controller_trangchu implements ActionListener {
         new controller_theloai(viewTheloai); // <--- Dòng này quan trọng!
     }
     viewTheloai.setVisible(true);
-}
+    }
+    private void openQuanLyNhanvienView() {
+        try {
+            // Kiểm tra nếu view chưa được tạo hoặc đã bị đóng
+            if (viewNhanvien == null || !viewNhanvien.isDisplayable()) {
+                viewNhanvien = new view_nhanvien();
+                // Khởi tạo controller cho nhân viên để nạp dữ liệu và xử lý nút Lưu
+                new controller_nhanvien(viewNhanvien); 
+            }
+            viewNhanvien.setVisible(true); // Hiển thị lên
+            viewNhanvien.toFront();        // Đưa lên trên cùng
+        } catch (Exception e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(viewHome, "Lỗi khi mở Quản lý nhân viên: " + e.getMessage());
+        }
+    }
 
     // Hàm xử lý Đăng Xuất
     private void handleDangXuat() {
@@ -75,7 +94,15 @@ public class controller_trangchu implements ActionListener {
             // Xử lý khi nhấn nút QL Thể Loại
             openQuanLyTheLoaiView();
             
-        } else if (source == viewHome.getBtnDangXuat()) {
+            
+        }
+        else if (source == viewHome.getBtnNhanvien()) {
+            // Gọi hàm mở nhân viên đã sửa ở trên
+            openQuanLyNhanvienView();
+            
+            
+        }
+        else if (source == viewHome.getBtnDangXuat()) {
             // Xử lý khi nhấn nút Đăng Xuất
             handleDangXuat();
         }

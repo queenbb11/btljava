@@ -22,6 +22,7 @@ public class view_trangchu extends JFrame {
     private JButton btnDocGia;
     private JButton btnMuonTra;
     private JButton btnTheloai;
+    private JButton btnNhanvien;
     private JButton btnDangXuat;
     // Bạn có thể khai báo thêm các nút khác nếu cần xử lý sự kiện riêng biệt
     
@@ -75,7 +76,7 @@ public class view_trangchu extends JFrame {
         //Nút: Thể loại
         btnTheloai = createStyledButton("QL Thể Loại", "🔖");
         pnlMenu.add(btnTheloai);
-        pnlMenu.add(createStyledButton("QL Nhân Viên", "🆔"));
+        
         pnlMenu.add(createStyledButton("Nhập Sách", "📥"));
         pnlMenu.add(createStyledButton("Thanh Lý", "📤"));
         pnlMenu.add(createStyledButton("Thống Kê", "📈"));
@@ -83,7 +84,9 @@ public class view_trangchu extends JFrame {
         pnlMenu.add(createStyledButton("Cấu Hình", "⚙️"));
         pnlMenu.add(createStyledButton("Quy Định", "📜"));
         pnlMenu.add(createStyledButton("Đổi Mật Khẩu", "🔑"));
-
+        //nut nhanvien 
+        btnNhanvien = createStyledButton("QL Nhan vien", "👥");
+        pnlMenu.add(btnNhanvien);
         // Nút 15: Đăng xuất (Cần gán biến để Controller xử lý thoát)
         btnDangXuat = createStyledButton("Đăng Xuất", "🚪");
         // Đổi màu riêng cho nút Đăng xuất để nổi bật
@@ -129,6 +132,10 @@ public class view_trangchu extends JFrame {
     
     public JButton getBtnTheloai() {
         return btnTheloai;
+    }
+    
+    public JButton getBtnNhanvien() {
+        return btnNhanvien;
     }
 
     
