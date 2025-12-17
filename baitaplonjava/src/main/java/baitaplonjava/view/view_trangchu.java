@@ -1,7 +1,4 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
+
 package baitaplonjava.view;
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -17,7 +14,6 @@ import javax.swing.border.EmptyBorder;
 
 public class view_trangchu extends JFrame {
 
-    // Khai báo các nút bấm dưới dạng thuộc tính để Controller có thể truy cập
     private JButton btnQuanLySach;
     private JButton btnDocGia;
     private JButton btnMuonTra;
@@ -30,7 +26,6 @@ public class view_trangchu extends JFrame {
     }
 
     private void initComponents() {
-        // 1. Cấu hình JFrame chính
         this.setTitle("Hệ Thống Quản Lý Thư Viện - Dashboard");
         this.setSize(1000, 600);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -55,7 +50,6 @@ public class view_trangchu extends JFrame {
         pnlMenu.setLayout(new GridLayout(3, 5, 20, 20)); 
         pnlMenu.setBorder(new EmptyBorder(30, 30, 30, 30));
 
-        // --- TẠO CÁC BUTTON VỚI ICON EMOJI ---
         
         // Nút 1: Quản lý sách
         btnQuanLySach = createStyledButton("QL Sách", "📚");
@@ -83,10 +77,7 @@ public class view_trangchu extends JFrame {
         pnlMenu.add(createStyledButton("Cấu Hình", "⚙️"));
         pnlMenu.add(createStyledButton("Quy Định", "📜"));
         pnlMenu.add(createStyledButton("Đổi Mật Khẩu", "🔑"));
-
-        // Nút 15: Đăng xuất (Cần gán biến để Controller xử lý thoát)
         btnDangXuat = createStyledButton("Đăng Xuất", "🚪");
-        // Đổi màu riêng cho nút Đăng xuất để nổi bật
         btnDangXuat.setForeground(new Color(200, 50, 50)); 
         pnlMenu.add(btnDangXuat);
 

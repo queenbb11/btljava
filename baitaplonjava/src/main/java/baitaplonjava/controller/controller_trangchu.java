@@ -10,11 +10,11 @@ import javax.swing.JOptionPane;
 
 public class controller_trangchu implements ActionListener {
     
-    private view_trangchu viewHome;
+    private view_trangchu viewtrangchu;
     private view_theloai viewtheloai; 
 
-    public controller_trangchu(view_trangchu viewHome) {
-        this.viewHome = viewHome;
+    public controller_trangchu(view_trangchu viewtrangchu) {
+        this.viewtrangchu = viewtrangchu;
         
         // Gắn sự kiện cho tất cả các nút cần xử lý
         attachListeners();
@@ -22,37 +22,40 @@ public class controller_trangchu implements ActionListener {
     
     private void attachListeners() {
         // Gắn 'this' (controller_trangchu) làm ActionListener cho tất cả các nút
-        this.viewHome.getBtnQuanLySach().addActionListener(this);
+        this.viewtrangchu.getBtnQuanLySach().addActionListener(this);
         // Bổ sung: QL Thể Loại
-        this.viewHome.getBtnTheloai().addActionListener(this); 
+        this.viewtrangchu.getBtnTheloai().addActionListener(this); 
         // Bổ sung: Đăng Xuất
-        this.viewHome.getBtnDangXuat().addActionListener(this);    
+        this.viewtrangchu.getBtnDangXuat().addActionListener(this);    
         // Bạn có thể thêm các nút khác vào đây
         // this.viewHome.getBtnDocGia().addActionListener(this);
     }
 
     public void hienThiTrangChu() {
-        viewHome.setVisible(true);
+        viewtrangchu.setVisible(true);
     }
 
     private void openQuanLyTheLoaiView() {
-    if (viewtheloai == null) {
-        viewtheloai = new view_theloai(); // Tạo view
-        new controller_theloai(viewtheloai); // Truyền view vào controller
+        if (viewtheloai == null) {
+            viewtheloai = new view_theloai(); 
+            // SỬA DÒNG 42: Truyền viewHome (JFrame) thay vì truyền 'this' (Controller)
+            new controller_theloai(viewtheloai, viewtrangchu); 
+        }
+        viewtheloai.setVisible(true);
+        // SỬA DÒNG 45: Gọi setVisible thông qua đối tượng viewHome
+        viewtrangchu.setVisible(false); 
     }
-    viewtheloai.setVisible(true);
-}
     
     
     // Hàm xử lý Đăng Xuất
     private void handleDangXuat() {
-        int confirm = JOptionPane.showConfirmDialog(viewHome, 
+        int confirm = JOptionPane.showConfirmDialog(viewtrangchu, 
                 "Bạn có chắc chắn muốn đăng xuất?", 
                 "Xác nhận Đăng xuất", JOptionPane.YES_NO_OPTION);
         
         if (confirm == JOptionPane.YES_OPTION) {
             // 1. Ẩn cửa sổ Trang Chủ
-            viewHome.dispose();
+            viewtrangchu.dispose();
             
             // 2. Mở lại cửa sổ Đăng Nhập
             view_login vLogin = new view_login();
@@ -66,15 +69,15 @@ public class controller_trangchu implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         Object source = e.getSource();
         
-        if (source == viewHome.getBtnQuanLySach()) {
-            JOptionPane.showMessageDialog(viewHome, "Mở chức năng Quản lý Sách");
+        if (source == viewtrangchu.getBtnQuanLySach()) {
+            JOptionPane.showMessageDialog(viewtrangchu, "Mở chức năng Quản lý Sách");
             // viewHome.setVisible(false); // Tùy chọn: Ẩn Trang chủ khi mở chức năng
             
-        } else if (source == viewHome.getBtnTheloai()) {
+        } else if (source == viewtrangchu.getBtnTheloai()) {
             // Xử lý khi nhấn nút QL Thể Loại
             openQuanLyTheLoaiView();
             
-        } else if (source == viewHome.getBtnDangXuat()) {
+        } else if (source == viewtrangchu.getBtnDangXuat()) {
             // Xử lý khi nhấn nút Đăng Xuất
             handleDangXuat();
         }

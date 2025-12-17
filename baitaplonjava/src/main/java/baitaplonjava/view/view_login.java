@@ -50,17 +50,17 @@ public class view_login extends JFrame{
         panelInput.add(new JLabel("Password"));
         panelInput.add(tf_password);
 
-        btn_login = new JButton("Login");
+        btn_login = new JButton("Đăng nhập");
         // Bổ sung: Khởi tạo nút Đăng ký
         btn_register = new JButton("Đăng ký");
 
         // Panel chứa các nút (để đặt chúng cạnh nhau)
         JPanel panelButtons = new JPanel(new FlowLayout(FlowLayout.CENTER));
         panelButtons.add(btn_login);
-        panelButtons.add(btn_register); // Thêm nút Đăng ký vào panel nút
+        panelButtons.add(btn_register); 
 
         this.add(panelInput, BorderLayout.CENTER);
-        this.add(panelButtons, BorderLayout.SOUTH); // Thay thế btn_login bằng panelButtons
+        this.add(panelButtons, BorderLayout.SOUTH); 
     }
 
     public model_login get_tk() {
@@ -74,7 +74,6 @@ public class view_login extends JFrame{
         btn_login.addActionListener(a);
     }
     
-    // Bổ sung: Phương thức để gán sự kiện cho nút Đăng ký
     public void register_listener(ActionListener a) {
         btn_register.addActionListener(a);
     }
