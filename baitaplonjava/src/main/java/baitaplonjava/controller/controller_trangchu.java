@@ -11,7 +11,7 @@ import javax.swing.JOptionPane;
 public class controller_trangchu implements ActionListener {
     
     private view_trangchu viewHome;
-    private view_theloai viewTheloai; 
+    private view_theloai viewtheloai; 
 
     public controller_trangchu(view_trangchu viewHome) {
         this.viewHome = viewHome;
@@ -35,16 +35,15 @@ public class controller_trangchu implements ActionListener {
         viewHome.setVisible(true);
     }
 
-    // Hàm mở cửa sổ QL Thể Loại
     private void openQuanLyTheLoaiView() {
-    if (viewTheloai == null) {
-        viewTheloai = new view_theloai();
-        // Khởi tạo controller_theloai và truyền view vào
-        new controller_theloai(viewTheloai); // <--- Dòng này quan trọng!
+    if (viewtheloai == null) {
+        viewtheloai = new view_theloai(); // Tạo view
+        new controller_theloai(viewtheloai); // Truyền view vào controller
     }
-    viewTheloai.setVisible(true);
+    viewtheloai.setVisible(true);
 }
-
+    
+    
     // Hàm xử lý Đăng Xuất
     private void handleDangXuat() {
         int confirm = JOptionPane.showConfirmDialog(viewHome, 

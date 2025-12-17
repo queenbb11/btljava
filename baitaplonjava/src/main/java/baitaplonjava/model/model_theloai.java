@@ -7,14 +7,10 @@ public class model_theloai {
 
     public model_theloai() {
     }
-
     public model_theloai(String matheloai, String tentheloai) {
         this.matheloai = matheloai;
         this.tentheloai = tentheloai;
     }
-
-    // ================== GETTER ==================
-
     public String getmatheloai() {
         return matheloai;
     }
@@ -22,8 +18,6 @@ public class model_theloai {
     public String gettentheloai() {
         return tentheloai;
     }
-
-    // ================== SETTER ==================
 
     public void setmatheloai(String matheloai) {
         this.matheloai = matheloai;
