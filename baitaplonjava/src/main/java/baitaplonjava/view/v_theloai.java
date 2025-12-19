@@ -1,7 +1,8 @@
 
 package baitaplonjava.view;
 
-import baitaplonjava.model.model_theloai;
+
+import baitaplonjava.model.m_theloai;
 import java.awt.*;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -12,19 +13,21 @@ import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 
-public class view_theloai extends JFrame {
+public class v_theloai extends JFrame {
 
-    public JTextField txtmatheloai, txttentheloai, txttimkiem;
+    public JTextField txtMaTL, txtTenTL, txttimkiem;
     public JButton btnthem, btnsua, btnxoa, btnluu, btntimkiem, btnxuatfile, btnback;
     public JTable table;
     public DefaultTableModel model;
 
-    public view_theloai() {
+    public v_theloai() {
         initUI();
     }
 
     private void initUI() {
         this.setTitle("Hệ Thống Quản Lý Thể Loại Sách");
+        // Dòng này giúp cửa sổ tự động phóng to toàn màn hình khi mở
+    this.setExtendedState(JFrame.MAXIMIZED_BOTH);
         this.setSize(900, 700);
         this.setLocationRelativeTo(null);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -49,13 +52,13 @@ public class view_theloai extends JFrame {
         inputPanel.setBackground(Color.WHITE);
         inputPanel.setMaximumSize(new Dimension(Integer.MAX_VALUE, 120));
 
-        txtmatheloai = new JTextField(); setupInputField(txtmatheloai, "Mã thể loại");
-        txttentheloai = new JTextField(); setupInputField(txttentheloai, "Tên thể loại");
+        txtMaTL = new JTextField(); setupInputField(txtMaTL, "Mã thể loại");
+        txtTenTL = new JTextField(); setupInputField( txtTenTL, "Tên thể loại");
 
         inputPanel.add(createLabelPanel("Mã Thể Loại:"));
-        inputPanel.add(txtmatheloai);
+        inputPanel.add(txtMaTL);
         inputPanel.add(createLabelPanel("Tên Thể Loại:"));
-        inputPanel.add(txttentheloai);
+        inputPanel.add( txtTenTL);
 
         // Panel Tìm kiếm
         JPanel searchPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 20));
@@ -166,13 +169,13 @@ public class view_theloai extends JFrame {
     public void bt_xuatfile_action_listenner(ActionListener a) { btnxuatfile.addActionListener(a); }
     public void bt_quaylai_action_listenner(ActionListener a) { btnback.addActionListener(a); }
 
-    public model_theloai get_theloai() {
-        String matheloai = txtmatheloai.getText().trim();
-        String tentheloai = txttentheloai.getText().trim();
-        if (matheloai.isEmpty() || tentheloai.isEmpty()) {
+    public m_theloai get_theloai() {
+        String MaTL = txtMaTL.getText().trim();
+        String TenTL = txtTenTL.getText().trim();
+        if (MaTL.isEmpty() || TenTL.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Vui lòng nhập đầy đủ thông tin!");
             return null;
         }
-        return new model_theloai(matheloai, tentheloai);
+        return new m_theloai(MaTL, TenTL);
     }
 }

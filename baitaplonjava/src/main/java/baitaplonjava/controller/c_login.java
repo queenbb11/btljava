@@ -1,8 +1,10 @@
 package baitaplonjava.controller;
 
-import baitaplonjava.view.view_login;
-import baitaplonjava.model.model_login;
-import baitaplonjava.view.view_trangchu;
+
+import baitaplonjava.model.m_login;
+import baitaplonjava.view.v_login;
+import baitaplonjava.view.v_trangchu;
+
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -12,15 +14,15 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import javax.swing.JOptionPane;
 
-public class controller_login {
+public class c_login {
 
     private Connection con;
-    private view_login view;
+    private v_login view;
 
-    public controller_login() {
+    public c_login() {
         connectDB();
 
-        view = new view_login();
+        view = new v_login();
         view.setVisible(true);
 
         view.check_login_listener(new login_listener());
@@ -42,7 +44,7 @@ public class controller_login {
     }
 
     // ================= ĐĂNG NHẬP =================
-    private void check_login(model_login tk) {
+    private void check_login(m_login tk) {
 
         String sql = "SELECT * FROM dangnhap WHERE username=? AND password=?";
 
@@ -68,13 +70,13 @@ public class controller_login {
 
     // ================= MỞ FORM ĐĂNG KÝ =================
     private void moFormDangKy() {
-        new controller_dangky(con); // controller riêng cho đăng ký
+        new c_dangky(con); 
     }
 
     // ================= TRANG CHỦ =================
     private void chuyenSangTrangChu() {
-        view_trangchu vtrangchu = new view_trangchu();
-        new controller_trangchu(vtrangchu).hienThiTrangChu();
+        v_trangchu vtrangchu = new v_trangchu();
+        new c_trangchu(vtrangchu).hienThiTrangChu();
     }
 
     // ================= LISTENER =================

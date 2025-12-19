@@ -6,7 +6,6 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridLayout;
-import java.awt.FlowLayout;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -14,21 +13,23 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
-public class view_trangchu extends JFrame {
+public class v_trangchu extends JFrame {
 
-    private JButton btnQuanLySach;
+    private JButton btnQuanlysach;
     private JButton btnDocGia;
     private JButton btnMuonTra;
     private JButton btnTheloai;
     private JButton btnDangXuat;
     private JLabel lblUserLogin; 
     
-    public view_trangchu() {
+    public v_trangchu() {
         initComponents();
     }
 
     private void initComponents() {
         this.setTitle("Hệ Thống Quản Lý Thư Viện - Dashboard");
+        // Dòng này giúp cửa sổ tự động phóng to toàn màn hình khi mở
+    this.setExtendedState(JFrame.MAXIMIZED_BOTH);
         this.setSize(1100, 650);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setLocationRelativeTo(null); 
@@ -44,35 +45,44 @@ public class view_trangchu extends JFrame {
         lblTitle.setFont(new Font("Segoe UI", Font.BOLD, 28));
         lblTitle.setForeground(Color.WHITE);
         pnlHeader.add(lblTitle, BorderLayout.CENTER);
-
-  
-        
-       
-
         // 3. Tạo phần Menu
         JPanel pnlMenu = new JPanel();
         pnlMenu.setBackground(new Color(245, 245, 245)); 
         pnlMenu.setLayout(new GridLayout(3, 5, 20, 20)); 
         pnlMenu.setBorder(new EmptyBorder(30, 30, 30, 30));
 
-        btnQuanLySach = createStyledButton("QL Sách", "📚");
-        pnlMenu.add(btnQuanLySach);
+        btnQuanlysach = createStyledButton("QL Sách", "📚");
+        pnlMenu.add(btnQuanlysach);
+        
         btnDocGia = createStyledButton("QL Độc Giả", "👥");
         pnlMenu.add(btnDocGia);
+        
         btnMuonTra = createStyledButton("QL Mượn Trả", "🔄");
         pnlMenu.add(btnMuonTra);
+        
         pnlMenu.add(createStyledButton("QL Tác Giả", "✍️"));
+        
         pnlMenu.add(createStyledButton("QL NXB", "🏢"));
+        
         btnTheloai = createStyledButton("QL Thể Loại", "🔖");
         pnlMenu.add(btnTheloai);
+        
         pnlMenu.add(createStyledButton("QL Nhân Viên", "🆔"));
+        
         pnlMenu.add(createStyledButton("Nhập Sách", "📥"));
+        
         pnlMenu.add(createStyledButton("Thanh Lý", "📤"));
+        
         pnlMenu.add(createStyledButton("Thống Kê", "📈"));
+        
         pnlMenu.add(createStyledButton("Báo Cáo", "📄"));
+        
         pnlMenu.add(createStyledButton("Cấu Hình", "⚙️"));
+        
         pnlMenu.add(createStyledButton("Quy Định", "📜"));
+        
         pnlMenu.add(createStyledButton("Đổi Mật Khẩu", "🔑"));
+        
         btnDangXuat = createStyledButton("Đăng Xuất", "🚪");
         btnDangXuat.setForeground(new Color(200, 50, 50)); 
         pnlMenu.add(btnDangXuat);
@@ -102,7 +112,7 @@ public class view_trangchu extends JFrame {
     }
 
     // --- GETTER ---
-    public JButton getBtnQuanLySach() { return btnQuanLySach; }
+    public JButton getBtnSach() { return btnQuanlysach; }
     public JButton getBtnDocGia() { return btnDocGia; }
     public JButton getBtnMuonTra() { return btnMuonTra; }
     public JButton getBtnTheloai() { return btnTheloai; }

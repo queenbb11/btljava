@@ -1,11 +1,11 @@
 package baitaplonjava.model;
 
-public class model_trangchu {
+public class m_trangchu {
 
     private String username;
     private boolean dangDangNhap;
 
-    public model_trangchu() {
+    public m_trangchu() {
         dangDangNhap = false;
     }
 

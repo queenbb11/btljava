@@ -1,6 +1,7 @@
 package baitaplonjava.controller;
 
-import baitaplonjava.view.view_dangky;
+import baitaplonjava.view.v_dangky;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Connection;
@@ -8,14 +9,14 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import javax.swing.JOptionPane;
 
-public class controller_dangky {
+public class c_dangky {
 
-    private view_dangky view;
+    private v_dangky view;
     private Connection con;
 
-    public controller_dangky(Connection con) {
+    public c_dangky(Connection con) {
         this.con = con;
-        view = new view_dangky();
+        view = new v_dangky();
         view.setVisible(true);
 
         view.register_listener(new register_listener());

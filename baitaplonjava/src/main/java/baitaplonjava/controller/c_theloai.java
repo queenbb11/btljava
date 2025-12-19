@@ -1,18 +1,20 @@
 
 package baitaplonjava.controller;
-import baitaplonjava.model.model_theloai;
-import baitaplonjava.view.view_theloai;
-import baitaplonjava.view.view_trangchu;
+import baitaplonjava.model.m_theloai;
+
+import baitaplonjava.view.v_theloai;
+import baitaplonjava.view.v_trangchu;
+
 import java.awt.event.*;
 import java.io.*; // Để xử lý File
 import java.sql.*;
 import javax.swing.*;
 import java.io.File;
 
-public class controller_theloai {
+public class c_theloai {
 
-    private view_theloai v;
-    private view_trangchu viewtrangchu; 
+    private v_theloai v;
+    private v_trangchu viewtrangchu; 
     private int selectedRow = -1;
 
     private final String url = "jdbc:mysql://localhost:3306/baitaplon";
@@ -20,9 +22,9 @@ public class controller_theloai {
     private final String pass = "123456789";
 
     // Cập nhật Constructor nhận thêm viewTrangChu
-    public controller_theloai(view_theloai view, JFrame trangchu) {
+    public c_theloai(v_theloai view, JFrame trangchu) {
         this.v = view;
-        this.viewtrangchu = (view_trangchu) trangchu;
+        this.viewtrangchu = (v_trangchu) trangchu;
 
         // --- Các sự kiện cũ của bạn ---
         this.v.bt_them_action_listenner(e -> clearFields());
@@ -41,9 +43,9 @@ public class controller_theloai {
             public void mouseClicked(MouseEvent e) {
                 selectedRow = v.table.getSelectedRow();
                 if (selectedRow != -1) {
-                    v.txtmatheloai.setText(v.table.getValueAt(selectedRow, 0).toString());
-                    v.txttentheloai.setText(v.table.getValueAt(selectedRow, 1).toString());
-                    v.txtmatheloai.setEditable(false);
+                    v.txtMaTL.setText(v.table.getValueAt(selectedRow, 0).toString());
+                    v.txtTenTL.setText(v.table.getValueAt(selectedRow, 1).toString());
+                    v.txtMaTL.setEditable(false);
                 }
             }
         });
@@ -61,7 +63,7 @@ public class controller_theloai {
     private void handleTimKiem() {
     String keyword = v.txttimkiem.getText().trim();
     // 1. Cập nhật SQL để kiểm tra cả mã và tên
-    String sql = "SELECT * FROM theloai WHERE tentheloai LIKE ? OR matheloai LIKE ?";
+    String sql = "SELECT * FROM Theloai WHERE TenTL LIKE ? OR MaTL LIKE ?";
     
     try (Connection conn = DriverManager.getConnection(url, user, pass);
          PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -76,8 +78,8 @@ public class controller_theloai {
         
         while (rs.next()) {
             v.model.addRow(new Object[]{
-                rs.getString("matheloai"), 
-                rs.getString("tentheloai")
+                rs.getString("MaTL"), 
+                rs.getString("TenTL")
             });
         }
     } catch (SQLException e) {
@@ -129,15 +131,15 @@ public class controller_theloai {
     // Hàm tải dữ liệu từ DB lên JTable
     public void loadData() {
         try (Connection conn = DriverManager.getConnection(url, user, pass)) {
-            String sql = "SELECT * FROM theloai";
+            String sql = "SELECT * FROM Theloai";
             Statement st = conn.createStatement();
             ResultSet rs = st.executeQuery(sql);
 
             v.model.setRowCount(0); // Xóa dữ liệu cũ trên bảng
             while (rs.next()) {
                 v.model.addRow(new Object[]{
-                    rs.getString("matheloai"), 
-                    rs.getString("tentheloai")
+                    rs.getString("MaTL"), 
+                    rs.getString("TenTL")
                 });
             }
             System.out.println("Tải dữ liệu thành công!");
@@ -148,15 +150,15 @@ public class controller_theloai {
 
     // Xử lý nút LƯU (Insert)
     private void handleLuu() {
-        model_theloai tl = v.get_theloai();
+        m_theloai tl = v.get_theloai();
         if (tl == null) return;
 
-        String sql = "INSERT INTO theloai (matheloai, tentheloai) VALUES (?, ?)";
+        String sql = "INSERT INTO Theloai (MaTL, TenTL) VALUES (?, ?)";
         try (Connection conn = DriverManager.getConnection(url, user, pass);
              PreparedStatement ps = conn.prepareStatement(sql)) {
             
-            ps.setString(1, tl.getmatheloai());
-            ps.setString(2, tl.gettentheloai());
+            ps.setString(1, tl.getMaTL());
+            ps.setString(2, tl.getTenTL());
             
             int check = ps.executeUpdate();
             if (check > 0) {
@@ -176,12 +178,12 @@ public class controller_theloai {
             return;
         }
         
-        String sql = "UPDATE theloai SET tentheloai = ? WHERE matheloai = ?";
+        String sql = "UPDATE Theloai SET TenTL = ? WHERE MaTL = ?";
         try (Connection conn = DriverManager.getConnection(url, user, pass);
              PreparedStatement ps = conn.prepareStatement(sql)) {
             
-            ps.setString(1, v.txttentheloai.getText().trim());
-            ps.setString(2, v.txtmatheloai.getText().trim());
+            ps.setString(1, v.txtTenTL.getText().trim());
+            ps.setString(2, v.txtMaTL.getText().trim());
             
             ps.executeUpdate();
             JOptionPane.showMessageDialog(v, "Sửa thành công!");
@@ -200,11 +202,11 @@ public class controller_theloai {
 
         int confirm = JOptionPane.showConfirmDialog(v, "Bạn có muốn xóa không?", "Xác nhận", JOptionPane.YES_NO_OPTION);
         if (confirm == JOptionPane.YES_OPTION) {
-            String sql = "DELETE FROM theloai WHERE matheloai = ?";
+            String sql = "DELETE FROM Theloai WHERE matheloai = ?";
             try (Connection conn = DriverManager.getConnection(url, user, pass);
                  PreparedStatement ps = conn.prepareStatement(sql)) {
                 
-                ps.setString(1, v.txtmatheloai.getText());
+                ps.setString(1, v.txtMaTL.getText());
                 ps.executeUpdate();
                 
                 JOptionPane.showMessageDialog(v, "Đã xóa!");
@@ -217,10 +219,10 @@ public class controller_theloai {
     }
 
     private void clearFields() {
-        v.txtmatheloai.setText("");
-        v.txttentheloai.setText("");
-        v.txtmatheloai.setEditable(true);
-        v.txtmatheloai.requestFocus();
+        v.txtMaTL.setText("");
+        v.txtTenTL.setText("");
+        v.txtMaTL.setEditable(true);
+        v.txtMaTL.requestFocus();
         selectedRow = -1;
     }
 }

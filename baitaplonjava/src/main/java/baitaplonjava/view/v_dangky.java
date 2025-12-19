@@ -8,14 +8,14 @@ import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 
-public class view_dangky extends JFrame {
+public class v_dangky extends JFrame {
 
     private JTextField tf_username;
     private JPasswordField tf_password;
     private JPasswordField tf_repassword;
     private JButton btn_register;
 
-    public view_dangky() {
+    public v_dangky() {
         initUI();
     }
 

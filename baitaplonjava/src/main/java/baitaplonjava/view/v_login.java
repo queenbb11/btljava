@@ -1,7 +1,7 @@
 
 package baitaplonjava.view;
 
-import baitaplonjava.model.model_login;
+import baitaplonjava.model.m_login;
 import java.awt.*;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -10,13 +10,13 @@ import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 
-public class view_login extends JFrame {
+public class v_login extends JFrame {
     JTextField tf_username;
     JPasswordField tf_password;
     JButton btn_login;
     JButton btn_register;
 
-    public view_login() {
+    public v_login() {
         initUI();
     }
 
@@ -114,8 +114,8 @@ public class view_login extends JFrame {
             }
         });
     }
-    public model_login get_tk() {
-        return new model_login(tf_username.getText(), new String(tf_password.getPassword()));
+    public m_login get_tk() {
+        return new m_login(tf_username.getText(), new String(tf_password.getPassword()));
     }
     public void check_login_listener(ActionListener a) { btn_login.addActionListener(a); }
     public void register_listener(ActionListener a) { btn_register.addActionListener(a); }

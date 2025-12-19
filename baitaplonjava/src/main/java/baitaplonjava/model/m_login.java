@@ -5,13 +5,13 @@
 package baitaplonjava.model;
 
     
-public class model_login {
+public class m_login {
     private String user;
     private String pass;
 
-    public model_login() {}
+    public m_login() {}
 
-    public model_login(String user, String pass) {
+    public m_login(String user, String pass) {
         this.user = user;
         this.pass = pass;
     }
