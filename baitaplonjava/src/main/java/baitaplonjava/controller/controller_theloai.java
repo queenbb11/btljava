@@ -33,7 +33,7 @@ public class controller_theloai {
         // --- Gán thêm 4 sự kiện mới ---
         this.v.bt_timkiem_action_listenner(e -> handleTimKiem());
         this.v.bt_xuatfile_action_listenner(e -> handleXuatFile());
-        this.v.bt_docfile_action_listenner(e -> handleDocFile());
+       // this.v.bt_docfile_action_listenner(e -> handleDocFile());
         this.v.bt_quaylai_action_listenner(e -> handleQuayLai());
 
         this.v.table.addMouseListener(new MouseAdapter() {
@@ -59,21 +59,31 @@ public class controller_theloai {
 
     // 2. Xử lý Tìm kiếm (Tìm theo tên gần đúng)
     private void handleTimKiem() {
-        String keyword = v.txttimkiem.getText().trim();
-        String sql = "SELECT * FROM theloai WHERE tentheloai LIKE ?";
-        try (Connection conn = DriverManager.getConnection(url, user, pass);
-             PreparedStatement ps = conn.prepareStatement(sql)) {
-            
-            ps.setString(1, "%" + keyword + "%");
-            ResultSet rs = ps.executeQuery();
-            v.model.setRowCount(0);
-            while (rs.next()) {
-                v.model.addRow(new Object[]{rs.getString("matheloai"), rs.getString("tentheloai")});
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
+    String keyword = v.txttimkiem.getText().trim();
+    // 1. Cập nhật SQL để kiểm tra cả mã và tên
+    String sql = "SELECT * FROM theloai WHERE tentheloai LIKE ? OR matheloai LIKE ?";
+    
+    try (Connection conn = DriverManager.getConnection(url, user, pass);
+         PreparedStatement ps = conn.prepareStatement(sql)) {
+        
+        // 2. Gán từ khóa vào cả 2 tham số
+        String searchPattern = "%" + keyword + "%";
+        ps.setString(1, searchPattern); // Cho tentheloai
+        ps.setString(2, searchPattern); // Cho matheloai
+        
+        ResultSet rs = ps.executeQuery();
+        v.model.setRowCount(0);
+        
+        while (rs.next()) {
+            v.model.addRow(new Object[]{
+                rs.getString("matheloai"), 
+                rs.getString("tentheloai")
+            });
         }
+    } catch (SQLException e) {
+        e.printStackTrace();
     }
+}
 
     // 3. Xử lý Xuất File (CSV - mở được bằng Excel)
     private void handleXuatFile() {
@@ -93,7 +103,7 @@ public class controller_theloai {
             }
         }
     }
-
+    /*
     // 4. Xử lý Đọc File (Đọc từ file CSV rồi nạp vào bảng)
     private void handleDocFile() {
         JFileChooser fileChooser = new JFileChooser();
@@ -115,7 +125,7 @@ public class controller_theloai {
             }
         }
     }
-
+*/
     // Hàm tải dữ liệu từ DB lên JTable
     public void loadData() {
         try (Connection conn = DriverManager.getConnection(url, user, pass)) {

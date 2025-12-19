@@ -1,10 +1,12 @@
 
 package baitaplonjava.view;
+
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridLayout;
+import java.awt.FlowLayout;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -19,7 +21,7 @@ public class view_trangchu extends JFrame {
     private JButton btnMuonTra;
     private JButton btnTheloai;
     private JButton btnDangXuat;
-    // Bạn có thể khai báo thêm các nút khác nếu cần xử lý sự kiện riêng biệt
+    private JLabel lblUserLogin; 
     
     public view_trangchu() {
         initComponents();
@@ -27,46 +29,40 @@ public class view_trangchu extends JFrame {
 
     private void initComponents() {
         this.setTitle("Hệ Thống Quản Lý Thư Viện - Dashboard");
-        this.setSize(1000, 600);
+        this.setSize(1100, 650);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        this.setLocationRelativeTo(null); // Căn giữa màn hình
+        this.setLocationRelativeTo(null); 
         this.setLayout(new BorderLayout());
 
-        // 2. Tạo phần Header (Tiêu đề phía trên)
+        // 2. Tạo phần Header
         JPanel pnlHeader = new JPanel();
-        pnlHeader.setBackground(new Color(45, 118, 232)); // Màu xanh dương đậm
-        pnlHeader.setPreferredSize(new Dimension(1000, 80));
+        pnlHeader.setBackground(new Color(45, 118, 232)); 
+        pnlHeader.setPreferredSize(new Dimension(1000, 100)); 
         pnlHeader.setLayout(new BorderLayout());
         
         JLabel lblTitle = new JLabel("TRANG CHỦ QUẢN TRỊ THƯ VIỆN", JLabel.CENTER);
-        lblTitle.setFont(new Font("Segoe UI", Font.BOLD, 26));
+        lblTitle.setFont(new Font("Segoe UI", Font.BOLD, 28));
         lblTitle.setForeground(Color.WHITE);
         pnlHeader.add(lblTitle, BorderLayout.CENTER);
 
-        // 3. Tạo phần Menu (Chứa 15 nút bấm)
+  
+        
+       
+
+        // 3. Tạo phần Menu
         JPanel pnlMenu = new JPanel();
-        pnlMenu.setBackground(new Color(245, 245, 245)); // Màu nền xám rất nhạt
-        // GridLayout: 3 hàng, 5 cột, khoảng cách 20px
+        pnlMenu.setBackground(new Color(245, 245, 245)); 
         pnlMenu.setLayout(new GridLayout(3, 5, 20, 20)); 
         pnlMenu.setBorder(new EmptyBorder(30, 30, 30, 30));
 
-        
-        // Nút 1: Quản lý sách
         btnQuanLySach = createStyledButton("QL Sách", "📚");
         pnlMenu.add(btnQuanLySach);
-
-        // Nút 2: Độc giả
         btnDocGia = createStyledButton("QL Độc Giả", "👥");
         pnlMenu.add(btnDocGia);
-        
-        // Nút 3: Mượn trả
         btnMuonTra = createStyledButton("QL Mượn Trả", "🔄");
         pnlMenu.add(btnMuonTra);
-
-        // Các nút chức năng khác (Chưa cần gán biến nếu chưa làm chức năng)
         pnlMenu.add(createStyledButton("QL Tác Giả", "✍️"));
         pnlMenu.add(createStyledButton("QL NXB", "🏢"));
-        //Nút: Thể loại
         btnTheloai = createStyledButton("QL Thể Loại", "🔖");
         pnlMenu.add(btnTheloai);
         pnlMenu.add(createStyledButton("QL Nhân Viên", "🆔"));
@@ -81,49 +77,34 @@ public class view_trangchu extends JFrame {
         btnDangXuat.setForeground(new Color(200, 50, 50)); 
         pnlMenu.add(btnDangXuat);
 
-        // 4. Thêm Header và Menu vào Frame
         this.add(pnlHeader, BorderLayout.NORTH);
         this.add(pnlMenu, BorderLayout.CENTER);
         
-        // Footer
         JLabel lblFooter = new JLabel("Quản lí thư viện _ Nhóm 3", JLabel.CENTER);
         lblFooter.setBorder(new EmptyBorder(10,0,10,0));
         this.add(lblFooter, BorderLayout.SOUTH);
     }
 
     private JButton createStyledButton(String text, String icon) {
-        // Sử dụng HTML để hiển thị Icon to ở trên và Text ở dưới
         JButton btn = new JButton("<html><center><span style='font-size:24px'>" + icon + "</span><br><span style='font-size:12px'>" + text + "</span></center></html>");
         btn.setFont(new Font("Segoe UI", Font.PLAIN, 14));
         btn.setBackground(Color.WHITE);
         btn.setForeground(new Color(50, 50, 50));
-        btn.setFocusPainted(false); // Bỏ viền focus khi click
+        btn.setFocusPainted(false);
         btn.setBorder(BorderFactory.createLineBorder(new Color(220, 220, 220), 1));
-        // Hiệu ứng con trỏ chuột khi di vào
         btn.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         return btn;
     }
 
-    // --- GETTER CHO CONTROLLER GỌI ---
-
-    public JButton getBtnQuanLySach() {
-        return btnQuanLySach;
+    // Khi đăng nhập thành công, Controller sẽ gọi hàm này để hiện tên thật
+    public void setDisplayName(String name) {
+        lblUserLogin.setText(name);
     }
 
-    public JButton getBtnDocGia() {
-        return btnDocGia;
-    }
-
-    public JButton getBtnMuonTra() {
-        return btnMuonTra;
-    }
-    
-    public JButton getBtnTheloai() {
-        return btnTheloai;
-    }
-
-    
-    public JButton getBtnDangXuat() {
-        return btnDangXuat;
-    }
+    // --- GETTER ---
+    public JButton getBtnQuanLySach() { return btnQuanLySach; }
+    public JButton getBtnDocGia() { return btnDocGia; }
+    public JButton getBtnMuonTra() { return btnMuonTra; }
+    public JButton getBtnTheloai() { return btnTheloai; }
+    public JButton getBtnDangXuat() { return btnDangXuat; }
 }

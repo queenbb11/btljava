@@ -73,8 +73,8 @@ public class controller_login {
 
     // ================= TRANG CHỦ =================
     private void chuyenSangTrangChu() {
-        view_trangchu vHome = new view_trangchu();
-        new controller_trangchu(vHome).hienThiTrangChu();
+        view_trangchu vtrangchu = new view_trangchu();
+        new controller_trangchu(vtrangchu).hienThiTrangChu();
     }
 
     // ================= LISTENER =================
