@@ -163,57 +163,36 @@ public class c_theloai {
             e.printStackTrace();
         }
     }
-
-           // 6. XỬ LÝ XUẤT FILE CSV
-private void handleXuatFile() {
+    // xuat file
+    private void handleXuatFile() {
     JFileChooser fileChooser = new JFileChooser();
     if (fileChooser.showSaveDialog(v) == JFileChooser.APPROVE_OPTION) {
-        File file = fileChooser.getSelectedFile();
-        String filePath = file.getAbsolutePath();
-        if (!filePath.endsWith(".csv")) {
-            filePath += ".csv";
-        }
+        try {
+            String path = fileChooser.getSelectedFile().getAbsolutePath();
+            if (!path.endsWith(".csv")) path += ".csv";
 
-        // Sử dụng FileOutputStream để ghi byte trực tiếp
-        try (FileOutputStream fos = new FileOutputStream(filePath)) {
-            
-            // BƯỚC 1: Ghi 3 byte của BOM UTF-8 (EF BB BF) - Quan trọng nhất để Excel nhận diện tiếng Việt
-            fos.write(0xEF);
-            fos.write(0xBB);
-            fos.write(0xBF);
+            // Bước 1: Ghi 3 byte BOM để Excel nhận diện UTF-8 (Tiếng Việt)
+            FileOutputStream fos = new FileOutputStream(path);
+            fos.write(0xEF); fos.write(0xBB); fos.write(0xBF);
 
-            // BƯỚC 2: Bọc FileOutputStream bằng OutputStreamWriter với encoding UTF-8
-            try (OutputStreamWriter osw = new OutputStreamWriter(fos, "UTF-8");
-                 PrintWriter pw = new PrintWriter(osw)) {
+            // Bước 2: Dùng PrintWriter bọc OutputStreamWriter để ép kiểu UTF-8
+            PrintWriter pw = new PrintWriter(new OutputStreamWriter(fos, "UTF-8"));
 
-                // BƯỚC 3: Dòng này giúp Excel tự động chia cột khi dùng dấu phẩy
-                pw.println("sep=,");
+            // Bước 3: Ghi tiêu đề - Dùng dấu chấm phẩy (;) để Excel tự chia cột
+            pw.println("STT;Mã Thể Loại;Tên Thể Loại");
 
-                // BƯỚC 4: Ghi tiêu đề (Header)
-                pw.println("STT,Ma The Loai,Ten The Loai");
-
-                // BƯỚC 5: Ghi dữ liệu từ Table
-                for (int i = 0; i < v.table.getRowCount(); i++) {
-                    int stt = i + 1;
-                    
-                    // Lấy dữ liệu và ép kiểu an toàn
-                    Object maObj = v.table.getValueAt(i, 0);
-                    Object tenObj = v.table.getValueAt(i, 1);
-                    
-                    String ma = (maObj != null) ? maObj.toString() : "";
-                    String ten = (tenObj != null) ? tenObj.toString() : "";
-
-                    // Ghi dòng dữ liệu
-                    pw.println(stt + "," + ma + "," + ten);
-                }
-                
-                // Đẩy dữ liệu từ bộ nhớ đệm xuống file
-                pw.flush();
+            // Bước 4: Duyệt bảng ghi dữ liệu
+            for (int i = 0; i < v.table.getRowCount(); i++) {
+                String ma = v.table.getValueAt(i, 0).toString();
+                String ten = v.table.getValueAt(i, 1).toString();
+                // Ngăn cách bằng dấu chấm phẩy (;)
+                pw.println((i + 1) + ";" + ma + ";" + ten);
             }
-            
+
+            pw.close();
             JOptionPane.showMessageDialog(v, "Xuất file thành công!");
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(v, "Lỗi hệ thống: " + e.getMessage());
+            JOptionPane.showMessageDialog(v, "Lỗi: " + e.getMessage());
         }
     }
 }

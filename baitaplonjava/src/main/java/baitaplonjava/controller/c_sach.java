@@ -4,13 +4,18 @@
  */
 package baitaplonjava.controller;
 
+
 import baitaplonjava.model.m_sach;
 import baitaplonjava.view.v_sach;
 import baitaplonjava.view.v_trangchu;
 
 import java.awt.event.*;
+import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.sql.*;
 import javax.swing.*;
+
+import java.sql.ResultSet;
 
 public class c_sach {
 
@@ -27,16 +32,15 @@ public class c_sach {
         this.viewtrangchu = (v_trangchu) trangchu;
 
         // --- Gán sự kiện cho các nút ---
-        // Nút Thêm: Hiển thị lên bảng (giống ví dụ nhân viên)
         this.v.bt_them_action_listener(e -> handleThem());
-        
-        // Nút Lưu: Ghi vào Database
         this.v.bt_luu_action_listener(e -> handleLuu());
-        
         this.v.bt_sua_action_listener(e -> handleSua());
         this.v.bt_xoa_action_listener(e -> handleXoa());
         this.v.bt_timkiem_action_listener(e -> handleTimKiem());
         this.v.bt_quaylai_action_listener(e -> handleQuayLai());
+        
+        // Bổ sung nút xuất file (Giả định view có hàm này)
+        this.v.bt_xuatfile_action_listener(e -> handleXuatFile());
 
         // --- Sự kiện click bảng ---
         this.v.table.addMouseListener(new MouseAdapter() {
@@ -61,7 +65,45 @@ public class c_sach {
         loadData();
     }
 
-    // 1. Xử lý nút THÊM (Đưa lên bảng)
+    // --- XỬ LÝ XUẤT FILE CSV (Tối ưu cho vấn đáp) ---
+    private void handleXuatFile() {
+        JFileChooser fileChooser = new JFileChooser();
+        if (fileChooser.showSaveDialog(v) == JFileChooser.APPROVE_OPTION) {
+            File file = fileChooser.getSelectedFile();
+            String path = file.getAbsolutePath();
+            if (!path.toLowerCase().endsWith(".csv")) path += ".csv";
+
+            // Dùng FileOutputStream để ghi byte BOM giúp Excel nhận diện tiếng Việt
+            try (FileOutputStream fos = new FileOutputStream(path)) {
+                // Ghi mã BOM UTF-8 (EF BB BF)
+                fos.write(0xEF); fos.write(0xBB); fos.write(0xBF);
+
+                try (OutputStreamWriter osw = new OutputStreamWriter(fos, StandardCharsets.UTF_8);
+                     PrintWriter pw = new PrintWriter(osw)) {
+
+                    // Ghi tiêu đề dùng dấu ; để Excel tự động tách cột
+                    pw.println("Mã Sách;Tên Sách;Mã TL;Mã NXB;Mã TG;Năm XB;Tình Trạng;Mô Tả");
+
+                    // Duyệt dữ liệu từ bảng
+                    for (int i = 0; i < v.table.getRowCount(); i++) {
+                        StringBuilder row = new StringBuilder();
+                        for (int j = 0; j < v.table.getColumnCount(); j++) {
+                            Object val = v.table.getValueAt(i, j);
+                            row.append(val != null ? val.toString() : "");
+                            if (j < v.table.getColumnCount() - 1) row.append(";");
+                        }
+                        pw.println(row.toString());
+                    }
+                    pw.flush();
+                    JOptionPane.showMessageDialog(v, "Xuất file thành công!");
+                }
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(v, "Lỗi xuất file: " + e.getMessage());
+            }
+        }
+    }
+
+    // --- Các hàm Database giữ nguyên logic của bạn ---
     private void handleThem() {
         m_sach s = v.get_sach();
         if (s != null) {
@@ -73,15 +115,12 @@ public class c_sach {
         }
     }
 
-    // 2. Xử lý nút LƯU (Ghi vào CSDL)
     private void handleLuu() {
         m_sach s = v.get_sach();
         if (s == null) return;
-
         String sql = "INSERT INTO Sach (MaS, TenS, MaTL, MaNXB, MaTG, Namxuatban, Tinhtrang, Mota) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
         try (Connection conn = DriverManager.getConnection(url, user, pass);
              PreparedStatement ps = conn.prepareStatement(sql)) {
-            
             ps.setString(1, s.getMaS());
             ps.setString(2, s.getTenS());
             ps.setString(3, s.getMaTL());
@@ -100,8 +139,6 @@ public class c_sach {
             JOptionPane.showMessageDialog(v, "Lỗi: Mã sách đã tồn tại!");
         }
     }
-
-    // --- Các hàm hỗ trợ khác giữ nguyên logic chuẩn ---
 
     public void loadData() {
         v.model.setRowCount(0);
