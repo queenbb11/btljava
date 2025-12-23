@@ -2,6 +2,7 @@
 package baitaplonjava.controller;
 
   
+import baitaplonjava.view.v_khosach;
 import baitaplonjava.view.v_login;
 import baitaplonjava.view.v_sach;
 import baitaplonjava.view.v_theloai;
@@ -15,6 +16,7 @@ public class c_trangchu implements ActionListener {
     private v_trangchu viewtrangchu;
     private v_theloai viewtheloai; 
     private v_sach viewsach;
+    private v_khosach viewkhosach;
 
     public c_trangchu(v_trangchu viewtrangchu) {
         this.viewtrangchu = viewtrangchu;
@@ -28,6 +30,8 @@ public class c_trangchu implements ActionListener {
         this.viewtrangchu.getBtnSach().addActionListener(this);
         // Bổ sung: QL Thể Loại
         this.viewtrangchu.getBtnTheloai().addActionListener(this); 
+        // QL: kho ssach
+         this.viewtrangchu.getBtnKhosach().addActionListener(this);
         // Bổ sung: Đăng Xuất
         this.viewtrangchu.getBtnDangXuat().addActionListener(this);    
         // Bạn có thể thêm các nút khác vào đây
@@ -60,6 +64,16 @@ public class c_trangchu implements ActionListener {
         viewtrangchu.setVisible(false); 
     }
     
+      private void moQuanlykhosachview() {
+        if (viewkhosach == null) {
+            viewkhosach = new v_khosach(); 
+            // SỬA DÒNG 42: Truyền viewHome (JFrame) thay vì truyền 'this' (Controller)
+            new c_khosach(viewkhosach, viewtrangchu); 
+        }
+        viewkhosach.setVisible(true);
+        // SỬA DÒNG 45: Gọi setVisible thông qua đối tượng viewHome
+        viewtrangchu.setVisible(false); 
+    }
     
     
     
@@ -92,7 +106,12 @@ public class c_trangchu implements ActionListener {
         } else if (source == viewtrangchu.getBtnTheloai()) {
             // Xử lý khi nhấn nút QL Thể Loại
             moQuanlytheloaiview();      
-        } else if (source == viewtrangchu.getBtnDangXuat()) {
+        } 
+        else if (source == viewtrangchu.getBtnKhosach()) {
+            // Xử lý khi nhấn nút QL Thể Loại
+            moQuanlykhosachview();      
+        } 
+        else if (source == viewtrangchu.getBtnDangXuat()) {
             // Xử lý khi nhấn nút Đăng Xuất
             handleDangXuat();
         }

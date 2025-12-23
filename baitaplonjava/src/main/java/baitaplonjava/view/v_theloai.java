@@ -94,7 +94,7 @@ public class v_theloai extends JFrame {
         JPanel actionPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 15, 20));
         actionPanel.setBackground(new Color(245, 245, 245));
 
-        btnthem = new JButton("Thêm"); styleButton(btnthem, new Color(46, 204, 113)); // Xanh lá
+        btnthem = new JButton("Thêm mới"); styleButton(btnthem, new Color(46, 204, 113)); // Xanh lá
         btnsua = new JButton("Sửa"); styleButton(btnsua, new Color(241, 196, 15)); // Vàng
         btnxoa = new JButton("Xóa"); styleButton(btnxoa, new Color(231, 76, 60)); // Đỏ
         btnluu = new JButton("Lưu"); styleButton(btnluu, new Color(155, 89, 182)); // Tím
