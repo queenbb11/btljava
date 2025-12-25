@@ -2,9 +2,18 @@
 package baitaplonjava.controller;
 
   
+
+import baitaplonjava.view.v_docgia;
+import baitaplonjava.view.v_khosach;
+import baitaplonjava.view.v_login;
+import baitaplonjava.view.v_nhaxuatban;
+import baitaplonjava.view.v_sach;
+import baitaplonjava.view.v_tacgia;
+
 import baitaplonjava.view.v_khosach;
 import baitaplonjava.view.v_login;
 import baitaplonjava.view.v_sach;
+
 import baitaplonjava.view.v_theloai;
 import baitaplonjava.view.v_trangchu;
 import java.awt.event.ActionEvent;
@@ -17,6 +26,12 @@ public class c_trangchu implements ActionListener {
     private v_theloai viewtheloai; 
     private v_sach viewsach;
     private v_khosach viewkhosach;
+
+    private v_nhaxuatban viewnhaxuatban;
+    private v_tacgia viewtacgia;
+    private v_docgia viewdocgia;
+
+
 
     public c_trangchu(v_trangchu viewtrangchu) {
         this.viewtrangchu = viewtrangchu;
@@ -36,6 +51,15 @@ public class c_trangchu implements ActionListener {
         this.viewtrangchu.getBtnDangXuat().addActionListener(this);    
         // Bạn có thể thêm các nút khác vào đây
         // this.viewHome.getBtnDocGia().addActionListener(this);
+
+        // Bổ sung: Đăng Xuất
+        this.viewtrangchu.getBtnNhaxuatban().addActionListener(this);
+        
+        this.viewtrangchu.getBtnTacgia().addActionListener(this);
+        
+        this.viewtrangchu.getBtnDocgia().addActionListener(this);
+
+
     }
 
     public void hienThiTrangChu() {
@@ -71,6 +95,40 @@ public class c_trangchu implements ActionListener {
             new c_khosach(viewkhosach, viewtrangchu); 
         }
         viewkhosach.setVisible(true);
+        // SỬA DÒNG 45: Gọi setVisible thông qua đối tượng viewHome
+        viewtrangchu.setVisible(false); 
+    }
+
+      
+      private void moQuanlyNhaxuatbanview() {
+        if (viewnhaxuatban == null) {
+            viewnhaxuatban = new v_nhaxuatban(); 
+            // SỬA DÒNG 42: Truyền viewHome (JFrame) thay vì truyền 'this' (Controller)
+            new c_nhaxuatban(viewnhaxuatban, viewtrangchu); 
+        }
+        viewnhaxuatban.setVisible(true);
+        // SỬA DÒNG 45: Gọi setVisible thông qua đối tượng viewHome
+        viewtrangchu.setVisible(false); 
+    }
+      
+      private void moQuanlyTacgiaview() {
+        if (viewtacgia == null) {
+            viewtacgia = new v_tacgia(); 
+            // SỬA DÒNG 42: Truyền viewHome (JFrame) thay vì truyền 'this' (Controller)
+            new c_tacgia(viewtacgia, viewtrangchu); 
+        }
+        viewtacgia.setVisible(true);
+        // SỬA DÒNG 45: Gọi setVisible thông qua đối tượng viewHome
+        viewtrangchu.setVisible(false); 
+    }
+      
+      private void moQuanlyDocgiaview() {
+        if (viewdocgia == null) {
+            viewdocgia = new v_docgia(); 
+            // SỬA DÒNG 42: Truyền viewHome (JFrame) thay vì truyền 'this' (Controller)
+            new c_docgia(viewdocgia, viewtrangchu); 
+        }
+        viewdocgia.setVisible(true);
         // SỬA DÒNG 45: Gọi setVisible thông qua đối tượng viewHome
         viewtrangchu.setVisible(false); 
     }
@@ -116,5 +174,21 @@ public class c_trangchu implements ActionListener {
             handleDangXuat();
         }
         // Thêm các else if cho các nút khác ở đây
+
+        else if (source == viewtrangchu.getBtnNhaxuatban()) {
+            // Xử lý khi nhấn nút Đăng Xuất
+            moQuanlyNhaxuatbanview();
+        }
+        
+        else if (source == viewtrangchu.getBtnTacgia()) {
+            // Xử lý khi nhấn nút Đăng Xuất
+            moQuanlyTacgiaview();
+        }
+        
+        else if (source == viewtrangchu.getBtnDocgia()) {
+            // Xử lý khi nhấn nút Đăng Xuất
+            moQuanlyDocgiaview();
+        }
+
     }
 }

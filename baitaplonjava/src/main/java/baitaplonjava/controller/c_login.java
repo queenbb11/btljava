@@ -36,7 +36,10 @@ public class c_login {
             con = DriverManager.getConnection(
                     "jdbc:mysql://localhost:3306/baitaplon",
                     "root",
-                    "123456789"
+                    "123456"
+
+             
+              
             );
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "Không thể kết nối CSDL!");

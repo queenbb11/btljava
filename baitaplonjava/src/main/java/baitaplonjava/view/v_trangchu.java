@@ -15,6 +15,11 @@ import javax.swing.border.EmptyBorder;
 
 public class v_trangchu extends JFrame {
 
+
+    private JButton btnDocgia;
+    private JButton btnTacgia;
+    private JButton btnNhaxuatban;
+
     private JButton btnQuanlysach;
     private JButton btnKhosach;
     private JButton btnMuonTra;
@@ -60,13 +65,27 @@ public class v_trangchu extends JFrame {
         btnMuonTra = createStyledButton("QL Mượn Trả", "🔄");
         pnlMenu.add(btnMuonTra);
         
+
+        btnTacgia = createStyledButton("QL Tác Giả", "✍️");
+        pnlMenu.add(btnTacgia);
+        
+        btnNhaxuatban = createStyledButton("QL NXB", "🏢");
+        pnlMenu.add(btnNhaxuatban);
+        
+        btnDocgia = createStyledButton("Độc giả", "⚙️");
+        pnlMenu.add(btnDocgia);
+
         pnlMenu.add(createStyledButton("QL Tác Giả", "✍️"));
         
         pnlMenu.add(createStyledButton("QL NXB", "🏢"));
+
         
         btnTheloai = createStyledButton("QL Thể Loại", "🔖");
         pnlMenu.add(btnTheloai);
         
+
+        
+
         pnlMenu.add(createStyledButton("QL Nhân Viên", "🆔"));
         
         pnlMenu.add(createStyledButton("Nhập Sách", "📥"));
@@ -77,8 +96,10 @@ public class v_trangchu extends JFrame {
         
         pnlMenu.add(createStyledButton("Báo Cáo", "📄"));
         
+
         pnlMenu.add(createStyledButton("Cấu Hình", "⚙️"));
         
+
         pnlMenu.add(createStyledButton("Quy Định", "📜"));
         
         pnlMenu.add(createStyledButton("Đổi Mật Khẩu", "🔑"));
@@ -117,4 +138,9 @@ public class v_trangchu extends JFrame {
     public JButton getBtnMuonTra() { return btnMuonTra; }
     public JButton getBtnTheloai() { return btnTheloai; }
     public JButton getBtnDangXuat() { return btnDangXuat; }
+
+    public JButton getBtnNhaxuatban() { return btnNhaxuatban; }
+    public JButton getBtnTacgia() { return btnTacgia; }
+    public JButton getBtnDocgia() { return btnDocgia; }
+
 }
