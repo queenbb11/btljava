@@ -2,12 +2,18 @@
 package baitaplonjava.controller;
 
   
+
 import baitaplonjava.view.v_docgia;
 import baitaplonjava.view.v_khosach;
 import baitaplonjava.view.v_login;
 import baitaplonjava.view.v_nhaxuatban;
 import baitaplonjava.view.v_sach;
 import baitaplonjava.view.v_tacgia;
+
+import baitaplonjava.view.v_khosach;
+import baitaplonjava.view.v_login;
+import baitaplonjava.view.v_sach;
+
 import baitaplonjava.view.v_theloai;
 import baitaplonjava.view.v_trangchu;
 import java.awt.event.ActionEvent;
@@ -20,9 +26,12 @@ public class c_trangchu implements ActionListener {
     private v_theloai viewtheloai; 
     private v_sach viewsach;
     private v_khosach viewkhosach;
+
     private v_nhaxuatban viewnhaxuatban;
     private v_tacgia viewtacgia;
     private v_docgia viewdocgia;
+
+
 
     public c_trangchu(v_trangchu viewtrangchu) {
         this.viewtrangchu = viewtrangchu;
@@ -42,12 +51,15 @@ public class c_trangchu implements ActionListener {
         this.viewtrangchu.getBtnDangXuat().addActionListener(this);    
         // Bạn có thể thêm các nút khác vào đây
         // this.viewHome.getBtnDocGia().addActionListener(this);
+
         // Bổ sung: Đăng Xuất
         this.viewtrangchu.getBtnNhaxuatban().addActionListener(this);
         
         this.viewtrangchu.getBtnTacgia().addActionListener(this);
         
         this.viewtrangchu.getBtnDocgia().addActionListener(this);
+
+
     }
 
     public void hienThiTrangChu() {
@@ -86,6 +98,7 @@ public class c_trangchu implements ActionListener {
         // SỬA DÒNG 45: Gọi setVisible thông qua đối tượng viewHome
         viewtrangchu.setVisible(false); 
     }
+
       
       private void moQuanlyNhaxuatbanview() {
         if (viewnhaxuatban == null) {
@@ -161,6 +174,7 @@ public class c_trangchu implements ActionListener {
             handleDangXuat();
         }
         // Thêm các else if cho các nút khác ở đây
+
         else if (source == viewtrangchu.getBtnNhaxuatban()) {
             // Xử lý khi nhấn nút Đăng Xuất
             moQuanlyNhaxuatbanview();
@@ -175,5 +189,6 @@ public class c_trangchu implements ActionListener {
             // Xử lý khi nhấn nút Đăng Xuất
             moQuanlyDocgiaview();
         }
+
     }
 }

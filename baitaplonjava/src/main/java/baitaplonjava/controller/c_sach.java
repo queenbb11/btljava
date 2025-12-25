@@ -21,7 +21,11 @@ public class c_sach {
 
     private final String url = "jdbc:mysql://localhost:3306/baitaplon";
     private final String user = "root";
+
     private final String pass = "123456";
+
+
+
 
     public c_sach(v_sach view, JFrame trangchu) {
         this.v = view;
