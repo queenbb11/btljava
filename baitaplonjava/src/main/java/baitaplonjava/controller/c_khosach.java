@@ -16,8 +16,7 @@ public class c_khosach {
 
     private final String url = "jdbc:mysql://localhost:3306/baitaplon";
     private final String user = "root";
-
-    private final String pass = "123456";
+    private final String pass = "123456789";
 
 
 
@@ -57,7 +56,6 @@ public class c_khosach {
                 k.getSoluongN(), k.getSoluongX(), k.getSoluongT()
         });
     }
-
     private void handleLuu() {
         String sql = "INSERT INTO Khosach VALUES (?,?,?,?,?)";
         try (Connection c = DriverManager.getConnection(url, user, pass);

@@ -56,7 +56,7 @@ public class c_nhaxuatban {
         Class.forName("com.mysql.cj.jdbc.Driver");
         return DriverManager.getConnection(
                 "jdbc:mysql://localhost:3306/baitaplon",
-                "root", "123456"
+                "root", "123456789"
         );
     }
 

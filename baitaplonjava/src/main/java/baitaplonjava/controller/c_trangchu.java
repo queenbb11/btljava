@@ -1,13 +1,11 @@
 
 package baitaplonjava.controller;
 
-  
 
 import baitaplonjava.view.v_docgia;
-import baitaplonjava.view.v_khosach;
-import baitaplonjava.view.v_login;
+
 import baitaplonjava.view.v_nhaxuatban;
-import baitaplonjava.view.v_sach;
+
 import baitaplonjava.view.v_tacgia;
 
 import baitaplonjava.view.v_khosach;
@@ -41,18 +39,15 @@ public class c_trangchu implements ActionListener {
     }
     
     private void attachListeners() {
-        // Gắn 'this' (controller_trangchu) làm ActionListener cho tất cả các nút
+       
         this.viewtrangchu.getBtnSach().addActionListener(this);
-        // Bổ sung: QL Thể Loại
+        //  QL Thể Loại
         this.viewtrangchu.getBtnTheloai().addActionListener(this); 
         // QL: kho ssach
          this.viewtrangchu.getBtnKhosach().addActionListener(this);
-        // Bổ sung: Đăng Xuất
-        this.viewtrangchu.getBtnDangXuat().addActionListener(this);    
-        // Bạn có thể thêm các nút khác vào đây
-        // this.viewHome.getBtnDocGia().addActionListener(this);
 
-        // Bổ sung: Đăng Xuất
+        this.viewtrangchu.getBtnDangXuat().addActionListener(this);    
+       
         this.viewtrangchu.getBtnNhaxuatban().addActionListener(this);
         
         this.viewtrangchu.getBtnTacgia().addActionListener(this);
@@ -125,11 +120,10 @@ public class c_trangchu implements ActionListener {
       private void moQuanlyDocgiaview() {
         if (viewdocgia == null) {
             viewdocgia = new v_docgia(); 
-            // SỬA DÒNG 42: Truyền viewHome (JFrame) thay vì truyền 'this' (Controller)
+
             new c_docgia(viewdocgia, viewtrangchu); 
         }
         viewdocgia.setVisible(true);
-        // SỬA DÒNG 45: Gọi setVisible thông qua đối tượng viewHome
         viewtrangchu.setVisible(false); 
     }
     

@@ -19,7 +19,6 @@ public class v_trangchu extends JFrame {
     private JButton btnDocgia;
     private JButton btnTacgia;
     private JButton btnNhaxuatban;
-
     private JButton btnQuanlysach;
     private JButton btnKhosach;
     private JButton btnMuonTra;
@@ -82,8 +81,6 @@ public class v_trangchu extends JFrame {
         
         btnTheloai = createStyledButton("QL Thể Loại", "🔖");
         pnlMenu.add(btnTheloai);
-        
-
         
 
         pnlMenu.add(createStyledButton("QL Nhân Viên", "🆔"));

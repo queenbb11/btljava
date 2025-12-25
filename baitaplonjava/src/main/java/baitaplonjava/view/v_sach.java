@@ -77,7 +77,6 @@ public class v_sach extends JFrame {
         // Hàng 4
         inputPanel.add(createLabel("Tình Trạng:")); inputPanel.add(txtTinhTrang);
         inputPanel.add(createLabel("Mô Tả:")); inputPanel.add(txtMoTa);
-
         // Panel Tìm kiếm
         JPanel searchPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 20));
         searchPanel.setBackground(Color.WHITE);
@@ -88,7 +87,6 @@ public class v_sach extends JFrame {
         
         btntimkiem = new JButton("Tìm Kiếm");
         styleButton(btntimkiem, new Color(52, 152, 219));
-
         searchPanel.add(txttimkiem);
         searchPanel.add(Box.createHorizontalStrut(10));
         searchPanel.add(btntimkiem);
