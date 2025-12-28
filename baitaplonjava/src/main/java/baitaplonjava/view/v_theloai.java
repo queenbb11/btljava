@@ -160,7 +160,7 @@ public class v_theloai extends JFrame {
         header.setPreferredSize(new Dimension(0, 35));
     }
 
-    // --- Các Listener giữ nguyên như code của bạn ---
+    // --- Các Listener  ---
     public void bt_them_action_listenner(ActionListener a) { btnthem.addActionListener(a); }
     public void bt_sua_action_listenner(ActionListener a) { btnsua.addActionListener(a); }
     public void bt_xoa_action_listenner(ActionListener a) { btnxoa.addActionListener(a); }

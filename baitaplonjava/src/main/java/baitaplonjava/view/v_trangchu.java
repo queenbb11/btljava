@@ -74,9 +74,9 @@ public class v_trangchu extends JFrame {
         btnDocgia = createStyledButton("Độc giả", "⚙️");
         pnlMenu.add(btnDocgia);
 
-        pnlMenu.add(createStyledButton("QL Tác Giả", "✍️"));
+        pnlMenu.add(createStyledButton("QL ....", "✍️"));
         
-        pnlMenu.add(createStyledButton("QL NXB", "🏢"));
+        pnlMenu.add(createStyledButton("QL ....", "🏢"));
 
         
         btnTheloai = createStyledButton("QL Thể Loại", "🔖");

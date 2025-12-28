@@ -18,10 +18,6 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
-/**
- *
- * @author Lenovo
- */
 public class v_docgia extends JFrame {
     public JTextField txtMaDG, txtTenDG, txtNgaysinh, txtGioitinh,
             txtDienthoai, txtEmail, txtDiachi, txtTimkiem;

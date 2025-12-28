@@ -3,26 +3,20 @@ package baitaplonjava.controller;
 import baitaplonjava.model.m_theloai;
 import baitaplonjava.view.v_theloai;
 import baitaplonjava.view.v_trangchu;
-
 import java.awt.event.*;
 import java.io.*;
 import java.sql.*;
 import javax.swing.*;
 
 public class c_theloai {
-
     private v_theloai v;
     private v_trangchu viewtrangchu;
-
     private int selectedRow = -1;
-
     // Cờ đang tìm kiếm (bảng đang bị lọc)
     private boolean isSearching = false;
-
     // DB
     private final String url  = "jdbc:mysql://localhost:3306/baitaplon";
     private final String user = "root";
-
     private final String pass = "123456789";
 
 
@@ -30,7 +24,6 @@ public class c_theloai {
     public c_theloai(v_theloai view, JFrame trangchu) {
         this.v = view;
         this.viewtrangchu = (v_trangchu) trangchu;
-
         // Nút
         this.v.bt_them_action_listenner(e -> handleThem());
         this.v.bt_luu_action_listenner(e -> handleLuu());
@@ -39,7 +32,6 @@ public class c_theloai {
         this.v.bt_timkiem_action_listenner(e -> handleTimKiem());
         this.v.bt_xuatfile_action_listenner(e -> handleXuatFile());
         this.v.bt_quaylai_action_listenner(e -> handleQuayLai());
-
         // Click bảng
         this.v.table.addMouseListener(new MouseAdapter() {
             @Override
@@ -52,11 +44,9 @@ public class c_theloai {
                 }
             }
         });
-
         loadData();
         resetForm();
     }
-
     // ===== RESET FORM =====
     private void resetForm() {
         v.txtMaTL.setText("");
@@ -66,7 +56,6 @@ public class c_theloai {
         selectedRow = -1;
         v.txtMaTL.requestFocus();
     }
-
     // ===== Nếu đang search thì trả bảng về full trước khi thao tác =====
     private void ensureFullTable() {
         if (isSearching) {
@@ -79,10 +68,8 @@ public class c_theloai {
     // ===== 1) THÊM: thêm vào JTable (bảng tạm) =====
     private void handleThem() {
         ensureFullTable(); // nếu đang lọc thì trả về full
-
         m_theloai tl = v.get_theloai();
         if (tl == null) return;
-
         // check trùng mã trong bảng hiện tại
         for (int i = 0; i < v.model.getRowCount(); i++) {
             String maDangCo = v.model.getValueAt(i, 0).toString().trim();
@@ -91,16 +78,13 @@ public class c_theloai {
                 return;
             }
         }
-
         v.model.addRow(new Object[]{ tl.getMaTL(), tl.getTenTL() });
         JOptionPane.showMessageDialog(v, "Đã thêm vào danh sách tạm. Nhấn 'Lưu' để lưu vào CSDL!");
         resetForm();
     }
-
     // ===== 2) LƯU: lưu toàn bộ JTable xuống DB =====
     private void handleLuu() {
         ensureFullTable(); // nếu đang lọc thì trả về full
-
         if (v.model.getRowCount() == 0) {
             JOptionPane.showMessageDialog(v, "Bảng đang trống, không có gì để lưu!");
             return;
@@ -113,7 +97,6 @@ public class c_theloai {
 
             int demThanhCong = 0;
             int demTrung = 0;
-
             for (int i = 0; i < v.model.getRowCount(); i++) {
                 String ma = v.model.getValueAt(i, 0).toString().trim();
                 String ten = v.model.getValueAt(i, 1).toString().trim();
@@ -140,25 +123,20 @@ public class c_theloai {
             JOptionPane.showMessageDialog(v, "Lỗi lưu: " + e.getMessage());
         }
     }
-
     // ===== 3) SỬA: update theo MaTL =====
     private void handleSua() {
         ensureFullTable(); // nếu đang lọc thì trả về full
-
         if (selectedRow == -1) {
             JOptionPane.showMessageDialog(v, "Vui lòng chọn một dòng để sửa!");
             return;
         }
-
         String ma = v.txtMaTL.getText().trim();
         String ten = v.txtTenTL.getText().trim();
-
         if (ten.isEmpty()) {
             JOptionPane.showMessageDialog(v, "Tên thể loại không được để trống!");
             v.txtTenTL.requestFocus();
             return;
         }
-
         String sql = "UPDATE Theloai SET TenTL = ? WHERE MaTL = ?";
         try (Connection conn = DriverManager.getConnection(url, user, pass);
              PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -222,24 +200,19 @@ public class c_theloai {
         }
 
         String sql = "SELECT * FROM Theloai WHERE TenTL LIKE ? OR MaTL LIKE ?";
-
         try (Connection conn = DriverManager.getConnection(url, user, pass);
              PreparedStatement ps = conn.prepareStatement(sql)) {
-
             String p = "%" + keyword + "%";
             ps.setString(1, p);
             ps.setString(2, p);
-
             ResultSet rs = ps.executeQuery();
             v.model.setRowCount(0);
-
             while (rs.next()) {
                 v.model.addRow(new Object[]{
                         rs.getString("MaTL"),
                         rs.getString("TenTL")
                 });
             }
-
             // đang ở chế độ lọc
             isSearching = true;
             resetForm();
@@ -248,12 +221,10 @@ public class c_theloai {
             JOptionPane.showMessageDialog(v, "Lỗi tìm kiếm: " + e.getMessage());
         }
     }
-
     // ===== 6) XUẤT FILE =====
     private void handleXuatFile() {
         JFileChooser fileChooser = new JFileChooser();
         if (fileChooser.showSaveDialog(v) != JFileChooser.APPROVE_OPTION) return;
-
         try {
             String path = fileChooser.getSelectedFile().getAbsolutePath();
             if (!path.endsWith(".csv")) path += ".csv";
@@ -278,13 +249,11 @@ public class c_theloai {
             JOptionPane.showMessageDialog(v, "Lỗi: " + e.getMessage());
         }
     }
-
     // ===== 7) QUAY LẠI =====
     private void handleQuayLai() {
         v.dispose();
         if (viewtrangchu != null) viewtrangchu.setVisible(true);
     }
-
     // ===== LOAD DATA =====
     public void loadData() {
         try (Connection conn = DriverManager.getConnection(url, user, pass)) {
@@ -304,8 +273,6 @@ public class c_theloai {
         }
     }
 }
-
-
 /*
     // 4. Xử lý Đọc File (Đọc từ file CSV rồi nạp vào bảng)
     private void handleDocFile() {

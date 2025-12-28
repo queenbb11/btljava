@@ -11,17 +11,15 @@ import java.sql.*;
 import javax.swing.*;
 
 public class c_sach {
-
     private v_sach v;
     private v_trangchu viewtrangchu;
     private int selectedRow = -1;
 
     // cờ đang tìm kiếm (bảng đang lọc)
     private boolean isSearching = false;
-
+    
     private final String url = "jdbc:mysql://localhost:3306/baitaplon";
     private final String user = "root";
-
     private final String pass = "123456789";
 
 
@@ -71,7 +69,6 @@ public class c_sach {
         v.txtNamXB.setText("");
         v.txtTinhTrang.setText("");
         v.txtMoTa.setText("");
-
         v.txtMaS.setEditable(true);
         v.table.clearSelection();
         selectedRow = -1;
@@ -87,14 +84,12 @@ public class c_sach {
             resetForm();
         }
     }
-
     // ===== THÊM: thêm vào bảng tạm (JTable) =====
     private void handleThem() {
         ensureFullTable();
 
         m_sach s = v.get_sach();
         if (s == null) return;
-
         // check trùng MaS trên bảng
         for (int i = 0; i < v.model.getRowCount(); i++) {
             String maDangCo = v.model.getValueAt(i, 0).toString().trim();
@@ -112,7 +107,6 @@ public class c_sach {
         JOptionPane.showMessageDialog(v, "Đã thêm vào danh sách tạm!");
         resetForm();
     }
-
     // ===== LƯU: lưu toàn bộ bảng xuống DB (trùng thì bỏ qua) =====
     private void handleLuu() {
         ensureFullTable();
@@ -165,14 +159,11 @@ public class c_sach {
                     demLoi++;
                 }
             }
-
             JOptionPane.showMessageDialog(v,
                     "Lưu xong!\nThành công: " + demThanhCong + "\nKhông lưu (trùng/lỗi): " + demLoi);
-
             loadData();
             isSearching = false;
             resetForm();
-
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(v, "Lỗi lưu: " + e.getMessage());
         }
@@ -186,7 +177,6 @@ public class c_sach {
             JOptionPane.showMessageDialog(v, "Chọn sách cần sửa!");
             return;
         }
-
         m_sach s = v.get_sach();
         if (s == null) return;
 
@@ -202,13 +192,11 @@ public class c_sach {
             ps.setString(6, s.getTinhtrang());
             ps.setString(7, s.getMota());
             ps.setString(8, s.getMaS());
-
             ps.executeUpdate();
             JOptionPane.showMessageDialog(v, "Sửa thành công!");
             loadData();
             isSearching = false;
             resetForm();
-
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(v, "Lỗi sửa: " + e.getMessage());
         }
@@ -217,21 +205,17 @@ public class c_sach {
     // ===== XÓA =====
     private void handleXoa() {
         ensureFullTable();
-
         if (selectedRow == -1) {
             JOptionPane.showMessageDialog(v, "Chọn sách cần xóa!");
             return;
         }
-
         int confirm = JOptionPane.showConfirmDialog(v, "Xóa sách này?", "Xác nhận", JOptionPane.YES_NO_OPTION);
         if (confirm != JOptionPane.YES_OPTION) return;
 
         try (Connection conn = DriverManager.getConnection(url, user, pass);
              PreparedStatement ps = conn.prepareStatement("DELETE FROM Sach WHERE MaS=?")) {
-
             ps.setString(1, v.txtMaS.getText().trim());
             ps.executeUpdate();
-
             JOptionPane.showMessageDialog(v, "Đã xóa!");
             loadData();
             isSearching = false;
@@ -259,7 +243,6 @@ public class c_sach {
         try (Connection conn = DriverManager.getConnection(url, user, pass);
              PreparedStatement ps = conn.prepareStatement(
                      "SELECT * FROM Sach WHERE TenS LIKE ? OR MaS LIKE ?")) {
-
             ps.setString(1, "%" + kw + "%");
             ps.setString(2, "%" + kw + "%");
 
@@ -284,7 +267,6 @@ public class c_sach {
             JOptionPane.showMessageDialog(v, "Lỗi tìm kiếm: " + e.getMessage());
         }
     }
-
     // ===== XUẤT FILE CSV =====
     private void handleXuatFile() {
         JFileChooser fileChooser = new JFileChooser();
@@ -321,13 +303,11 @@ public class c_sach {
             JOptionPane.showMessageDialog(v, "Lỗi xuất file: " + e.getMessage());
         }
     }
-
     // ===== LOAD DATA =====
     public void loadData() {
         v.model.setRowCount(0);
         try (Connection conn = DriverManager.getConnection(url, user, pass);
              ResultSet rs = conn.createStatement().executeQuery("SELECT * FROM Sach")) {
-
             while (rs.next()) {
                 v.model.addRow(new Object[]{
                         rs.getString("MaS"),
@@ -344,7 +324,6 @@ public class c_sach {
             JOptionPane.showMessageDialog(v, "Lỗi tải dữ liệu: " + e.getMessage());
         }
     }
-
     // ===== Load combobox =====
     private void loadComboBoxData() {
         try (Connection conn = DriverManager.getConnection(url, user, pass)) {
@@ -354,13 +333,10 @@ public class c_sach {
 
             ResultSet rsTL = conn.createStatement().executeQuery("SELECT MaTL FROM Theloai");
             while (rsTL.next()) v.cbMaTL.addItem(rsTL.getString("MaTL"));
-
             ResultSet rsTG = conn.createStatement().executeQuery("SELECT MaTG FROM Tacgia");
             while (rsTG.next()) v.cbMaTG.addItem(rsTG.getString("MaTG"));
-
             ResultSet rsNXB = conn.createStatement().executeQuery("SELECT MaNXB FROM Nhaxuatban");
             while (rsNXB.next()) v.cbMaNXB.addItem(rsNXB.getString("MaNXB"));
-
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(v, "Lỗi load combobox: " + e.getMessage());
         }

@@ -26,13 +26,13 @@ public class v_login extends JFrame {
         this.setLocationRelativeTo(null);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setLayout(new BorderLayout());
-        this.getContentPane().setBackground(Color.WHITE); // Nền trắng cho sạch sẽ
+        this.getContentPane().setBackground(Color.WHITE); //nền trắng
 
         // --- 1. TIÊU ĐỀ (NORTH) ---
         // Thay đổi câu tiêu đề tại đây
         JLabel lblTitle = new JLabel("HỆ THỐNG QUẢN LÝ THƯ VIỆN", JLabel.CENTER);
         lblTitle.setFont(new Font("Segoe UI", Font.BOLD, 26));
-        lblTitle.setForeground(new Color(44, 62, 80)); // Màu chữ xám đen sang trọng
+        lblTitle.setForeground(new Color(44, 62, 80)); // Màu chữ xám đen 
         lblTitle.setBorder(new EmptyBorder(40, 0, 20, 0));
         this.add(lblTitle, BorderLayout.NORTH);
 
@@ -73,9 +73,9 @@ public class v_login extends JFrame {
         btn_login = new JButton("Đăng nhập");
         btn_register = new JButton("Đăng ký");
 
-        // Màu xanh lá hiện đại (Emerald) cho Đăng nhập
+        // Màu xanh lá  cho Đăng nhập
         styleButton(btn_login, new Color(46, 204, 113)); 
-        // Màu xanh dương (Peter River) cho Đăng ký
+        // Màu xanh dương cho Đăng ký
         styleButton(btn_register, new Color(52, 152, 219));
 
         panelButtons.add(btn_login);

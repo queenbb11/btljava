@@ -3,11 +3,8 @@ package baitaplonjava.controller;
 
 
 import baitaplonjava.view.v_docgia;
-
 import baitaplonjava.view.v_nhaxuatban;
-
 import baitaplonjava.view.v_tacgia;
-
 import baitaplonjava.view.v_khosach;
 import baitaplonjava.view.v_login;
 import baitaplonjava.view.v_sach;
@@ -39,58 +36,52 @@ public class c_trangchu implements ActionListener {
     }
     
     private void attachListeners() {
-       
+       //QL sácg
         this.viewtrangchu.getBtnSach().addActionListener(this);
         //  QL Thể Loại
         this.viewtrangchu.getBtnTheloai().addActionListener(this); 
-        // QL: kho ssach
+        // QL: kho sach
          this.viewtrangchu.getBtnKhosach().addActionListener(this);
 
+        //QL Nhà xuất bản
+        this.viewtrangchu.getBtnNhaxuatban().addActionListener(this);
+        //QL tác giả
+        this.viewtrangchu.getBtnTacgia().addActionListener(this);
+        //QL độc giả
+        this.viewtrangchu.getBtnDocgia().addActionListener(this);
+        //Đăng xuất
         this.viewtrangchu.getBtnDangXuat().addActionListener(this);    
        
-        this.viewtrangchu.getBtnNhaxuatban().addActionListener(this);
-        
-        this.viewtrangchu.getBtnTacgia().addActionListener(this);
-        
-        this.viewtrangchu.getBtnDocgia().addActionListener(this);
-
-
     }
 
     public void hienThiTrangChu() {
         viewtrangchu.setVisible(true);
     }
-
+    
     private void moQuanlytheloaiview() {
         if (viewtheloai == null) {
             viewtheloai = new v_theloai(); 
-            // SỬA DÒNG 42: Truyền viewHome (JFrame) thay vì truyền 'this' (Controller)
             new c_theloai(viewtheloai, viewtrangchu); 
         }
         viewtheloai.setVisible(true);
-        // SỬA DÒNG 45: Gọi setVisible thông qua đối tượng viewHome
         viewtrangchu.setVisible(false); 
     }
     
      private void moQuanlysachview() {
         if (viewsach == null) {
             viewsach = new v_sach(); 
-            // SỬA DÒNG 42: Truyền viewHome (JFrame) thay vì truyền 'this' (Controller)
             new c_sach(viewsach, viewtrangchu); 
         }
         viewsach.setVisible(true);
-        // SỬA DÒNG 45: Gọi setVisible thông qua đối tượng viewHome
         viewtrangchu.setVisible(false); 
     }
     
       private void moQuanlykhosachview() {
         if (viewkhosach == null) {
             viewkhosach = new v_khosach(); 
-            // SỬA DÒNG 42: Truyền viewHome (JFrame) thay vì truyền 'this' (Controller)
             new c_khosach(viewkhosach, viewtrangchu); 
         }
         viewkhosach.setVisible(true);
-        // SỬA DÒNG 45: Gọi setVisible thông qua đối tượng viewHome
         viewtrangchu.setVisible(false); 
     }
 
@@ -98,29 +89,24 @@ public class c_trangchu implements ActionListener {
       private void moQuanlyNhaxuatbanview() {
         if (viewnhaxuatban == null) {
             viewnhaxuatban = new v_nhaxuatban(); 
-            // SỬA DÒNG 42: Truyền viewHome (JFrame) thay vì truyền 'this' (Controller)
             new c_nhaxuatban(viewnhaxuatban, viewtrangchu); 
         }
         viewnhaxuatban.setVisible(true);
-        // SỬA DÒNG 45: Gọi setVisible thông qua đối tượng viewHome
         viewtrangchu.setVisible(false); 
     }
       
       private void moQuanlyTacgiaview() {
         if (viewtacgia == null) {
             viewtacgia = new v_tacgia(); 
-            // SỬA DÒNG 42: Truyền viewHome (JFrame) thay vì truyền 'this' (Controller)
             new c_tacgia(viewtacgia, viewtrangchu); 
         }
         viewtacgia.setVisible(true);
-        // SỬA DÒNG 45: Gọi setVisible thông qua đối tượng viewHome
         viewtrangchu.setVisible(false); 
     }
       
       private void moQuanlyDocgiaview() {
         if (viewdocgia == null) {
             viewdocgia = new v_docgia(); 
-
             new c_docgia(viewdocgia, viewtrangchu); 
         }
         viewdocgia.setVisible(true);
@@ -139,48 +125,42 @@ public class c_trangchu implements ActionListener {
         if (confirm == JOptionPane.YES_OPTION) {
             // 1. Ẩn cửa sổ Trang Chủ
             viewtrangchu.dispose();
-            
             // 2. Mở lại cửa sổ Đăng Nhập
             v_login vLogin = new v_login();
-            // Lưu ý: Nếu bạn muốn logic login được xử lý lại, 
-            // bạn cần tạo lại controller_login và truyền vLogin vào.
-            new c_login(); // Giả sử controller_login có constructor nhận view_login
+            new c_login(); 
         }
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
         Object source = e.getSource();
-        
+        // QL sách
         if (source == viewtrangchu.getBtnSach()) {
            moQuanlysachview();
-            
         } else if (source == viewtrangchu.getBtnTheloai()) {
             // Xử lý khi nhấn nút QL Thể Loại
             moQuanlytheloaiview();      
         } 
         else if (source == viewtrangchu.getBtnKhosach()) {
-            // Xử lý khi nhấn nút QL Thể Loại
+            // Xử lý khi nhấn nút QL kho sách
             moQuanlykhosachview();      
         } 
         else if (source == viewtrangchu.getBtnDangXuat()) {
             // Xử lý khi nhấn nút Đăng Xuất
             handleDangXuat();
         }
-        // Thêm các else if cho các nút khác ở đây
-
         else if (source == viewtrangchu.getBtnNhaxuatban()) {
-            // Xử lý khi nhấn nút Đăng Xuất
+            // Xử lý khi nhấn nút QL nhà xuất bản
             moQuanlyNhaxuatbanview();
         }
         
         else if (source == viewtrangchu.getBtnTacgia()) {
-            // Xử lý khi nhấn nút Đăng Xuất
+            // Xử lý khi nhấn nút QL tác giả
             moQuanlyTacgiaview();
         }
         
         else if (source == viewtrangchu.getBtnDocgia()) {
-            // Xử lý khi nhấn nút Đăng Xuất
+            // Xử lý khi nhấn nút QL độc giả
             moQuanlyDocgiaview();
         }
 
