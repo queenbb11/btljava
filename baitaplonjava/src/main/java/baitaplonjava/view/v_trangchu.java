@@ -90,22 +90,20 @@ public class v_trangchu extends JFrame {
         btnNhanvien = createStyledButton("QL Nhân Viên", "🆔");
         pnlMenu.add(btnNhanvien);
         
-        
-       
-        pnlMenu.add(createStyledButton("Nhập Sách", "📥"));
-        
-        pnlMenu.add(createStyledButton("Thanh Lý", "📤"));
-        
         btnThongke = createStyledButton("Thống kê", "📈");
         pnlMenu.add(btnThongke);
+       
+        pnlMenu.add(createStyledButton("....", "📥"));
         
-        pnlMenu.add(createStyledButton("Báo Cáo", "📄"));
+        pnlMenu.add(createStyledButton("....", "📤"));
+        
+        pnlMenu.add(createStyledButton("....", "📄"));
         
 
-        pnlMenu.add(createStyledButton("Cấu Hình", "⚙️"));
+        pnlMenu.add(createStyledButton("....", "⚙️"));
         
 
-        pnlMenu.add(createStyledButton("Quy Định", "📜"));
+        pnlMenu.add(createStyledButton("....", "📜"));
         
         pnlMenu.add(createStyledButton("Đổi Mật Khẩu", "🔑"));
         
@@ -143,12 +141,10 @@ public class v_trangchu extends JFrame {
     public JButton getBtnMuonTra() { return btnMuonTra; }
     public JButton getBtnTheloai() { return btnTheloai; }
     public JButton getBtnDangXuat() { return btnDangXuat; }
-
     public JButton getBtnNhaxuatban() { return btnNhaxuatban; }
     public JButton getBtnTacgia() { return btnTacgia; }
     public JButton getBtnDocgia() { return btnDocgia; }
     public JButton getBtnNhanvien() { return btnNhanvien; }
-    
     public JButton getBtnTrangthaisach() { return btnTrangthaisach; }
     public JButton getBtnTracuu() { return btnTracuu;}
     public JButton getBtnThongke() { return btnThongke;}

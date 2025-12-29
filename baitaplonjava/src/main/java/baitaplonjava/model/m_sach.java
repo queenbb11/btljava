@@ -11,19 +11,18 @@ public class m_sach {
     private String MaNXB;  // Khóa lấy từ m_nhaxuatban
     private String MaTG;   // Khóa lấy từ m_tacgia
     private int Namxuatban;
-    private String Tinhtrang;
+
     private String Mota;
 
     public m_sach() {}
 
-    public m_sach(String MaS, String TenS, String MaTL, String MaNXB, String MaTG, int Namxuatban, String Tinhtrang, String Mota) {
+    public m_sach(String MaS, String TenS, String MaTL, String MaNXB, String MaTG, int Namxuatban, String Mota) {
         this.MaS = MaS;
         this.TenS = TenS;
         this.MaTL = MaTL;
         this.MaNXB = MaNXB;
         this.MaTG = MaTG;
         this.Namxuatban = Namxuatban;
-        this.Tinhtrang = Tinhtrang;
         this.Mota = Mota;
     }
 
@@ -46,8 +45,7 @@ public class m_sach {
     public int getNamxuatban() { return Namxuatban; }
     public void setNamxuatban(int Namxuatban) { this.Namxuatban = Namxuatban; }
 
-    public String getTinhtrang() { return Tinhtrang; }
-    public void setTinhtrang(String Tinhtrang) { this.Tinhtrang = Tinhtrang; }
+ 
 
     public String getMota() { return Mota; }
     public void setMota(String Mota) { this.Mota = Mota; }

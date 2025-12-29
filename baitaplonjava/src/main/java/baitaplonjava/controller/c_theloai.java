@@ -125,34 +125,38 @@ public class c_theloai {
     }
     // ===== 3) SỬA: update theo MaTL =====
     private void handleSua() {
-        ensureFullTable(); // nếu đang lọc thì trả về full
-        if (selectedRow == -1) {
-            JOptionPane.showMessageDialog(v, "Vui lòng chọn một dòng để sửa!");
-            return;
-        }
-        String ma = v.txtMaTL.getText().trim();
-        String ten = v.txtTenTL.getText().trim();
-        if (ten.isEmpty()) {
-            JOptionPane.showMessageDialog(v, "Tên thể loại không được để trống!");
-            v.txtTenTL.requestFocus();
-            return;
-        }
-        String sql = "UPDATE Theloai SET TenTL = ? WHERE MaTL = ?";
-        try (Connection conn = DriverManager.getConnection(url, user, pass);
-             PreparedStatement ps = conn.prepareStatement(sql)) {
+       if (selectedRow == -1) {
+        JOptionPane.showMessageDialog(v, "Vui lòng chọn một dòng để sửa!");
+        return;
+    }
 
-            ps.setString(1, ten);
-            ps.setString(2, ma);
+    String ma = v.txtMaTL.getText().trim();
+    String ten = v.txtTenTL.getText().trim();
 
-            ps.executeUpdate();
-            JOptionPane.showMessageDialog(v, "Cập nhật thành công!");
-            loadData();
-            isSearching = false;
-            resetForm();
+    if (ten.isEmpty()) {
+        JOptionPane.showMessageDialog(v, "Tên thể loại không được để trống!");
+        v.txtTenTL.requestFocus();
+        return;
+    }
 
-        } catch (SQLException e) {
-            JOptionPane.showMessageDialog(v, "Lỗi sửa: " + e.getMessage());
-        }
+    String sql = "UPDATE Theloai SET TenTL = ? WHERE MaTL = ?";
+
+    try (Connection conn = DriverManager.getConnection(url, user, pass);
+         PreparedStatement ps = conn.prepareStatement(sql)) {
+
+        ps.setString(1, ten);
+        ps.setString(2, ma);
+        ps.executeUpdate();
+
+        // cập nhật lại ngay trên JTable, không cần loadData()
+        v.model.setValueAt(ten, selectedRow, 1);
+
+        JOptionPane.showMessageDialog(v, "Cập nhật thành công!");
+        resetForm(); // chỉ reset form nhập, không đụng tới bảng
+
+    } catch (SQLException e) {
+        JOptionPane.showMessageDialog(v, "Lỗi sửa: " + e.getMessage());
+    }
     }
 
     // ===== 4) XÓA =====

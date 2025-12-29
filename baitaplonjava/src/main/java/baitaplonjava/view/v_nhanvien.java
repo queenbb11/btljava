@@ -11,7 +11,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class v_nhanvien extends JFrame {
-
     public JTextField txtMaNV, txtTenNV, txtDienThoai, txtEmail, txtDiaChi, txttimkiem;
     public JComboBox<String> cbGioiTinh;
     public JFormattedTextField dateNS;
@@ -103,7 +102,6 @@ public class v_nhanvien extends JFrame {
             String ten = txtTenNV.getText().trim();
             Date ns = (Date) dateNS.getValue();
             if (ma.isEmpty() || ten.isEmpty() || ns == null) return null;
-
             return new m_nhanvien(
                     ma,
                     ten,

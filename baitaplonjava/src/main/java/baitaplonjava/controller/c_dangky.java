@@ -10,7 +10,6 @@ import java.sql.ResultSet;
 import javax.swing.JOptionPane;
 
 public class c_dangky {
-
     private v_dangky view;
     private Connection con;
 
@@ -21,7 +20,6 @@ public class c_dangky {
 
         view.register_listener(new register_listener());
     }
-
     class register_listener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {

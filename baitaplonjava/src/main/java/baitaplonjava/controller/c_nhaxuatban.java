@@ -11,7 +11,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.io.FileWriter;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -39,7 +38,6 @@ public class c_nhaxuatban {
         v.bt_timkiem_action_listenner(new action_timkiem());
         v.bt_xuatfile_action_listenner(new action_xuatfile());
         v.bt_quaylai_action_listenner(e -> quaylai());
-
         v.table.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -59,7 +57,6 @@ public class c_nhaxuatban {
                 "root", "123456789"
         );
     }
-
     // ================= LOAD DATA =================
     private void loadData() {
         v.model.setRowCount(0);
@@ -68,7 +65,6 @@ public class c_nhaxuatban {
             String sql = "SELECT * FROM Nhaxuatban";
             PreparedStatement ps = c.prepareStatement(sql);
             ResultSet rs = ps.executeQuery();
-
             while (rs.next()) {
                 v.model.addRow(new Object[]{
                     rs.getString("MaNXB"),
@@ -87,13 +83,11 @@ public class c_nhaxuatban {
     // ================= HIỂN THỊ LÊN FORM =================
     private void hienThiLenForm() {
         if (k < 0) return;
-
         v.txtMaNXB.setText(v.table.getValueAt(k, 0).toString());
         v.txtTenNXB.setText(v.table.getValueAt(k, 1).toString());
         v.txtDienthoai.setText(v.table.getValueAt(k, 2).toString());
         v.txtEmail.setText(v.table.getValueAt(k, 3).toString());
         v.txtDiachi.setText(v.table.getValueAt(k, 4).toString());
-
         v.txtMaNXB.setEditable(false);
     }
 
@@ -103,7 +97,6 @@ public class c_nhaxuatban {
         v.table.clearSelection();
         k = -1;
     }
-
     // ================= THÊM =================
     class action_them implements ActionListener {
         @Override

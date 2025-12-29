@@ -3,7 +3,6 @@ package baitaplonjava.controller;
 import baitaplonjava.model.m_sach;
 import baitaplonjava.view.v_sach;
 import baitaplonjava.view.v_trangchu;
-
 import java.awt.event.*;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
@@ -50,8 +49,8 @@ public class c_sach {
                     v.cbMaNXB.setSelectedItem(v.table.getValueAt(selectedRow, 3).toString());
                     v.cbMaTG.setSelectedItem(v.table.getValueAt(selectedRow, 4).toString());
                     v.txtNamXB.setText(v.table.getValueAt(selectedRow, 5).toString());
-                    v.txtTinhTrang.setText(v.table.getValueAt(selectedRow, 6).toString());
-                    v.txtMoTa.setText(v.table.getValueAt(selectedRow, 7).toString());
+                
+                    v.txtMoTa.setText(v.table.getValueAt(selectedRow, 6).toString());
                     v.txtMaS.setEditable(false); // chọn dòng -> khóa mã
                 }
             }
@@ -67,7 +66,6 @@ public class c_sach {
         v.txtMaS.setText("");
         v.txtTenS.setText("");
         v.txtNamXB.setText("");
-        v.txtTinhTrang.setText("");
         v.txtMoTa.setText("");
         v.txtMaS.setEditable(true);
         v.table.clearSelection();
@@ -101,7 +99,7 @@ public class c_sach {
 
         v.model.addRow(new Object[]{
                 s.getMaS(), s.getTenS(), s.getMaTL(), s.getMaNXB(),
-                s.getMaTG(), s.getNamxuatban(), s.getTinhtrang(), s.getMota()
+                s.getMaTG(), s.getNamxuatban(), s.getMota()
         });
 
         JOptionPane.showMessageDialog(v, "Đã thêm vào danh sách tạm!");
@@ -116,8 +114,8 @@ public class c_sach {
             return;
         }
 
-        String sql = "INSERT INTO Sach (MaS, TenS, MaTL, MaNXB, MaTG, Namxuatban, Tinhtrang, Mota) " +
-                     "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO Sach (MaS, TenS, MaTL, MaNXB, MaTG, Namxuatban, Mota) " +
+                     "VALUES (?, ?, ?, ?, ?, ?,  ?)";
 
         try (Connection conn = DriverManager.getConnection(url, user, pass);
              PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -140,8 +138,8 @@ public class c_sach {
                     continue;
                 }
 
-                String tinhtrang = v.model.getValueAt(i, 6) != null ? v.model.getValueAt(i, 6).toString() : "";
-                String mota      = v.model.getValueAt(i, 7) != null ? v.model.getValueAt(i, 7).toString() : "";
+         
+                String mota      = v.model.getValueAt(i, 6) != null ? v.model.getValueAt(i, 6).toString() : "";
 
                 try {
                     ps.setString(1, ma);
@@ -150,8 +148,7 @@ public class c_sach {
                     ps.setString(4, maNXB);
                     ps.setString(5, maTG);
                     ps.setInt(6, namXB);
-                    ps.setString(7, tinhtrang);
-                    ps.setString(8, mota);
+                    ps.setString(7, mota);
 
                     ps.executeUpdate();
                     demThanhCong++;
@@ -171,35 +168,52 @@ public class c_sach {
 
     // ===== SỬA =====
     private void handleSua() {
-        ensureFullTable();
+         if (selectedRow == -1) {
+        JOptionPane.showMessageDialog(v, "Chọn sách cần sửa!");
+        return;
+    }
 
-        if (selectedRow == -1) {
-            JOptionPane.showMessageDialog(v, "Chọn sách cần sửa!");
-            return;
-        }
-        m_sach s = v.get_sach();
-        if (s == null) return;
+             // Lấy dữ liệu từ form
+                m_sach s = v.get_sach();
+                if (s == null) {
+              JOptionPane.showMessageDialog(v, "Dữ liệu không hợp lệ, kiểm tra lại form!");
+                  return;
+    }
+              String sql = "UPDATE Sach SET TenS = ?, MaTL = ?, MaNXB = ?, MaTG = ?, " +
+                 "Namxuatban = ?, Mota = ? WHERE MaS = ?";
+             try (Connection conn = DriverManager.getConnection(url, user, pass);
+           PreparedStatement ps = conn.prepareStatement(sql)) {
 
-        String sql = "UPDATE Sach SET TenS=?, MaTL=?, MaNXB=?, MaTG=?, Namxuatban=?, Tinhtrang=?, Mota=? WHERE MaS=?";
-        try (Connection conn = DriverManager.getConnection(url, user, pass);
-             PreparedStatement ps = conn.prepareStatement(sql)) {
+        ps.setString(1, s.getTenS());
+        ps.setString(2, s.getMaTL());
+        ps.setString(3, s.getMaNXB());
+        ps.setString(4, s.getMaTG());
+        ps.setInt   (5, s.getNamxuatban());
+        ps.setString(6, s.getMota());
+        ps.setString(7, s.getMaS());
 
-            ps.setString(1, s.getTenS());
-            ps.setString(2, s.getMaTL());
-            ps.setString(3, s.getMaNXB());
-            ps.setString(4, s.getMaTG());
-            ps.setInt(5, s.getNamxuatban());
-            ps.setString(6, s.getTinhtrang());
-            ps.setString(7, s.getMota());
-            ps.setString(8, s.getMaS());
-            ps.executeUpdate();
+        int affected = ps.executeUpdate();
+
+        if (affected > 0) {
+            // Cập nhật lại ngay trên JTable
+           
+            v.model.setValueAt(s.getTenS(),       selectedRow, 1);
+            v.model.setValueAt(s.getMaTL(),       selectedRow, 2);
+            v.model.setValueAt(s.getMaNXB(),      selectedRow, 3);
+            v.model.setValueAt(s.getMaTG(),       selectedRow, 4);
+            v.model.setValueAt(s.getNamxuatban(), selectedRow, 5);
+            v.model.setValueAt(s.getMota(),       selectedRow, 6);
+
             JOptionPane.showMessageDialog(v, "Sửa thành công!");
-            loadData();
-            isSearching = false;
-            resetForm();
-        } catch (SQLException e) {
-            JOptionPane.showMessageDialog(v, "Lỗi sửa: " + e.getMessage());
+        } else {
+            JOptionPane.showMessageDialog(v, "Không tìm thấy sách để sửa (MaS không khớp)!");
         }
+
+        //  reset form sau khi sửa
+        resetForm();
+    } catch (SQLException e) {
+        JOptionPane.showMessageDialog(v, "Lỗi sửa: " + e.getMessage());
+    }
     }
 
     // ===== XÓA =====
@@ -226,10 +240,10 @@ public class c_sach {
         }
     }
 
+    
     // ===== TÌM KIẾM =====
     private void handleTimKiem() {
         String kw = v.txttimkiem.getText().trim();
-
         // rỗng -> load all
         if (kw.isEmpty()) {
             loadData();
@@ -237,15 +251,12 @@ public class c_sach {
             resetForm();
             return;
         }
-
         v.model.setRowCount(0);
-
         try (Connection conn = DriverManager.getConnection(url, user, pass);
              PreparedStatement ps = conn.prepareStatement(
                      "SELECT * FROM Sach WHERE TenS LIKE ? OR MaS LIKE ?")) {
             ps.setString(1, "%" + kw + "%");
             ps.setString(2, "%" + kw + "%");
-
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 v.model.addRow(new Object[]{
@@ -255,14 +266,11 @@ public class c_sach {
                         rs.getString("MaNXB"),
                         rs.getString("MaTG"),
                         rs.getInt("Namxuatban"),
-                        rs.getString("Tinhtrang"),
                         rs.getString("Mota")
                 });
             }
-
             isSearching = true;
             resetForm();
-
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(v, "Lỗi tìm kiếm: " + e.getMessage());
         }
@@ -271,19 +279,14 @@ public class c_sach {
     private void handleXuatFile() {
         JFileChooser fileChooser = new JFileChooser();
         if (fileChooser.showSaveDialog(v) != JFileChooser.APPROVE_OPTION) return;
-
         File file = fileChooser.getSelectedFile();
         String path = file.getAbsolutePath();
         if (!path.toLowerCase().endsWith(".csv")) path += ".csv";
-
         try (FileOutputStream fos = new FileOutputStream(path)) {
             fos.write(0xEF); fos.write(0xBB); fos.write(0xBF); // BOM UTF-8
-
             try (OutputStreamWriter osw = new OutputStreamWriter(fos, StandardCharsets.UTF_8);
                  PrintWriter pw = new PrintWriter(osw)) {
-
-                pw.println("Mã Sách;Tên Sách;Mã TL;Mã NXB;Mã TG;Năm XB;Tình Trạng;Mô Tả");
-
+                pw.println("Mã Sách;Tên Sách;Mã TL;Mã NXB;Mã TG;Năm XB;Mô Tả");
                 for (int i = 0; i < v.table.getRowCount(); i++) {
                     StringBuilder row = new StringBuilder();
                     for (int j = 0; j < v.table.getColumnCount(); j++) {
@@ -295,10 +298,8 @@ public class c_sach {
                 }
                 pw.flush();
             }
-
             JOptionPane.showMessageDialog(v, "Xuất file thành công!");
             resetForm();
-
         } catch (Exception e) {
             JOptionPane.showMessageDialog(v, "Lỗi xuất file: " + e.getMessage());
         }
@@ -316,7 +317,6 @@ public class c_sach {
                         rs.getString("MaNXB"),
                         rs.getString("MaTG"),
                         rs.getInt("Namxuatban"),
-                        rs.getString("Tinhtrang"),
                         rs.getString("Mota")
                 });
             }
@@ -330,7 +330,6 @@ public class c_sach {
             v.cbMaTL.removeAllItems();
             v.cbMaTG.removeAllItems();
             v.cbMaNXB.removeAllItems();
-
             ResultSet rsTL = conn.createStatement().executeQuery("SELECT MaTL FROM Theloai");
             while (rsTL.next()) v.cbMaTL.addItem(rsTL.getString("MaTL"));
             ResultSet rsTG = conn.createStatement().executeQuery("SELECT MaTG FROM Tacgia");
@@ -341,7 +340,6 @@ public class c_sach {
             JOptionPane.showMessageDialog(v, "Lỗi load combobox: " + e.getMessage());
         }
     }
-
     // ===== QUAY LẠI =====
     private void handleQuayLai() {
         v.dispose();

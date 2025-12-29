@@ -12,19 +12,18 @@ import java.text.SimpleDateFormat;
 public class c_nhanvien {
 
     private v_nhanvien v;
-    private v_trangchu home;
+    private v_trangchu trangchu;
     private int row = -1;
 
     private final String url = "jdbc:mysql://localhost:3306/baitaplon?useUnicode=true&characterEncoding=UTF-8";
     private final String user = "root";
-    private final String pass = "admin";
+    private final String pass = "123456789";
 
     private final SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 
     public c_nhanvien(v_nhanvien view, JFrame h) {
         v = view;
-        home = (v_trangchu) h;
-
+        trangchu = (v_trangchu) h;
         v.btnthem.addActionListener(e -> them());
         v.btnsua.addActionListener(e -> sua());
         v.btnxoa.addActionListener(e -> xoa());
@@ -95,7 +94,6 @@ public class c_nhanvien {
             ps.setString(6, v.txtDiaChi.getText());
             ps.setString(7, v.txtMaNV.getText());
             ps.executeUpdate();
-
             v.model.setValueAt(v.txtTenNV.getText(), row, 1);
             v.model.setValueAt(v.cbGioiTinh.getSelectedItem(), row, 2);
             v.model.setValueAt(sdf.format(v.dateNS.getValue()), row, 3);
@@ -227,7 +225,7 @@ public class c_nhanvien {
 
     private void back() {
         v.dispose();
-        home.setVisible(true);
+        trangchu.setVisible(true);
     }
     // ================= RESET FORM =================
      int selectedRow = -1; 

@@ -6,7 +6,7 @@ public class m_nhanvien {
 
     private String maNV;
     private String tenNV;
-    private Date ngaySinh;      // ← PHẢI CÓ
+    private Date ngaySinh;      
     private String gioiTinh;
     private String dienThoai;
     private String email;
@@ -29,7 +29,6 @@ public class m_nhanvien {
         return ngaySinh;
     }
 
-    // ✅ GETTER SQL DATE (FIX LỖI CỦA BẠN)
     public java.sql.Date getNgaySinhSQL() {
         return new java.sql.Date(ngaySinh.getTime());
     }

@@ -1,7 +1,4 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
+
 package baitaplonjava.view;
 import baitaplonjava.model.m_sach;
 import java.awt.*;
@@ -16,8 +13,7 @@ import javax.swing.table.JTableHeader;
 
 public class v_sach extends JFrame {
 
-    public JTextField txtMaS, txtTenS, txtNamXB, txtTinhTrang, txtMoTa, txttimkiem;
-    // Sử dụng ComboBox để chọn mã từ các bảng liên quan
+    public JTextField txtMaS, txtTenS, txtNamXB, txtMoTa, txttimkiem;
     public JComboBox<String> cbMaTL, cbMaNXB, cbMaTG;
     public JButton btnthem, btnsua, btnxoa, btnluu, btntimkiem, btnxuatfile, btnback;
     public JTable table;
@@ -58,7 +54,6 @@ public class v_sach extends JFrame {
         txtMaS = new JTextField(); setupInputField(txtMaS);
         txtTenS = new JTextField(); setupInputField(txtTenS);
         txtNamXB = new JTextField(); setupInputField(txtNamXB);
-        txtTinhTrang = new JTextField(); setupInputField(txtTinhTrang);
         txtMoTa = new JTextField(); setupInputField(txtMoTa);
 
         cbMaTL = new JComboBox<>();
@@ -75,8 +70,7 @@ public class v_sach extends JFrame {
         inputPanel.add(createLabel("Nhà Xuất Bản:")); inputPanel.add(cbMaNXB);
         inputPanel.add(createLabel("Năm Xuất Bản:")); inputPanel.add(txtNamXB);
         // Hàng 4
-        inputPanel.add(createLabel("Tình Trạng:")); inputPanel.add(txtTinhTrang);
-        inputPanel.add(createLabel("Mô Tả:")); inputPanel.add(txtMoTa);
+        inputPanel.add(createLabel("Mô tả:")); inputPanel.add(txtMoTa);
         // Panel Tìm kiếm
         JPanel searchPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 20));
         searchPanel.setBackground(Color.WHITE);
@@ -92,7 +86,7 @@ public class v_sach extends JFrame {
         searchPanel.add(btntimkiem);
 
         // --- Bảng hiển thị ---
-        String[] columns = {"Mã Sách", "Tên Sách", "Mã TL", "Mã NXB", "Mã TG", "Năm XB", "Tình Trạng", "Mô Tả"};
+        String[] columns = {"Mã Sách", "Tên Sách", "Mã TL", "Mã NXB", "Mã TG", "Năm XB", "Mô Tả"};
         model = new DefaultTableModel(columns, 0);
         table = new JTable(model);
         styleTable(table);
@@ -177,14 +171,14 @@ public class v_sach extends JFrame {
             String MaNXB = cbMaNXB.getSelectedItem().toString();
             String MaTG = cbMaTG.getSelectedItem().toString();
             int NamXB = Integer.parseInt(txtNamXB.getText().trim());
-            String TinhTrang = txtTinhTrang.getText().trim();
+ 
             String MoTa = txtMoTa.getText().trim();
 
             if (MaS.isEmpty() || TenS.isEmpty()) {
                 JOptionPane.showMessageDialog(this, "Vui lòng nhập Mã và Tên sách!");
                 return null;
             }
-            return new m_sach(MaS, TenS, MaTL, MaNXB, MaTG, NamXB, TinhTrang, MoTa);
+            return new m_sach(MaS, TenS, MaTL, MaNXB, MaTG, NamXB, MoTa);
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, "Lỗi nhập liệu: Năm xuất bản phải là số!");
             return null;

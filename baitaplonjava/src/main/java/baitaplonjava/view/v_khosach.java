@@ -15,7 +15,7 @@ public class v_khosach extends JFrame {
 
     public JTextField txtMaK, txtNhap, txtXuat, txttimkiem;
     public JComboBox<String> cbMaS;
-    public JButton btnthem, btnsua, btnxoa, btnluu, btntimkiem, btnback;
+    public JButton btnthem, btnsua, btnxoa, btnluu, btnxuatfile, btntimkiem, btnback;
     public JTable table;
     public DefaultTableModel model;
 
@@ -32,20 +32,20 @@ public class v_khosach extends JFrame {
         this.setLayout(new BorderLayout(10, 10));
         this.getContentPane().setBackground(Color.WHITE);
 
-        // ===== 1) TITLE =====
+        // ===== TITLE =====
         JLabel lblTitle = new JLabel("QUẢN LÝ KHO SÁCH", JLabel.CENTER);
         lblTitle.setFont(new Font("Segoe UI", Font.BOLD, 26));
         lblTitle.setForeground(new Color(44, 62, 80));
         lblTitle.setBorder(new EmptyBorder(20, 0, 10, 0));
         this.add(lblTitle, BorderLayout.NORTH);
 
-        // ===== 2) CENTER (INPUT + SEARCH + TABLE) =====
+        // ===== CENTER =====
         JPanel mainCenter = new JPanel();
         mainCenter.setLayout(new BoxLayout(mainCenter, BoxLayout.Y_AXIS));
         mainCenter.setBackground(Color.WHITE);
         mainCenter.setBorder(new EmptyBorder(10, 30, 10, 30));
 
-        // Panel nhập liệu (2 hàng, 4 cột)
+        // Input
         JPanel inputPanel = new JPanel(new GridLayout(2, 4, 15, 15));
         inputPanel.setBackground(Color.WHITE);
         inputPanel.setMaximumSize(new Dimension(Integer.MAX_VALUE, 120));
@@ -53,7 +53,7 @@ public class v_khosach extends JFrame {
         txtMaK = new JTextField(); setupInputField(txtMaK);
         cbMaS = new JComboBox<>();
         txtNhap = new JTextField(); setupInputField(txtNhap);
-        txtXuat  = new JTextField(); setupInputField(txtXuat);
+        txtXuat = new JTextField(); setupInputField(txtXuat);
 
         inputPanel.add(createLabel("Mã Kho:"));
         inputPanel.add(txtMaK);
@@ -65,7 +65,7 @@ public class v_khosach extends JFrame {
         inputPanel.add(createLabel("Số lượng xuất:"));
         inputPanel.add(txtXuat);
 
-        // Panel tìm kiếm 
+        // Search
         JPanel searchPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 20));
         searchPanel.setBackground(Color.WHITE);
         searchPanel.setMaximumSize(new Dimension(Integer.MAX_VALUE, 80));
@@ -76,18 +76,16 @@ public class v_khosach extends JFrame {
 
         btntimkiem = new JButton("Tìm Kiếm");
         styleButton(btntimkiem, new Color(52, 152, 219));
-        btntimkiem.setPreferredSize(new Dimension(120, 40));
 
         searchPanel.add(txttimkiem);
         searchPanel.add(Box.createHorizontalStrut(10));
         searchPanel.add(btntimkiem);
 
-        // Bảng hiển thị
+        // Table
         String[] cols = {"Mã Kho", "Mã Sách", "Nhập", "Xuất", "Tồn"};
         model = new DefaultTableModel(cols, 0);
         table = new JTable(model);
         styleTable(table);
-
         JScrollPane scrollPane = new JScrollPane(table);
         scrollPane.setBorder(new LineBorder(new Color(230, 230, 230)));
 
@@ -97,20 +95,22 @@ public class v_khosach extends JFrame {
 
         this.add(mainCenter, BorderLayout.CENTER);
 
-        // ===== 3) SOUTH BUTTONS =====
+        // ===== BOTTOM BUTTONS =====
         JPanel actionPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 15, 20));
         actionPanel.setBackground(new Color(245, 245, 245));
 
-        btnthem = new JButton("Thêm"); styleButton(btnthem, new Color(46, 204, 113));
-        btnsua  = new JButton("Sửa");  styleButton(btnsua, new Color(241, 196, 15));
-        btnxoa  = new JButton("Xóa");  styleButton(btnxoa, new Color(231, 76, 60));
-        btnluu  = new JButton("Lưu");  styleButton(btnluu, new Color(155, 89, 182));
-        btnback = new JButton("Quay Lại"); styleButton(btnback, new Color(52, 73, 94));
+        btnthem     = new JButton("Thêm");      styleButton(btnthem,     new Color(46, 204, 113));
+        btnsua      = new JButton("Sửa");       styleButton(btnsua,       new Color(241, 196, 15));
+        btnxoa      = new JButton("Xóa");       styleButton(btnxoa,       new Color(231, 76, 60));
+        btnluu      = new JButton("Lưu");       styleButton(btnluu,       new Color(155, 89, 182));
+        btnxuatfile = new JButton("Xuất File"); styleButton(btnxuatfile,  new Color(149, 165, 166));
+        btnback     = new JButton("Quay Lại");  styleButton(btnback,      new Color(52, 73, 94));
 
         actionPanel.add(btnthem);
         actionPanel.add(btnsua);
         actionPanel.add(btnxoa);
         actionPanel.add(btnluu);
+        actionPanel.add(btnxuatfile);
         actionPanel.add(btnback);
 
         this.add(actionPanel, BorderLayout.SOUTH);
@@ -143,7 +143,7 @@ public class v_khosach extends JFrame {
 
         button.addMouseListener(new MouseAdapter() {
             @Override public void mouseEntered(MouseEvent e) { button.setBackground(bgColor.darker()); }
-            @Override public void mouseExited(MouseEvent e) { button.setBackground(bgColor); }
+            @Override public void mouseExited(MouseEvent e)  { button.setBackground(bgColor); }
         });
     }
 
@@ -161,13 +161,14 @@ public class v_khosach extends JFrame {
         header.setPreferredSize(new Dimension(0, 35));
     }
 
-    // ===== Listener =====
-    public void bt_them(ActionListener a) { btnthem.addActionListener(a); }
-    public void bt_sua(ActionListener a)  { btnsua.addActionListener(a); }
-    public void bt_xoa(ActionListener a)  { btnxoa.addActionListener(a); }
-    public void bt_luu(ActionListener a)  { btnluu.addActionListener(a); }
-    public void bt_back(ActionListener a) { btnback.addActionListener(a); }
-    public void bt_timkiem(ActionListener a) { btntimkiem.addActionListener(a); }
+    // ===== Listeners =====
+    public void bt_them(ActionListener a)      { btnthem.addActionListener(a); }
+    public void bt_sua(ActionListener a)       { btnsua.addActionListener(a); }
+    public void bt_xoa(ActionListener a)       { btnxoa.addActionListener(a); }
+    public void bt_luu(ActionListener a)       { btnluu.addActionListener(a); }
+    public void bt_xuatfile(ActionListener a)  { btnxuatfile.addActionListener(a); }
+    public void bt_back(ActionListener a)      { btnback.addActionListener(a); }
+    public void bt_timkiem(ActionListener a)   { btntimkiem.addActionListener(a); }
 
     // ===== Lấy đối tượng kho sách =====
     public m_khosach get_khosach() {

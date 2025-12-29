@@ -28,14 +28,13 @@ public class c_trangchu implements ActionListener {
     private v_tacgia viewtacgia;
     private v_docgia viewdocgia;
     private v_nhanvien viewnhanvien;
-
     private v_trangthaisach viewtrangthaisach;
     private v_tracuu viewtracuu;
     private v_thongke viewthongke;
 
     public c_trangchu(v_trangchu viewtrangchu) {
         this.viewtrangchu = viewtrangchu;
-        
+       
         // Gắn sự kiện cho tất cả các nút cần xử lý
         attachListeners();
     }
@@ -47,7 +46,6 @@ public class c_trangchu implements ActionListener {
         this.viewtrangchu.getBtnTheloai().addActionListener(this); 
         // QL: kho sach
          this.viewtrangchu.getBtnKhosach().addActionListener(this);
-
         //QL Nhà xuất bản
         this.viewtrangchu.getBtnNhaxuatban().addActionListener(this);
         //QL tác giả
@@ -56,17 +54,19 @@ public class c_trangchu implements ActionListener {
         this.viewtrangchu.getBtnDocgia().addActionListener(this);
         //Đăng xuất
         this.viewtrangchu.getBtnDangXuat().addActionListener(this);    
-       
+       // Nhà xuất bản
         this.viewtrangchu.getBtnNhaxuatban().addActionListener(this);
-        
+        //Tacs giả
         this.viewtrangchu.getBtnTacgia().addActionListener(this);
-        
+        //Độc giả
         this.viewtrangchu.getBtnDocgia().addActionListener(this);
-        
+        // Nhân viên
         this.viewtrangchu.getBtnNhanvien().addActionListener(this);
-
+        //Trạng thái sách
         this.viewtrangchu.getBtnTrangthaisach().addActionListener(this);
+        //Tra cứu
         this.viewtrangchu.getBtnTracuu().addActionListener(this); 
+        //Thống kế
         this.viewtrangchu.getBtnThongke().addActionListener(this); 
     }
 
@@ -128,14 +128,7 @@ public class c_trangchu implements ActionListener {
         viewdocgia.setVisible(true);
         viewtrangchu.setVisible(false); 
     }
-      private void moQuanlynhanvienview() {
-        if (viewnhanvien == null) {
-            viewnhanvien = new v_nhanvien(); 
-            new c_nhanvien(viewnhanvien, viewtrangchu); 
-        }
-        viewdocgia.setVisible(true);
-        viewtrangchu.setVisible(false); 
-    }
+     
       
       private void moQuanlyTrangthaisachview() {
         if (viewtrangthaisach == null) {
@@ -157,15 +150,26 @@ public class c_trangchu implements ActionListener {
         viewtrangchu.setVisible(false); 
     }
       
+      
       private void moThongkeview() {
         if (viewthongke == null) {
             viewthongke = new v_thongke(); 
-
             new c_thongke(viewthongke, viewtrangchu); 
         }
         viewthongke.setVisible(true);
         viewtrangchu.setVisible(false); 
     }
+    
+    private void moNhanvienview(){
+    if (viewnhanvien == null) {
+            viewnhanvien = new v_nhanvien(); 
+            new c_nhanvien(viewnhanvien, viewtrangchu); 
+        }
+        viewnhanvien.setVisible(true);
+        viewtrangchu.setVisible(false); 
+    }
+    
+    
     
     
     
@@ -231,6 +235,9 @@ public class c_trangchu implements ActionListener {
             // Xử lý khi nhấn nút Thống kê
             moThongkeview();
         }
-
+        else if (source == viewtrangchu.getBtnNhanvien()) {
+            // Xử lý khi nhấn nút Nhân viên
+            moNhanvienview();
+        }
     }
 }
