@@ -65,7 +65,7 @@ public class v_khosach extends JFrame {
         inputPanel.add(createLabel("Số lượng xuất:"));
         inputPanel.add(txtXuat);
 
-        // Panel tìm kiếm (tùy bạn dùng hay không, mình để sẵn cho đồng bộ như sách)
+        // Panel tìm kiếm 
         JPanel searchPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 20));
         searchPanel.setBackground(Color.WHITE);
         searchPanel.setMaximumSize(new Dimension(Integer.MAX_VALUE, 80));
@@ -161,14 +161,12 @@ public class v_khosach extends JFrame {
         header.setPreferredSize(new Dimension(0, 35));
     }
 
-    // ===== Listener methods (giữ kiểu đơn giản) =====
+    // ===== Listener =====
     public void bt_them(ActionListener a) { btnthem.addActionListener(a); }
     public void bt_sua(ActionListener a)  { btnsua.addActionListener(a); }
     public void bt_xoa(ActionListener a)  { btnxoa.addActionListener(a); }
     public void bt_luu(ActionListener a)  { btnluu.addActionListener(a); }
     public void bt_back(ActionListener a) { btnback.addActionListener(a); }
-
-    // Nếu bạn muốn dùng tìm kiếm trong controller thì dùng cái này:
     public void bt_timkiem(ActionListener a) { btntimkiem.addActionListener(a); }
 
     // ===== Lấy đối tượng kho sách =====

@@ -21,7 +21,7 @@ public class v_dangky extends JFrame {
 
     private void initUI() {
         this.setTitle("Đăng Ký Tài Khoản");
-        this.setSize(480, 550); // Chiều cao lớn hơn một chút để chứa 3 ô nhập
+        this.setSize(480, 550); 
         this.setLocationRelativeTo(null);
         this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         this.setLayout(new BorderLayout());
@@ -75,13 +75,13 @@ public class v_dangky extends JFrame {
         this.add(panelInput, BorderLayout.CENTER);
 
         // --- 3. PANEL NÚT BẤM (SOUTH) ---
-        // Nhích nút lên bằng cách giảm vgap của FlowLayout và thêm Border phía dưới
+     
         JPanel panelButtons = new JPanel(new FlowLayout(FlowLayout.CENTER, 0, 20));
         panelButtons.setBackground(Color.WHITE);
         panelButtons.setBorder(new EmptyBorder(0, 0, 30, 0));
 
         btn_register = new JButton("Đăng ký ngay");
-        // Sử dụng màu xanh dương cho nút Đăng ký để đồng bộ với nút Đăng ký ở trang Login
+        // Màu xanh dương cho nút Đăng ký 
         styleButton(btn_register, new Color(52, 152, 219)); 
 
         panelButtons.add(btn_register);
