@@ -1,6 +1,8 @@
 
 package baitaplonjava.controller;
 
+import baitaplonjava.view.v_trangthaisach;
+import baitaplonjava.view.v_tracuu;
 
 import baitaplonjava.view.v_docgia;
 
@@ -29,7 +31,8 @@ public class c_trangchu implements ActionListener {
     private v_tacgia viewtacgia;
     private v_docgia viewdocgia;
 
-
+    private v_trangthaisach viewtrangthaisach;
+    private v_tracuu viewtracuu;
 
     public c_trangchu(v_trangchu viewtrangchu) {
         this.viewtrangchu = viewtrangchu;
@@ -54,7 +57,8 @@ public class c_trangchu implements ActionListener {
         
         this.viewtrangchu.getBtnDocgia().addActionListener(this);
 
-
+        this.viewtrangchu.getBtnTrangthaisach().addActionListener(this);
+        this.viewtrangchu.getBtnTracuu().addActionListener(this);
     }
 
     public void hienThiTrangChu() {
@@ -126,6 +130,26 @@ public class c_trangchu implements ActionListener {
         viewdocgia.setVisible(true);
         viewtrangchu.setVisible(false); 
     }
+      
+      private void moQuanlyTrangthaisachview() {
+        if (viewtrangthaisach == null) {
+            viewtrangthaisach = new v_trangthaisach(); 
+
+            new c_trangthaisach(viewtrangthaisach, viewtrangchu); 
+        }
+        viewtrangthaisach.setVisible(true);
+        viewtrangchu.setVisible(false); 
+    }
+      
+      private void moQuanlyTracuuview() {
+        if (viewtracuu == null) {
+            viewtracuu = new v_tracuu(); 
+
+            new c_tracuu(viewtracuu, viewtrangchu); 
+        }
+        viewtracuu.setVisible(true);
+        viewtrangchu.setVisible(false); 
+    }
     
     
     
@@ -182,6 +206,16 @@ public class c_trangchu implements ActionListener {
         else if (source == viewtrangchu.getBtnDocgia()) {
             // Xử lý khi nhấn nút Đăng Xuất
             moQuanlyDocgiaview();
+        }
+        
+        else if (source == viewtrangchu.getBtnTrangthaisach()) {
+            // Xử lý khi nhấn nút Đăng Xuất
+            moQuanlyTrangthaisachview();
+        }
+        
+        else if (source == viewtrangchu.getBtnTracuu()) {
+            // Xử lý khi nhấn nút Đăng Xuất
+            moQuanlyTracuuview();
         }
 
     }

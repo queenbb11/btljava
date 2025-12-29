@@ -15,7 +15,8 @@ import javax.swing.border.EmptyBorder;
 
 public class v_trangchu extends JFrame {
 
-
+    private JButton btnTracuu;
+    private JButton btnTrangthaisach;
     private JButton btnDocgia;
     private JButton btnTacgia;
     private JButton btnNhaxuatban;
@@ -74,9 +75,11 @@ public class v_trangchu extends JFrame {
         btnDocgia = createStyledButton("Độc giả", "⚙️");
         pnlMenu.add(btnDocgia);
 
-        pnlMenu.add(createStyledButton("QL Tác Giả", "✍️"));
+        btnTrangthaisach = createStyledButton("QL Trạng thái sách", "️📄");
+        pnlMenu.add(btnTrangthaisach);
         
-        pnlMenu.add(createStyledButton("QL NXB", "🏢"));
+        btnTracuu = createStyledButton("QL Tra cứu", "️📜");
+        pnlMenu.add(btnTracuu);
 
         
         btnTheloai = createStyledButton("QL Thể Loại", "🔖");
@@ -139,5 +142,9 @@ public class v_trangchu extends JFrame {
     public JButton getBtnNhaxuatban() { return btnNhaxuatban; }
     public JButton getBtnTacgia() { return btnTacgia; }
     public JButton getBtnDocgia() { return btnDocgia; }
+    
+    public JButton getBtnTrangthaisach() { return btnTrangthaisach; }
+    public JButton getBtnTracuu() { return btnTracuu;}
+    
 
 }
