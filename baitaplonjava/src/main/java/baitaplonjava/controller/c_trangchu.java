@@ -10,7 +10,7 @@ import baitaplonjava.view.v_tacgia;
 import baitaplonjava.view.v_khosach;
 import baitaplonjava.view.v_login;
 import baitaplonjava.view.v_sach;
-
+import baitaplonjava.view.v_nhanvien;
 import baitaplonjava.view.v_theloai;
 import baitaplonjava.view.v_trangchu;
 import java.awt.event.ActionEvent;
@@ -27,6 +27,7 @@ public class c_trangchu implements ActionListener {
     private v_nhaxuatban viewnhaxuatban;
     private v_tacgia viewtacgia;
     private v_docgia viewdocgia;
+    private v_nhanvien viewnhanvien;
 
     private v_trangthaisach viewtrangthaisach;
     private v_tracuu viewtracuu;
@@ -60,6 +61,8 @@ public class c_trangchu implements ActionListener {
         this.viewtrangchu.getBtnTacgia().addActionListener(this);
         
         this.viewtrangchu.getBtnDocgia().addActionListener(this);
+        
+        this.viewtrangchu.getBtnNhanvien().addActionListener(this);
 
         this.viewtrangchu.getBtnTrangthaisach().addActionListener(this);
         this.viewtrangchu.getBtnTracuu().addActionListener(this); }
@@ -118,6 +121,14 @@ public class c_trangchu implements ActionListener {
         if (viewdocgia == null) {
             viewdocgia = new v_docgia(); 
             new c_docgia(viewdocgia, viewtrangchu); 
+        }
+        viewdocgia.setVisible(true);
+        viewtrangchu.setVisible(false); 
+    }
+      private void moQuanlynhanvienview() {
+        if (viewnhanvien == null) {
+            viewnhanvien = new v_nhanvien(); 
+            new c_nhanvien(viewnhanvien, viewtrangchu); 
         }
         viewdocgia.setVisible(true);
         viewtrangchu.setVisible(false); 

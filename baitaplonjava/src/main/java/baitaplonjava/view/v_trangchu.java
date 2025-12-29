@@ -24,6 +24,7 @@ public class v_trangchu extends JFrame {
     private JButton btnKhosach;
     private JButton btnMuonTra;
     private JButton btnTheloai;
+    private JButton btnNhanvien;
     private JButton btnDangXuat;
     private JLabel lblUserLogin; 
     
@@ -85,9 +86,10 @@ public class v_trangchu extends JFrame {
         btnTheloai = createStyledButton("QL Thể Loại", "🔖");
         pnlMenu.add(btnTheloai);
         
-
-        pnlMenu.add(createStyledButton("QL Nhân Viên", "🆔"));
+        btnNhanvien = createStyledButton("QL Nhân Viên", "🆔");
+        pnlMenu.add(btnNhanvien);
         
+       
         pnlMenu.add(createStyledButton("Nhập Sách", "📥"));
         
         pnlMenu.add(createStyledButton("Thanh Lý", "📤"));
@@ -142,6 +144,7 @@ public class v_trangchu extends JFrame {
     public JButton getBtnNhaxuatban() { return btnNhaxuatban; }
     public JButton getBtnTacgia() { return btnTacgia; }
     public JButton getBtnDocgia() { return btnDocgia; }
+    public JButton getBtnNhanvien() { return btnNhanvien; }
     
     public JButton getBtnTrangthaisach() { return btnTrangthaisach; }
     public JButton getBtnTracuu() { return btnTracuu;}
