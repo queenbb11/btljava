@@ -3,7 +3,7 @@ package baitaplonjava.controller;
 
 import baitaplonjava.view.v_trangthaisach;
 import baitaplonjava.view.v_tracuu;
-
+import baitaplonjava.view.v_thongke;
 import baitaplonjava.view.v_docgia;
 import baitaplonjava.view.v_nhaxuatban;
 import baitaplonjava.view.v_tacgia;
@@ -31,6 +31,7 @@ public class c_trangchu implements ActionListener {
 
     private v_trangthaisach viewtrangthaisach;
     private v_tracuu viewtracuu;
+    private v_thongke viewthongke;
 
     public c_trangchu(v_trangchu viewtrangchu) {
         this.viewtrangchu = viewtrangchu;
@@ -65,7 +66,9 @@ public class c_trangchu implements ActionListener {
         this.viewtrangchu.getBtnNhanvien().addActionListener(this);
 
         this.viewtrangchu.getBtnTrangthaisach().addActionListener(this);
-        this.viewtrangchu.getBtnTracuu().addActionListener(this); }
+        this.viewtrangchu.getBtnTracuu().addActionListener(this); 
+        this.viewtrangchu.getBtnThongke().addActionListener(this); 
+    }
 
     public void hienThiTrangChu() {
         viewtrangchu.setVisible(true);
@@ -153,6 +156,16 @@ public class c_trangchu implements ActionListener {
         viewtracuu.setVisible(true);
         viewtrangchu.setVisible(false); 
     }
+      
+      private void moThongkeview() {
+        if (viewthongke == null) {
+            viewthongke = new v_thongke(); 
+
+            new c_thongke(viewthongke, viewtrangchu); 
+        }
+        viewthongke.setVisible(true);
+        viewtrangchu.setVisible(false); 
+    }
     
     
     
@@ -206,13 +219,17 @@ public class c_trangchu implements ActionListener {
         }
         
         else if (source == viewtrangchu.getBtnTrangthaisach()) {
-            // Xử lý khi nhấn nút Đăng Xuất
+            // Xử lý khi nhấn nút QL Trạng thái sách
             moQuanlyTrangthaisachview();
         }
         
         else if (source == viewtrangchu.getBtnTracuu()) {
-            // Xử lý khi nhấn nút Đăng Xuất
+            // Xử lý khi nhấn nút QL Tra cứu
             moQuanlyTracuuview();
+        }
+        else if (source == viewtrangchu.getBtnThongke()) {
+            // Xử lý khi nhấn nút Thống kê
+            moThongkeview();
         }
 
     }
