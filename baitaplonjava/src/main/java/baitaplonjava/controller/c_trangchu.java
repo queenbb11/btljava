@@ -11,6 +11,9 @@ import baitaplonjava.view.v_khosach;
 import baitaplonjava.view.v_login;
 import baitaplonjava.view.v_sach;
 import baitaplonjava.view.v_nhanvien;
+import baitaplonjava.view.v_phieumuon;
+import baitaplonjava.view.v_phieuphat;
+import baitaplonjava.view.v_phieutra;
 import baitaplonjava.view.v_theloai;
 import baitaplonjava.view.v_trangchu;
 import java.awt.event.ActionEvent;
@@ -31,6 +34,9 @@ public class c_trangchu implements ActionListener {
     private v_trangthaisach viewtrangthaisach;
     private v_tracuu viewtracuu;
     private v_thongke viewthongke;
+    private v_phieumuon viewmuon;
+    private v_phieutra viewtra;
+    private v_phieuphat viewphat;
 
     public c_trangchu(v_trangchu viewtrangchu) {
         this.viewtrangchu = viewtrangchu;
@@ -68,6 +74,12 @@ public class c_trangchu implements ActionListener {
         this.viewtrangchu.getBtnTracuu().addActionListener(this); 
         //Thống kế
         this.viewtrangchu.getBtnThongke().addActionListener(this); 
+        //mượn
+        this.viewtrangchu.getBtnMuon().addActionListener(this); 
+        //trả
+        this.viewtrangchu.getBtnTra().addActionListener(this); 
+        //phạt
+        this.viewtrangchu.getBtnPhat().addActionListener(this); 
     }
 
     public void hienThiTrangChu() {
@@ -169,7 +181,30 @@ public class c_trangchu implements ActionListener {
         viewtrangchu.setVisible(false); 
     }
     
-    
+        private void moMuonview(){
+    if (viewmuon == null) {
+            viewmuon = new v_phieumuon(); 
+            new c_phieumuon(viewmuon, viewtrangchu); 
+        }
+        viewmuon.setVisible(true);
+        viewtrangchu.setVisible(false); 
+    }
+            private void moTraview(){
+    if (viewtra == null) {
+            viewtra = new v_phieutra(); 
+            new c_phieutra(viewtra, viewtrangchu); 
+        }
+        viewtra.setVisible(true);
+        viewtrangchu.setVisible(false); 
+    }
+      private void moPhatview(){
+    if (viewphat == null) {
+            viewphat = new v_phieuphat(); 
+            new c_phieuphat(viewphat, viewtrangchu); 
+        }
+        viewphat.setVisible(true);
+        viewtrangchu.setVisible(false); 
+    }
     
     
     
@@ -239,5 +274,19 @@ public class c_trangchu implements ActionListener {
             // Xử lý khi nhấn nút Nhân viên
             moNhanvienview();
         }
+                else if (source == viewtrangchu.getBtnMuon()) {
+            // Xử lý khi nhấn nút Mượn
+            moMuonview();
+        }
+                else if (source == viewtrangchu.getBtnTra()) {
+            // Xử lý khi nhấn nút trả
+            moTraview();
+        }        else if (source == viewtrangchu.getBtnPhat()) {
+            // Xử lý khi nhấn nút phạt
+            moPhatview();
+        }
+        
+        
+      
     }
 }

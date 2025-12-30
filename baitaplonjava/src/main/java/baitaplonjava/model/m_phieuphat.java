@@ -1,0 +1,27 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
+package baitaplonjava.model;
+
+
+public class m_phieuphat {
+    private String MaPP;
+    private String MaPM;
+    private int TienPhat;
+
+    public m_phieuphat(String MaPP, String MaPM, int TienPhat) {
+        this.MaPP = MaPP;
+        this.MaPM = MaPM;
+        this.TienPhat = TienPhat;
+    }
+
+    public String getMaPP() { return MaPP; }
+    public void setMaPP(String MaPP) { this.MaPP = MaPP; }
+
+    public String getMaPM() { return MaPM; }
+    public void setMaPM(String MaPM) { this.MaPM = MaPM; }
+
+    public int getTienPhat() { return TienPhat; }
+    public void setTienPhat(int tienPhat) { this.TienPhat = tienPhat; }
+}

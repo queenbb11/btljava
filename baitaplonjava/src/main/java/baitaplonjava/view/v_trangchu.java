@@ -23,7 +23,9 @@ public class v_trangchu extends JFrame {
     private JButton btnNhaxuatban;
     private JButton btnQuanlysach;
     private JButton btnKhosach;
-    private JButton btnMuonTra;
+    private JButton btnMuon;
+    private JButton btnTra;
+    private JButton btnPhat;
     private JButton btnTheloai;
     private JButton btnNhanvien;
     private JButton btnDangXuat;
@@ -64,8 +66,6 @@ public class v_trangchu extends JFrame {
         btnKhosach = createStyledButton("QL Kho sách", "📄");
         pnlMenu.add(btnKhosach);
         
-        btnMuonTra = createStyledButton("QL Mượn Trả", "🔄");
-        pnlMenu.add(btnMuonTra);
         
 
         btnTacgia = createStyledButton("QL Tác Giả", "✍️");
@@ -93,19 +93,24 @@ public class v_trangchu extends JFrame {
         btnThongke = createStyledButton("Thống kê", "📈");
         pnlMenu.add(btnThongke);
        
-        pnlMenu.add(createStyledButton("....", "📥"));
+        btnMuon = createStyledButton("QL Mượn ", "🔄");
+        pnlMenu.add(btnMuon);
         
-        pnlMenu.add(createStyledButton("....", "📤"));
+        btnTra = createStyledButton("QL Trả", "📥");
+        pnlMenu.add(btnTra);
         
-        pnlMenu.add(createStyledButton("....", "📄"));
+       btnPhat = createStyledButton("QL Phạt", "📥");
+        pnlMenu.add(btnPhat);
+        
+        //pnlMenu.add(createStyledButton("....", "📄"));
         
 
-        pnlMenu.add(createStyledButton("....", "⚙️"));
+       // pnlMenu.add(createStyledButton("....", "⚙️"));
         
 
-        pnlMenu.add(createStyledButton("....", "📜"));
+        //pnlMenu.add(createStyledButton("....", "📜"));
         
-        pnlMenu.add(createStyledButton("Đổi Mật Khẩu", "🔑"));
+        //pnlMenu.add(createStyledButton("Đổi Mật Khẩu", "🔑"));
         
         btnDangXuat = createStyledButton("Đăng Xuất", "🚪");
         btnDangXuat.setForeground(new Color(200, 50, 50)); 
@@ -138,7 +143,7 @@ public class v_trangchu extends JFrame {
     // --- GETTER ---
     public JButton getBtnSach() { return btnQuanlysach; }
     public JButton getBtnKhosach() { return btnKhosach; }
-    public JButton getBtnMuonTra() { return btnMuonTra; }
+    
     public JButton getBtnTheloai() { return btnTheloai; }
     public JButton getBtnDangXuat() { return btnDangXuat; }
     public JButton getBtnNhaxuatban() { return btnNhaxuatban; }
@@ -148,6 +153,8 @@ public class v_trangchu extends JFrame {
     public JButton getBtnTrangthaisach() { return btnTrangthaisach; }
     public JButton getBtnTracuu() { return btnTracuu;}
     public JButton getBtnThongke() { return btnThongke;}
-    
+    public JButton getBtnMuon() { return btnMuon; }
+    public JButton getBtnTra() { return btnTra; }
+    public JButton getBtnPhat(){return btnPhat; }
 
 }
