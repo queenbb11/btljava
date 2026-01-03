@@ -19,8 +19,6 @@ public class c_theloai {
     private final String user = "root";
     private final String pass = "123456789";
 
-
-
     public c_theloai(v_theloai view, JFrame trangchu) {
         this.v = view;
         this.viewtrangchu = (v_trangchu) trangchu;
