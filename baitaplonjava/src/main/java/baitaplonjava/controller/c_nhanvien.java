@@ -12,24 +12,27 @@ import java.text.SimpleDateFormat;
 public class c_nhanvien {
 
     private v_nhanvien v;
-    private v_trangchu trangchu;
+    private v_trangchu home;
     private int row = -1;
-
+// ==============================kết nối DB========================================================================================================================
     private final String url = "jdbc:mysql://localhost:3306/baitaplon?useUnicode=true&characterEncoding=UTF-8";
     private final String user = "root";
-    private final String pass = "1234567890";
+    private final String pass = "admin";
 
     private final SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-
+// ==============================Gắn sự kiện cho nút================================================================================================================
     public c_nhanvien(v_nhanvien view, JFrame h) {
         v = view;
-        trangchu = (v_trangchu) h;
+        home = (v_trangchu) h;
+
         v.btnthem.addActionListener(e -> them());
         v.btnsua.addActionListener(e -> sua());
         v.btnxoa.addActionListener(e -> xoa());
         v.btnluu.addActionListener(e -> luu());
         v.btntimkiem.addActionListener(e -> timkiem());
         v.btnxuatfile.addActionListener(e -> xuatFileCSV());
+        v.btnR.addActionListener(e -> resetForm());
+
         v.btnback.addActionListener(e -> back());
 
         v.table.addMouseListener(new MouseAdapter() {
@@ -41,11 +44,11 @@ public class c_nhanvien {
 
         loadData();
     }
-
+//==============================Hàm kết nối Database==================================================================================================================
     private Connection conn() throws SQLException {
         return DriverManager.getConnection(url, user, pass);
     }
-
+//Đổ dữ liệu bảng lên form==============================================================================================================
     private void showForm() {
         if (row == -1) return;
 
@@ -61,11 +64,29 @@ public class c_nhanvien {
 
         v.txtMaNV.setEditable(false);
     }
+// ==============================CHECK TRÙNG MÃ NV =======================================================================================
+    private boolean isMaNVExists(String maNV) {
 
+        // 1️⃣ Check trùng trong JTable
+        for (int i = 0; i < v.model.getRowCount(); i++) {
+            if (v.model.getValueAt(i, 0).toString().equalsIgnoreCase(maNV)) {
+                return true;
+            }
+        }
+        return false;
+    }
+// ================================================== THÊM ===============================================================================
     private void them() {
         m_nhanvien nv = v.getNhanVien();
-        if (nv == null) return;
-
+        if (nv == null) {
+            JOptionPane.showMessageDialog(v, "Vui lòng nhập đầy đủ thông tin");
+        return;
+    }
+    if (isMaNVExists(nv.getMaNV())) {
+        JOptionPane.showMessageDialog(v, "Mã nhân viên đã tồn tại!");
+        v.txtMaNV.requestFocus();
+        return;
+    }
         v.model.addRow(new Object[]{
                 nv.getMaNV(),
                 nv.getTenNV(),
@@ -78,6 +99,7 @@ public class c_nhanvien {
        
         resetForm();
     }
+// ================================================== SỬA ===============================================================================
 
     private void sua() {
         if (row == -1) return;
@@ -94,6 +116,7 @@ public class c_nhanvien {
             ps.setString(6, v.txtDiaChi.getText());
             ps.setString(7, v.txtMaNV.getText());
             ps.executeUpdate();
+
             v.model.setValueAt(v.txtTenNV.getText(), row, 1);
             v.model.setValueAt(v.cbGioiTinh.getSelectedItem(), row, 2);
             v.model.setValueAt(sdf.format(v.dateNS.getValue()), row, 3);
@@ -105,6 +128,7 @@ public class c_nhanvien {
             JOptionPane.showMessageDialog(v, "Lỗi sửa");
         }
     }
+// ================================================== XÓA ===============================================================================
 
     private void xoa() {
         if (row == -1) return;
@@ -116,7 +140,7 @@ public class c_nhanvien {
             ps.executeUpdate();
             v.model.removeRow(row);
             row = -1;
-            loadData();
+           
             resetForm();
 
         } catch (Exception e) {
@@ -124,12 +148,14 @@ public class c_nhanvien {
         }
         
     }
+    
+// ================================================== LƯU ===============================================================================
 
     private void luu() {
         try (Connection c = conn()) {
             for (int i = 0; i < v.model.getRowCount(); i++) {
                 PreparedStatement ps = c.prepareStatement(
-                        "INSERT IGNORE INTO nhanvien VALUES (?,?,?,?,?,?,?)");
+                        "INSERT INTO nhanvien VALUES (?,?,?,?,?,?,?)");
 
                 ps.setString(1, v.model.getValueAt(i, 0).toString());
                 ps.setString(2, v.model.getValueAt(i, 1).toString());
@@ -145,15 +171,18 @@ public class c_nhanvien {
             JOptionPane.showMessageDialog(v, "Lỗi lưu");
         }
     }
+// ================================================== TÌM KIẾM ===============================================================================
 
     private void timkiem() {
         v.model.setRowCount(0);
         try (Connection c = conn();
              PreparedStatement ps = c.prepareStatement(
-                     "SELECT * FROM nhanvien WHERE MaNV LIKE ? OR TenNV LIKE ?")) {
+                     "SELECT * FROM nhanvien WHERE MaNV LIKE ? OR TenNV LIKE ? OR GioitinhNV LIKE ?")) {
 
             ps.setString(1, "%" + v.txttimkiem.getText() + "%");
             ps.setString(2, "%" + v.txttimkiem.getText() + "%");
+            ps.setString(3, "%" + v.txttimkiem.getText() + "%");
+
             ResultSet rs = ps.executeQuery();
 
             while (rs.next()) {
@@ -169,6 +198,7 @@ public class c_nhanvien {
             }
         } catch (Exception ignored) {}
     }
+// ================================================== LOAD DỮ LIỆU  ===============================================================================
 
     private void loadData() {
         v.model.setRowCount(0);
@@ -189,6 +219,8 @@ public class c_nhanvien {
             }
         } catch (Exception ignored) {}
     }
+    // ================================================== XUẤT FILE ===============================================================================
+
     private void xuatFileCSV() {
     JFileChooser chooser = new JFileChooser();
     chooser.setDialogTitle("Chọn nơi lưu file");
@@ -220,15 +252,14 @@ public class c_nhanvien {
         JOptionPane.showMessageDialog(v, "Lỗi xuất file");
     }
 }
-
-
+// ================================================== THOÁT ===============================================================================
 
     private void back() {
         v.dispose();
-        trangchu.setVisible(true);
+        home.setVisible(true);
     }
-    // ================= RESET FORM =================
-     int selectedRow = -1; 
+// ================================================== RESERT ===============================================================================
+
 private void resetForm() {
     v.txtMaNV.setText("");
     v.txtTenNV.setText("");
@@ -238,8 +269,9 @@ private void resetForm() {
     v.txtEmail.setText("");
     v.cbGioiTinh.setSelectedIndex(0);
     v.txtMaNV.setEditable(true);
-    selectedRow = -1;
+    row = -1; 
     v.table.clearSelection();
 }
+
 
 }

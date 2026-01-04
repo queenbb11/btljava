@@ -14,11 +14,11 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 
 public class v_theloai extends JFrame {
-
+    //khai báo thuộc tính giao diện
     public JTextField txtMaTL, txtTenTL, txttimkiem;
     public JButton btnthem, btnsua, btnxoa, btnluu, btntimkiem, btnxuatfile, btnback;
     public JTable table;
-    public DefaultTableModel model;
+    public DefaultTableModel model;//lưu dl cho bảng
 
     public v_theloai() {
         initUI();
@@ -31,7 +31,7 @@ public class v_theloai extends JFrame {
         this.setSize(900, 700);
         this.setLocationRelativeTo(null);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        this.setLayout(new BorderLayout(10, 10));
+        this.setLayout(new BorderLayout(10, 10));//borderlayout cho 3 vùng chính
         this.getContentPane().setBackground(Color.WHITE);
 
         // --- 1. TIÊU ĐỀ (NORTH) ---
@@ -90,7 +90,8 @@ public class v_theloai extends JFrame {
         mainCenter.add(scrollPane);
         this.add(mainCenter, BorderLayout.CENTER);
 
-        // --- 3. PANEL NÚT CHỨC NĂNG (SOUTH) ---
+        // --- 3. PANEL NÚT CHỨC NĂNG (SOUTH) --- 
+        //dùng flowlayout
         JPanel actionPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 15, 20));
         actionPanel.setBackground(new Color(245, 245, 245));
 

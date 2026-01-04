@@ -11,11 +11,12 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class v_nhanvien extends JFrame {
+
     public JTextField txtMaNV, txtTenNV, txtDienThoai, txtEmail, txtDiaChi, txttimkiem;
     public JComboBox<String> cbGioiTinh;
     public JFormattedTextField dateNS;
 
-    public JButton btnthem, btnsua, btnxoa, btnluu, btntimkiem, btnxuatfile, btnback;
+    public JButton btnthem, btnsua, btnxoa, btnluu, btntimkiem, btnxuatfile, btnR, btnback;
     public JTable table;
     public DefaultTableModel model;
 
@@ -34,11 +35,14 @@ public class v_nhanvien extends JFrame {
         title.setBorder(new EmptyBorder(20, 0, 10, 0));
         add(title, BorderLayout.NORTH);
 
+        
+        
+        
         JPanel center = new JPanel();
         center.setLayout(new BoxLayout(center, BoxLayout.Y_AXIS));
         center.setBorder(new EmptyBorder(10, 30, 10, 30));
 
-        JPanel input = new JPanel(new GridLayout(4, 4, 15, 15));
+        JPanel input = new JPanel(new GridLayout(7, 2, 15, 15));
 
         txtMaNV = txt();
         txtTenNV = txt();
@@ -62,7 +66,7 @@ public class v_nhanvien extends JFrame {
 
         JPanel search = new JPanel(new FlowLayout(FlowLayout.LEFT));
         txttimkiem = txt();
-        txttimkiem.setPreferredSize(new Dimension(700, 40));
+        txttimkiem.setPreferredSize(new Dimension(1200, 40));
         btntimkiem = btn("Tìm kiếm");
         search.add(txttimkiem);
         search.add(btntimkiem);
@@ -74,6 +78,9 @@ public class v_nhanvien extends JFrame {
         JTableHeader h = table.getTableHeader();
         h.setFont(new Font("Segoe UI", Font.BOLD, 14));
 
+        
+        
+        
         center.add(input);
         center.add(search);
         center.add(new JScrollPane(table));
@@ -85,6 +92,7 @@ public class v_nhanvien extends JFrame {
         btnxoa = btn("Xóa");
         btnluu = btn("Lưu");
         btnxuatfile = btn("Xuất file");
+        btnR = btn("Resert");
         btnback = btn("Quay lại");
 
         action.add(btnthem);
@@ -92,6 +100,7 @@ public class v_nhanvien extends JFrame {
         action.add(btnxoa);
         action.add(btnluu);
         action.add(btnxuatfile);
+        action.add(btnR);
         action.add(btnback);
         add(action, BorderLayout.SOUTH);
     }
@@ -102,6 +111,7 @@ public class v_nhanvien extends JFrame {
             String ten = txtTenNV.getText().trim();
             Date ns = (Date) dateNS.getValue();
             if (ma.isEmpty() || ten.isEmpty() || ns == null) return null;
+
             return new m_nhanvien(
                     ma,
                     ten,
