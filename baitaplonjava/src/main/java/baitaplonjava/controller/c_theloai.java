@@ -3,298 +3,314 @@ package baitaplonjava.controller;
 import baitaplonjava.model.m_theloai;
 import baitaplonjava.view.v_theloai;
 import baitaplonjava.view.v_trangchu;
+
 import java.awt.event.*;
-import java.io.*;
 import java.sql.*;
 import javax.swing.*;
 
 public class c_theloai {
     private v_theloai v;
-    private v_trangchu viewtrangchu;
-    private int selectedRow = -1;
-    // Cờ đang tìm kiếm (bảng đang bị lọc)
-    private boolean isSearching = false;
+    private v_trangchu trangchu;
+    private int k = -1; // dòng đang chọn
+
     // DB
     private final String url  = "jdbc:mysql://localhost:3306/baitaplon";
     private final String user = "root";
-    private final String pass = "1234567890";
+    private final String pass = "123456789";
 
-    public c_theloai(v_theloai view, JFrame trangchu) {
+    public c_theloai(v_theloai view, v_trangchu viewtrangchu) {
         this.v = view;
-        this.viewtrangchu = (v_trangchu) trangchu;
-        // Nút
-        this.v.bt_them_action_listenner(e -> handleThem());
-        this.v.bt_luu_action_listenner(e -> handleLuu());
-        this.v.bt_sua_action_listenner(e -> handleSua());
-        this.v.bt_xoa_action_listenner(e -> handleXoa());
-        this.v.bt_timkiem_action_listenner(e -> handleTimKiem());
-        this.v.bt_xuatfile_action_listenner(e -> handleXuatFile());
-        this.v.bt_quaylai_action_listenner(e -> handleQuayLai());
+        this.trangchu = viewtrangchu;
+
+        // Gắn sự kiện nút
+        v.bt_them_action_listenner(new action_them());
+        v.bt_sua_action_listenner(new action_sua());
+        v.bt_xoa_action_listenner(new action_xoa());
+        v.bt_reset_action_listenner(new action_reset());   
+        v.bt_timkiem_action_listenner(new action_timkiem());
+        v.bt_xuatfile_action_listenner(new action_xuatfile());
+        v.bt_quaylai_action_listenner(e -> quaylai());
+
         // Click bảng
-        this.v.table.addMouseListener(new MouseAdapter() {
+        v.table.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                selectedRow = v.table.getSelectedRow();
-                if (selectedRow != -1) {
-                    v.txtMaTL.setText(v.table.getValueAt(selectedRow, 0).toString());
-                    v.txtTenTL.setText(v.table.getValueAt(selectedRow, 1).toString());
-                    v.txtMaTL.setEditable(false); // chọn dòng -> khóa mã
-                }
+                k = v.table.getSelectedRow();
+                hienThiLenForm();
             }
         });
+
         loadData();
         resetForm();
     }
-    // ===== RESET FORM =====
+
+    // =============== KẾT NỐI DB ===============
+    private Connection getConnection() throws Exception {
+        Class.forName("com.mysql.cj.jdbc.Driver");
+        return DriverManager.getConnection(url, user, pass);
+    }
+
+    // =============== LOAD DATA ===============
+    public void loadData() {
+        v.model.setRowCount(0);
+        try (Connection conn = getConnection()) {
+
+            String sql = "SELECT MaTL, TenTL FROM Theloai ORDER BY MaTL";
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                v.model.addRow(new Object[]{
+                        rs.getString("MaTL"),
+                        rs.getString("TenTL")
+                });
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(v, "Lỗi tải dữ liệu: " + e.getMessage());
+        }
+    }
+
+    // =============== HIỂN THỊ LÊN FORM ===============
+    private void hienThiLenForm() {
+        if (k < 0) return;
+
+        v.txtMaTL.setText(v.table.getValueAt(k, 0).toString());
+        v.txtTenTL.setText(v.table.getValueAt(k, 1).toString());
+        v.txtMaTL.setEditable(false);
+    }
+
+    // =============== RESET FORM ===============
     private void resetForm() {
         v.txtMaTL.setText("");
         v.txtTenTL.setText("");
         v.txtMaTL.setEditable(true);
         v.table.clearSelection();
-        selectedRow = -1;
+        v.txttimkiem.setText("");
+        k = -1;
         v.txtMaTL.requestFocus();
     }
-    // ===== Nếu đang search thì trả bảng về full trước khi thao tác =====
-    private void ensureFullTable() {
-        if (isSearching) {
-            loadData();
-            isSearching = false;
-            resetForm();
-        }
-    }
 
-    // ===== 1) THÊM: thêm vào JTable (bảng tạm) =====
-    private void handleThem() {
-        ensureFullTable(); // nếu đang lọc thì trả về full
-        m_theloai tl = v.get_theloai();
-        if (tl == null) return;
-        // check trùng mã trong bảng hiện tại
-        for (int i = 0; i < v.model.getRowCount(); i++) {
-            String maDangCo = v.model.getValueAt(i, 0).toString().trim();
-            if (maDangCo.equalsIgnoreCase(tl.getMaTL().trim())) {
-                JOptionPane.showMessageDialog(v, "Mã thể loại đã có trong bảng!");
+    // =============== THÊM ===============
+    class action_them implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+
+            m_theloai tl = v.get_theloai();
+            if (tl == null) return;
+
+            String ma = tl.getMaTL().trim();
+            String ten = tl.getTenTL().trim();
+
+            if (ma.isEmpty() || ten.isEmpty()) {
+                JOptionPane.showMessageDialog(v, "Mã và tên thể loại không được để trống!");
                 return;
             }
-        }
-        v.model.addRow(new Object[]{ tl.getMaTL(), tl.getTenTL() });
-        JOptionPane.showMessageDialog(v, "Đã thêm vào danh sách tạm. Nhấn 'Lưu' để lưu vào CSDL!");
-        resetForm();
-    }
-    // ===== 2) LƯU: lưu toàn bộ JTable xuống DB =====
-    private void handleLuu() {
-        ensureFullTable(); // nếu đang lọc thì trả về full
-        if (v.model.getRowCount() == 0) {
-            JOptionPane.showMessageDialog(v, "Bảng đang trống, không có gì để lưu!");
-            return;
-        }
 
-        String sql = "INSERT INTO Theloai (MaTL, TenTL) VALUES (?, ?)";
+            try (Connection conn = getConnection()) {
 
-        try (Connection conn = DriverManager.getConnection(url, user, pass);
-             PreparedStatement ps = conn.prepareStatement(sql)) {
-
-            int demThanhCong = 0;
-            int demTrung = 0;
-            for (int i = 0; i < v.model.getRowCount(); i++) {
-                String ma = v.model.getValueAt(i, 0).toString().trim();
-                String ten = v.model.getValueAt(i, 1).toString().trim();
-
-                try {
-                    ps.setString(1, ma);
-                    ps.setString(2, ten);
-                    ps.executeUpdate();
-                    demThanhCong++;
-                } catch (SQLException ex) {
-                    // trùng mã hoặc ràng buộc -> bỏ qua
-                    demTrung++;
+                // check trùng mã trong DB
+                String check = "SELECT MaTL FROM Theloai WHERE MaTL = ?";
+                PreparedStatement psCheck = conn.prepareStatement(check);
+                psCheck.setString(1, ma);
+                if (psCheck.executeQuery().next()) {
+                    JOptionPane.showMessageDialog(v, "Mã thể loại đã tồn tại trong CSDL!");
+                    return;
                 }
+
+                String sql = "INSERT INTO Theloai (MaTL, TenTL) VALUES (?, ?)";
+                PreparedStatement ps = conn.prepareStatement(sql);
+                ps.setString(1, ma);
+                ps.setString(2, ten);
+                ps.executeUpdate();
+
+                JOptionPane.showMessageDialog(v, "Thêm thể loại thành công!");
+                loadData();
+                resetForm();
+
+            } catch (Exception ex) {
+                ex.printStackTrace();
+                JOptionPane.showMessageDialog(v, "Lỗi thêm thể loại: " + ex.getMessage());
+            }
+        }
+    }
+
+    // =============== SỬA ===============
+    class action_sua implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+
+            String ma = v.txtMaTL.getText().trim();
+            String ten = v.txtTenTL.getText().trim();
+
+            if (ma.isEmpty()) {
+                JOptionPane.showMessageDialog(v, "Vui lòng chọn thể loại cần sửa!");
+                return;
+            }
+            if (ten.isEmpty()) {
+                JOptionPane.showMessageDialog(v, "Tên thể loại không được để trống!");
+                return;
             }
 
-            JOptionPane.showMessageDialog(v,
-                    "Lưu xong!\nThành công: " + demThanhCong + "\nTrùng/không lưu: " + demTrung);
+            try (Connection conn = getConnection()) {
 
-            loadData();
-            isSearching = false;
+                String sql = "UPDATE Theloai SET TenTL = ? WHERE MaTL = ?";
+                PreparedStatement ps = conn.prepareStatement(sql);
+                ps.setString(1, ten);
+                ps.setString(2, ma);
+                ps.executeUpdate();
+
+                JOptionPane.showMessageDialog(v, "Sửa thể loại thành công!");
+                loadData();
+                resetForm();
+
+            } catch (Exception ex) {
+                ex.printStackTrace();
+                JOptionPane.showMessageDialog(v, "Lỗi sửa thể loại: " + ex.getMessage());
+            }
+        }
+    }
+
+    // =============== XÓA ===============
+    class action_xoa implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+
+            String ma = v.txtMaTL.getText().trim();
+            if (ma.isEmpty()) {
+                JOptionPane.showMessageDialog(v, "Vui lòng chọn thể loại cần xóa!");
+                return;
+            }
+
+            int ch = JOptionPane.showConfirmDialog(v,
+                    "Bạn có chắc muốn xóa thể loại này không?",
+                    "Xác nhận",
+                    JOptionPane.YES_NO_OPTION);
+
+            if (ch != JOptionPane.YES_OPTION) return;
+
+            try (Connection conn = getConnection()) {
+
+                String sql = "DELETE FROM Theloai WHERE MaTL = ?";
+                PreparedStatement ps = conn.prepareStatement(sql);
+                ps.setString(1, ma);
+                ps.executeUpdate();
+
+                JOptionPane.showMessageDialog(v, "Xóa thể loại thành công!");
+                loadData();
+                resetForm();
+
+            } catch (Exception ex) {
+                ex.printStackTrace();
+                JOptionPane.showMessageDialog(v,
+                        "Không thể xóa thể loại (có thể đang được dùng ở bảng Sách)!");
+            }
+        }
+    }
+
+    // =============== RESET (NÚT RESET) ===============
+    class action_reset implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
             resetForm();
-
-        } catch (SQLException e) {
-            JOptionPane.showMessageDialog(v, "Lỗi lưu: " + e.getMessage());
-        }
-    }
-    // ===== 3) SỬA: update theo MaTL =====
-    private void handleSua() {
-       if (selectedRow == -1) {
-        JOptionPane.showMessageDialog(v, "Vui lòng chọn một dòng để sửa!");
-        return;
-    }
-
-    String ma = v.txtMaTL.getText().trim();
-    String ten = v.txtTenTL.getText().trim();
-
-    if (ten.isEmpty()) {
-        JOptionPane.showMessageDialog(v, "Tên thể loại không được để trống!");
-        v.txtTenTL.requestFocus();
-        return;
-    }
-
-    String sql = "UPDATE Theloai SET TenTL = ? WHERE MaTL = ?";
-
-    try (Connection conn = DriverManager.getConnection(url, user, pass);
-         PreparedStatement ps = conn.prepareStatement(sql)) {
-
-        ps.setString(1, ten);
-        ps.setString(2, ma);
-        ps.executeUpdate();
-
-        // cập nhật lại ngay trên JTable, không cần loadData()
-        v.model.setValueAt(ten, selectedRow, 1);
-
-        JOptionPane.showMessageDialog(v, "Cập nhật thành công!");
-        resetForm(); // chỉ reset form nhập, không đụng tới bảng
-
-    } catch (SQLException e) {
-        JOptionPane.showMessageDialog(v, "Lỗi sửa: " + e.getMessage());
-    }
-    }
-
-    // ===== 4) XÓA =====
-    private void handleXoa() {
-        ensureFullTable(); // nếu đang lọc thì trả về full
-
-        if (selectedRow == -1) {
-            JOptionPane.showMessageDialog(v, "Vui lòng chọn dòng cần xóa!");
-            return;
-        }
-
-        int confirm = JOptionPane.showConfirmDialog(v, "Bạn chắc chắn muốn xóa?", "Xác nhận",
-                JOptionPane.YES_NO_OPTION);
-        if (confirm != JOptionPane.YES_OPTION) return;
-
-        String ma = v.txtMaTL.getText().trim();
-        String sql = "DELETE FROM Theloai WHERE MaTL = ?";
-
-        try (Connection conn = DriverManager.getConnection(url, user, pass);
-             PreparedStatement ps = conn.prepareStatement(sql)) {
-
-            ps.setString(1, ma);
-            ps.executeUpdate();
-
-            JOptionPane.showMessageDialog(v, "Đã xóa thành công!");
             loadData();
-            isSearching = false;
-            resetForm();
-
-        } catch (SQLException e) {
-            JOptionPane.showMessageDialog(v, "Không thể xóa vì thể loại đang được dùng ở bảng khác!");
         }
     }
 
-    // ===== 5) TÌM KIẾM =====
-    private void handleTimKiem() {
-        String keyword = v.txttimkiem.getText().trim();
+    // =============== TÌM KIẾM ===============
+    class action_timkiem implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
 
-        // rỗng -> load all
-        if (keyword.isEmpty()) {
-            loadData();
-            isSearching = false;
-            resetForm();
-            return;
-        }
+            String key = v.txttimkiem.getText().trim();
 
-        String sql = "SELECT * FROM Theloai WHERE TenTL LIKE ? OR MaTL LIKE ?";
-        try (Connection conn = DriverManager.getConnection(url, user, pass);
-             PreparedStatement ps = conn.prepareStatement(sql)) {
-            String p = "%" + keyword + "%";
-            ps.setString(1, p);
-            ps.setString(2, p);
-            ResultSet rs = ps.executeQuery();
+            if (key.isEmpty()) {
+                loadData();
+                resetForm();
+                return;
+            }
+
             v.model.setRowCount(0);
-            while (rs.next()) {
-                v.model.addRow(new Object[]{
-                        rs.getString("MaTL"),
-                        rs.getString("TenTL")
-                });
-            }
-            // đang ở chế độ lọc
-            isSearching = true;
-            resetForm();
 
-        } catch (SQLException e) {
-            JOptionPane.showMessageDialog(v, "Lỗi tìm kiếm: " + e.getMessage());
+            try (Connection conn = getConnection()) {
+
+                String sql = "SELECT MaTL, TenTL FROM Theloai WHERE MaTL LIKE ? OR TenTL LIKE ?";
+                PreparedStatement ps = conn.prepareStatement(sql);
+                String p = "%" + key + "%";
+                ps.setString(1, p);
+                ps.setString(2, p);
+
+                ResultSet rs = ps.executeQuery();
+                while (rs.next()) {
+                    v.model.addRow(new Object[]{
+                            rs.getString("MaTL"),
+                            rs.getString("TenTL")
+                    });
+                }
+
+            } catch (Exception ex) {
+                ex.printStackTrace();
+                JOptionPane.showMessageDialog(v, "Lỗi tìm kiếm thể loại!");
+            }
         }
     }
-    // ===== 6) XUẤT FILE =====
-    private void handleXuatFile() {
-        JFileChooser fileChooser = new JFileChooser();
-        if (fileChooser.showSaveDialog(v) != JFileChooser.APPROVE_OPTION) return;
-        try {
-            String path = fileChooser.getSelectedFile().getAbsolutePath();
-            if (!path.endsWith(".csv")) path += ".csv";
 
-            FileOutputStream fos = new FileOutputStream(path);
-            fos.write(0xEF); fos.write(0xBB); fos.write(0xBF); // BOM UTF-8
+    // =============== XUẤT FILE ===============
+    class action_xuatfile implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
 
-            PrintWriter pw = new PrintWriter(new OutputStreamWriter(fos, "UTF-8"));
-            pw.println("STT;Mã Thể Loại;Tên Thể Loại");
-
-            for (int i = 0; i < v.table.getRowCount(); i++) {
-                String ma = v.table.getValueAt(i, 0).toString();
-                String ten = v.table.getValueAt(i, 1).toString();
-                pw.println((i + 1) + ";" + ma + ";" + ten);
+            if (v.model.getRowCount() == 0) {
+                JOptionPane.showMessageDialog(v, "Không có dữ liệu để xuất!");
+                return;
             }
 
-            pw.close();
-            JOptionPane.showMessageDialog(v, "Xuất file thành công!");
-            resetForm();
+            JFileChooser fc = new JFileChooser();
+            fc.setDialogTitle("Chọn nơi lưu file");
+            fc.setSelectedFile(new java.io.File("theloai.csv"));
 
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(v, "Lỗi: " + e.getMessage());
+            int choose = fc.showSaveDialog(v);
+            if (choose != JFileChooser.APPROVE_OPTION) return;
+
+            java.io.File file = fc.getSelectedFile();
+
+            try (
+                java.io.OutputStreamWriter osw =
+                    new java.io.OutputStreamWriter(
+                        new java.io.FileOutputStream(file),
+                        java.nio.charset.StandardCharsets.UTF_8
+                    );
+                java.io.BufferedWriter bw = new java.io.BufferedWriter(osw)
+            ) {
+
+                // Ghi BOM UTF-8
+                bw.write("\uFEFF");
+                // HEADER
+                bw.write("MaTL,TenTL");
+                bw.newLine();
+
+                // DATA
+                for (int i = 0; i < v.model.getRowCount(); i++) {
+                    String ma = v.table.getValueAt(i, 0).toString();
+                    String ten = v.table.getValueAt(i, 1).toString();
+                    bw.write(ma + "," + ten);
+                    bw.newLine();
+                }
+
+                JOptionPane.showMessageDialog(v, "Xuất file thể loại thành công!");
+
+            } catch (Exception ex) {
+                ex.printStackTrace();
+                JOptionPane.showMessageDialog(v, "Lỗi xuất file thể loại!");
+            }
         }
     }
-    // ===== 7) QUAY LẠI =====
-    private void handleQuayLai() {
+
+    // =============== QUAY LẠI ===============
+    private void quaylai() {
         v.dispose();
-        if (viewtrangchu != null) viewtrangchu.setVisible(true);
-    }
-    // ===== LOAD DATA =====
-    public void loadData() {
-        try (Connection conn = DriverManager.getConnection(url, user, pass)) {
-            String sql = "SELECT * FROM Theloai";
-            Statement st = conn.createStatement();
-            ResultSet rs = st.executeQuery(sql);
-
-            v.model.setRowCount(0);
-            while (rs.next()) {
-                v.model.addRow(new Object[]{
-                        rs.getString("MaTL"),
-                        rs.getString("TenTL")
-                });
-            }
-        } catch (SQLException e) {
-            JOptionPane.showMessageDialog(v, "Lỗi tải dữ liệu: " + e.getMessage());
+        if (trangchu != null) {
+            trangchu.setVisible(true);
         }
     }
 }
-/*
-    // 4. Xử lý Đọc File (Đọc từ file CSV rồi nạp vào bảng)
-    private void handleDocFile() {
-        JFileChooser fileChooser = new JFileChooser();
-        if (fileChooser.showOpenDialog(v) == JFileChooser.APPROVE_OPTION) {
-            File file = fileChooser.getSelectedFile();
-            try (BufferedReader br = new BufferedReader(new FileReader(file))) {
-                String line;
-                br.readLine(); // Bỏ qua dòng header
-                v.model.setRowCount(0); // Xóa bảng hiện tại
-                while ((line = br.readLine()) != null) {
-                    String[] data = line.split(",");
-                    if (data.length >= 2) {
-                        v.model.addRow(data);
-                    }
-                }
-                JOptionPane.showMessageDialog(v, "Đọc file thành công!");
-            } catch (Exception e) {
-                JOptionPane.showMessageDialog(v, "Lỗi đọc file: " + e.getMessage());
-            }
-        }
-    }
-*/

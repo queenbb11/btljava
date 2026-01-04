@@ -28,7 +28,7 @@ public class c_tracuu {
         Class.forName("com.mysql.cj.jdbc.Driver");
         return DriverManager.getConnection(
                 "jdbc:mysql://localhost:3306/baitaplon",
-                "root", "1234567890"
+                "root", "123456789"
         );
     }
 
