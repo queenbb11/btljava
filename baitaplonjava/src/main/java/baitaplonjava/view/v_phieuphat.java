@@ -25,7 +25,7 @@ import javax.swing.table.DefaultTableModel;
  */
 public class v_phieuphat extends JFrame {
     public JTextField txtMaPP, txtTienPhat, txtTimkiem;
-    public JComboBox<String> cbMaPM;
+    public JComboBox<String> cbMaPM, cbMaNV;
     public JTable table;
     public DefaultTableModel model;
     private JButton btnThem, btnSua, btnXoa, btnReset, btnTimkiem, btnBack, btnNhapFile, btnXuatFile;
@@ -52,9 +52,13 @@ public class v_phieuphat extends JFrame {
         JLabel lbTienPhat = new JLabel("Tiền phạt:");
         lbTienPhat.setBounds(50, 110, 120, 30);
         add(lbTienPhat);
+        
+        JLabel lbMaNV = new JLabel("Người lập:");
+        lbMaNV.setBounds(50, 150, 120, 30);
+        add(lbMaNV);
 
         JLabel lbTimkiem = new JLabel("Tìm kiếm:");
-        lbTimkiem.setBounds(50, 165, 120, 30);
+        lbTimkiem.setBounds(50, 190, 120, 30);
         add(lbTimkiem);
 
         txtMaPP = new JTextField();
@@ -67,11 +71,15 @@ public class v_phieuphat extends JFrame {
 
         txtTienPhat = new JTextField();
         txtTienPhat.setBounds(170, 110, 200, 30);
-        txtTienPhat.setEditable(false); // tự tính
+        txtTienPhat.setEditable(false);
         add(txtTienPhat);
+        
+        cbMaNV = new JComboBox<>();
+        cbMaNV.setBounds(170, 150, 200, 30);
+        add(cbMaNV);
 
         txtTimkiem = new JTextField();
-        txtTimkiem.setBounds(170, 165, 200, 30);
+        txtTimkiem.setBounds(170, 190, 200, 30);
         add(txtTimkiem);
 
         btnThem = new JButton("Thêm");
@@ -87,11 +95,11 @@ public class v_phieuphat extends JFrame {
         add(btnXoa);
 
         btnReset = new JButton("Reset");
-        btnReset.setBounds(520, 165, 100, 35);
+        btnReset.setBounds(520, 190, 100, 35);
         add(btnReset);
 
         btnTimkiem = new JButton("Tìm");
-        btnTimkiem.setBounds(400, 165, 100, 35);
+        btnTimkiem.setBounds(400, 190, 100, 35);
         add(btnTimkiem);
 
         btnXuatFile = new JButton("Xuất File");
@@ -106,41 +114,40 @@ public class v_phieuphat extends JFrame {
         btnBack.setBounds(600, 500, 100, 35);
         add(btnBack);
 
-        String[] columns = {"Mã PP", "Mã PM", "Tiền Phạt"};
+        String[] columns = {"Mã PP", "Mã PM","Người lập", "Tiền Phạt"};
         model = new DefaultTableModel(columns, 0);
         table = new JTable(model);
         JScrollPane sp = new JScrollPane(table);
-        sp.setBounds(50, 220, 700, 280);
+        sp.setBounds(50, 250, 700, 250);
         add(sp);
 
         setVisible(true);
     }
 
-    // ===== LẤY DỮ LIỆU PHIẾU PHẠT =====
     public m_phieuphat getPhieuPhat() {
         String maPP = txtMaPP.getText().trim();
         String maPM = (String) cbMaPM.getSelectedItem();
+        String maNV = (String) cbMaNV.getSelectedItem(); 
         int tienPhat = 0;
         try {
             tienPhat = Integer.parseInt(txtTienPhat.getText().trim());
         } catch (Exception e) {}
-        if (maPP.isEmpty() || maPM == null) {
+        if (maPP.isEmpty() || maPM == null || maNV == null) {
             JOptionPane.showMessageDialog(this, "Vui lòng nhập đầy đủ thông tin!");
             return null;
         }
-        return new m_phieuphat(maPP, maPM, tienPhat);
+        return new m_phieuphat(maPP, maPM, maNV, tienPhat);
     }
 
-    // ===== RESET FORM =====
     public void resetForm() {
         txtMaPP.setText("");
         txtTienPhat.setText("");
         txtTimkiem.setText("");
         cbMaPM.setSelectedIndex(-1);
-        txtMaPP.setEditable(true);
+        cbMaNV.setSelectedIndex(-1);
+        txtMaPP.setEditable(true); 
     }
 
-    // ===== ACTION LISTENER =====
     public void bt_them_action_listener(ActionListener a) { btnThem.addActionListener(a); }
     public void bt_sua_action_listener(ActionListener a) { btnSua.addActionListener(a); }
     public void bt_xoa_action_listener(ActionListener a) { btnXoa.addActionListener(a); }

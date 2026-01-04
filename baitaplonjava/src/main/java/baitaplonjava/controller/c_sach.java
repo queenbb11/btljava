@@ -19,7 +19,7 @@ public class c_sach {
     
     private final String url = "jdbc:mysql://localhost:3306/baitaplon";
     private final String user = "root";
-    private final String pass = "123456789";
+    private final String pass = "1234567890";
 
 
 

@@ -18,7 +18,7 @@ public class c_khosach {
 
     private final String url = "jdbc:mysql://localhost:3306/baitaplon";
     private final String user = "root";
-    private final String pass = "123456789";
+    private final String pass = "1234567890";
 
     public c_khosach(v_khosach view, JFrame trangchu) {
         this.v = view;
