@@ -15,7 +15,7 @@ public class c_theloai {
     // DB
     private final String url  = "jdbc:mysql://localhost:3306/baitaplon";
     private final String user = "root";
-    private final String pass = "123456789";
+    private final String pass = "1234567890";
 
     public c_theloai(v_theloai view, v_trangchu viewtrangchu) {
         this.v = view;

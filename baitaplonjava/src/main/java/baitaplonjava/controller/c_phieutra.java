@@ -65,7 +65,7 @@ public class c_phieutra {
         Class.forName("com.mysql.cj.jdbc.Driver");
         return DriverManager.getConnection(
             "jdbc:mysql://localhost:3306/baitaplon",
-            "root", "123456789"
+            "root", "1234567890"
         );
     }
 

@@ -18,7 +18,7 @@ public class c_khosach {
     // DB
     private final String url  = "jdbc:mysql://localhost:3306/baitaplon";
     private final String user = "root";
-    private final String pass = "123456789";
+    private final String pass = "1234567890";
 
     public c_khosach(v_khosach view, v_trangchu viewtrangchu) {
         this.v = view;
@@ -223,6 +223,7 @@ public class c_khosach {
         public void actionPerformed(java.awt.event.ActionEvent e) {
             resetForm();
             loadData();
+            loadComboSach();
         }
     }
 

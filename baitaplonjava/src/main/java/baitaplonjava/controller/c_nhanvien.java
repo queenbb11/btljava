@@ -17,7 +17,7 @@ public class c_nhanvien {
 // ==============================kết nối DB========================================================================================================================
     private final String url = "jdbc:mysql://localhost:3306/baitaplon?useUnicode=true&characterEncoding=UTF-8";
     private final String user = "root";
-    private final String pass = "123456789";
+    private final String pass = "1234567890";
 
     private final SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 // ==============================Gắn sự kiện cho nút================================================================================================================
@@ -151,26 +151,74 @@ public class c_nhanvien {
     
 // ================================================== LƯU ===============================================================================
 
+//    private void luu() {
+//        try (Connection c = conn()) {
+//            for (int i = 0; i < v.model.getRowCount(); i++) {
+//                PreparedStatement ps = c.prepareStatement(
+//                        "INSERT INTO nhanvien VALUES (?,?,?,?,?,?,?)");
+//
+//                ps.setString(1, v.model.getValueAt(i, 0).toString());
+//                ps.setString(2, v.model.getValueAt(i, 1).toString());
+//                ps.setDate(3, new java.sql.Date(sdf.parse(v.model.getValueAt(i, 3).toString()).getTime()));
+//                ps.setString(4, v.model.getValueAt(i, 2).toString());
+//                ps.setString(5, v.model.getValueAt(i, 5).toString());
+//                ps.setString(6, v.model.getValueAt(i, 6).toString());
+//                ps.setString(7, v.model.getValueAt(i, 4).toString());
+//                ps.executeUpdate();
+//            }
+//            JOptionPane.showMessageDialog(v, "Lưu thành công");
+//        } catch (Exception e) {
+//            JOptionPane.showMessageDialog(v, "Lỗi lưu");
+//        }
+//    }
+    
     private void luu() {
-        try (Connection c = conn()) {
-            for (int i = 0; i < v.model.getRowCount(); i++) {
-                PreparedStatement ps = c.prepareStatement(
-                        "INSERT INTO nhanvien VALUES (?,?,?,?,?,?,?)");
+    int savedCount = 0;
+    try (Connection c = conn()) {
+        // Chuẩn bị câu lệnh kiểm tra tồn tại
+        PreparedStatement psCheck = c.prepareStatement("SELECT COUNT(*) FROM nhanvien WHERE MaNV = ?");
+        
+        // Chuẩn bị câu lệnh INSERT đúng thứ tự cột trong DB
+        PreparedStatement psInsert = c.prepareStatement(
+            "INSERT INTO nhanvien (MaNV, TenNV, NgaysinhNV, GioitinhNV, DienthoaiNV, EmailNV, DiachiNV) " +
+            "VALUES (?, ?, ?, ?, ?, ?, ?)");
 
-                ps.setString(1, v.model.getValueAt(i, 0).toString());
-                ps.setString(2, v.model.getValueAt(i, 1).toString());
-                ps.setDate(3, new java.sql.Date(sdf.parse(v.model.getValueAt(i, 3).toString()).getTime()));
-                ps.setString(4, v.model.getValueAt(i, 2).toString());
-                ps.setString(5, v.model.getValueAt(i, 5).toString());
-                ps.setString(6, v.model.getValueAt(i, 6).toString());
-                ps.setString(7, v.model.getValueAt(i, 4).toString());
-                ps.executeUpdate();
+        for (int i = 0; i < v.model.getRowCount(); i++) {
+            String maNV = v.model.getValueAt(i, 0).toString();
+
+            // Kiểm tra xem MaNV đã tồn tại trong DB chưa
+            psCheck.setString(1, maNV);
+            ResultSet rs = psCheck.executeQuery();
+            rs.next();
+            if (rs.getInt(1) > 0) {
+                continue; // Bỏ qua nếu đã tồn tại (đã được thêm trước đó hoặc sửa/xóa riêng)
             }
-            JOptionPane.showMessageDialog(v, "Lưu thành công");
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(v, "Lỗi lưu");
+
+            // Nếu chưa tồn tại → INSERT
+            psInsert.setString(1, maNV);
+            psInsert.setString(2, v.model.getValueAt(i, 1).toString()); // TenNV
+            psInsert.setDate(3, new java.sql.Date(sdf.parse(v.model.getValueAt(i, 3).toString()).getTime())); // Ngaysinh
+            psInsert.setString(4, v.model.getValueAt(i, 2).toString()); // Gioitinh
+            psInsert.setString(5, v.model.getValueAt(i, 5).toString()); // Dienthoai (cột 5 trong table)
+            psInsert.setString(6, v.model.getValueAt(i, 6).toString()); // Email (cột 6)
+            psInsert.setString(7, v.model.getValueAt(i, 4).toString()); // Diachi (cột 4)
+
+            psInsert.executeUpdate();
+            savedCount++;
         }
+
+        if (savedCount > 0) {
+            JOptionPane.showMessageDialog(v, "Lưu thành công " + savedCount + " nhân viên mới!");
+            loadData(); // Tải lại dữ liệu từ DB để đồng bộ (tùy chọn)
+        } else {
+            JOptionPane.showMessageDialog(v, "Không có nhân viên mới để lưu.");
+        }
+
+    } catch (Exception e) {
+        e.printStackTrace(); // Rất quan trọng: in lỗi ra console
+        JOptionPane.showMessageDialog(v, "Lỗi khi lưu: " + e.getMessage());
     }
+}
 // ================================================== TÌM KIẾM ===============================================================================
 
     private void timkiem() {

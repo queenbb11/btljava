@@ -18,7 +18,7 @@ public class c_sach {
     // Thông tin DB
     private final String url  = "jdbc:mysql://localhost:3306/baitaplon";
     private final String user = "root";
-    private final String pass = "123456789";
+    private final String pass = "1234567890";
 
     public c_sach(v_sach view, v_trangchu viewtrangchu) {
         this.v = view;
@@ -255,6 +255,7 @@ public class c_sach {
         public void actionPerformed(ActionEvent e) {
             resetForm();
             loadData();
+            loadComboBoxData();
         }
     }
 

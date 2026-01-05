@@ -61,7 +61,7 @@ public class c_phieuphat {
 
     private Connection getConnection() throws Exception {
         Class.forName("com.mysql.cj.jdbc.Driver");
-        return DriverManager.getConnection("jdbc:mysql://localhost:3306/baitaplon","root","123456789");
+        return DriverManager.getConnection("jdbc:mysql://localhost:3306/baitaplon","root","1234567890");
     }
 
     private void loadMaPMQuaHan() {
