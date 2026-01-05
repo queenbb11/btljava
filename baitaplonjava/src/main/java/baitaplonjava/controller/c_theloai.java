@@ -3,7 +3,6 @@ package baitaplonjava.controller;
 import baitaplonjava.model.m_theloai;
 import baitaplonjava.view.v_theloai;
 import baitaplonjava.view.v_trangchu;
-
 import java.awt.event.*;
 import java.sql.*;
 import javax.swing.*;
@@ -139,10 +138,8 @@ public class c_theloai {
     class action_sua implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-
             String ma = v.txtMaTL.getText().trim();
             String ten = v.txtTenTL.getText().trim();
-
             if (ma.isEmpty()) {
                 JOptionPane.showMessageDialog(v, "Vui lòng chọn thể loại cần sửa!");
                 return;
@@ -151,19 +148,15 @@ public class c_theloai {
                 JOptionPane.showMessageDialog(v, "Tên thể loại không được để trống!");
                 return;
             }
-
             try (Connection conn = getConnection()) {
-
                 String sql = "UPDATE Theloai SET TenTL = ? WHERE MaTL = ?";
                 PreparedStatement ps = conn.prepareStatement(sql);
                 ps.setString(1, ten);
                 ps.setString(2, ma);
                 ps.executeUpdate();
-
                 JOptionPane.showMessageDialog(v, "Sửa thể loại thành công!");
                 loadData();
                 resetForm();
-
             } catch (Exception ex) {
                 ex.printStackTrace();
                 JOptionPane.showMessageDialog(v, "Lỗi sửa thể loại: " + ex.getMessage());
@@ -181,21 +174,16 @@ public class c_theloai {
                 JOptionPane.showMessageDialog(v, "Vui lòng chọn thể loại cần xóa!");
                 return;
             }
-
             int ch = JOptionPane.showConfirmDialog(v,
                     "Bạn có chắc muốn xóa thể loại này không?",
                     "Xác nhận",
                     JOptionPane.YES_NO_OPTION);
-
             if (ch != JOptionPane.YES_OPTION) return;
-
             try (Connection conn = getConnection()) {
-
                 String sql = "DELETE FROM Theloai WHERE MaTL = ?";
                 PreparedStatement ps = conn.prepareStatement(sql);
                 ps.setString(1, ma);
                 ps.executeUpdate();
-
                 JOptionPane.showMessageDialog(v, "Xóa thể loại thành công!");
                 loadData();
                 resetForm();

@@ -31,7 +31,7 @@ public class v_theloai extends JFrame {
 
         // --- 1. TIÊU ĐỀ (NORTH) ---
         JLabel lblTitle = new JLabel("DANH MỤC THỂ LOẠI SÁCH", JLabel.CENTER);
-        lblTitle.setFont(new Font("Segoe UI", Font.BOLD, 24));
+        lblTitle.setFont(new Font("Segoe UI", Font.BOLD, 26));
         lblTitle.setForeground(new Color(44, 62, 80));
         lblTitle.setBorder(new EmptyBorder(20, 0, 10, 0));
         this.add(lblTitle, BorderLayout.NORTH);
@@ -42,8 +42,8 @@ public class v_theloai extends JFrame {
         mainCenter.setBackground(Color.WHITE);
         mainCenter.setBorder(new EmptyBorder(10, 30, 10, 30));
 
-        // Panel Nhập liệu
-        JPanel inputPanel = new JPanel(new GridLayout(2, 2, 20, 15));
+        // ===== Panel Nhập liệu  =====
+        JPanel inputPanel = new JPanel(new GridLayout(2, 2, 15, 15));
         inputPanel.setBackground(Color.WHITE);
         inputPanel.setMaximumSize(new Dimension(Integer.MAX_VALUE, 120));
 
@@ -53,12 +53,12 @@ public class v_theloai extends JFrame {
         txtTenTL = new JTextField();
         setupInputField(txtTenTL);
 
-        inputPanel.add(createLabelPanel("Mã Thể Loại:"));
+        inputPanel.add(createLabel("Mã Thể Loại:"));
         inputPanel.add(txtMaTL);
-        inputPanel.add(createLabelPanel("Tên Thể Loại:"));
+        inputPanel.add(createLabel("Tên Thể Loại:"));
         inputPanel.add(txtTenTL);
 
-        // Panel Tìm kiếm
+        // ===== Panel Tìm kiếm =====
         JPanel searchPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 20));
         searchPanel.setBackground(Color.WHITE);
         searchPanel.setMaximumSize(new Dimension(Integer.MAX_VALUE, 80));
@@ -74,13 +74,12 @@ public class v_theloai extends JFrame {
         searchPanel.add(Box.createHorizontalStrut(10));
         searchPanel.add(btntimkiem);
 
-        // --- Bảng hiển thị ---
+        // ===== Bảng hiển thị =====
         String[] columns = {"Mã Thể Loại", "Tên Thể Loại"};
         model = new DefaultTableModel(columns, 0);
         table = new JTable(model);
         styleTable(table);
         JScrollPane scrollPane = new JScrollPane(table);
-        scrollPane.setBorder(new LineBorder(new Color(230, 230, 230)));
 
         mainCenter.add(inputPanel);
         mainCenter.add(searchPanel);
@@ -116,34 +115,26 @@ public class v_theloai extends JFrame {
         this.add(actionPanel, BorderLayout.SOUTH);
     }
 
+    private JLabel createLabel(String text) {
+        JLabel lbl = new JLabel(text);
+        lbl.setFont(new Font("Segoe UI", Font.BOLD, 14));
+        return lbl;
+    }
+
     private void setupInputField(JTextField field) {
         field.setFont(new Font("Segoe UI", Font.PLAIN, 14));
         field.setBorder(BorderFactory.createCompoundBorder(
-            new LineBorder(new Color(210, 210, 210), 1),
-            new EmptyBorder(5, 10, 5, 10)
+                new LineBorder(new Color(210, 210, 210), 1),
+                new EmptyBorder(5, 10, 5, 10)
         ));
-    }
-
-    private JPanel createLabelPanel(String text) {
-        JPanel p = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        p.setBackground(Color.WHITE);
-        JLabel lbl = new JLabel(text);
-        lbl.setFont(new Font("Segoe UI", Font.BOLD, 14));
-        p.add(lbl);
-        return p;
     }
 
     private void styleTable(JTable table) {
         table.setRowHeight(30);
         table.setFont(new Font("Segoe UI", Font.PLAIN, 14));
         table.setSelectionBackground(new Color(232, 242, 252));
-        table.setSelectionForeground(Color.BLACK);
-        table.setShowGrid(false);
-        table.setIntercellSpacing(new Dimension(0, 0));
-
         JTableHeader header = table.getTableHeader();
         header.setFont(new Font("Segoe UI", Font.BOLD, 14));
-        header.setBackground(new Color(240, 240, 240));
         header.setPreferredSize(new Dimension(0, 35));
     }
 

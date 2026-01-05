@@ -2,12 +2,14 @@ baitaplonjava\controller\c_trangthaisach$action_timkiem.class
 baitaplonjava\view\v_phieumuon.class
 baitaplonjava\controller\c_tacgia$action_xuatfile.class
 baitaplonjava\view\v_dangky.class
+baitaplonjava\controller\c_sach$action_them.class
 baitaplonjava\controller\c_phieumuon$action_them.class
 baitaplonjava\controller\c_nhaxuatban$action_sua.class
 baitaplonjava\controller\c_nhaxuatban$action_xuatfile.class
 baitaplonjava\controller\c_phieuphat$1.class
 baitaplonjava\controller\c_phieuphat.class
 baitaplonjava\controller\c_theloai$action_them.class
+baitaplonjava\controller\c_sach$action_xoa.class
 baitaplonjava\controller\c_phieuphat$action_sua.class
 baitaplonjava\view\v_phieuphat.class
 baitaplonjava\view\v_trangthaisach.class
@@ -17,6 +19,7 @@ baitaplonjava\controller\c_phieuphat$action_xuatfile.class
 baitaplonjava\controller\c_nhanvien.class
 baitaplonjava\controller\c_theloai$action_reset.class
 baitaplonjava\controller\c_phieuphat$action_them.class
+baitaplonjava\controller\c_sach$action_xuatfile.class
 baitaplonjava\controller\c_theloai.class
 baitaplonjava\controller\c_nhaxuatban$1.class
 baitaplonjava\controller\c_nhaxuatban$action_them.class
@@ -33,7 +36,9 @@ baitaplonjava\controller\c_docgia$action_xuatfile.class
 baitaplonjava\controller\c_dangky.class
 baitaplonjava\model\m_sach.class
 baitaplonjava\controller\c_theloai$action_sua.class
+baitaplonjava\controller\c_khosach$action_reset.class
 baitaplonjava\controller\c_phieutra$action_xoa.class
+baitaplonjava\controller\c_sach$action_timkiem.class
 baitaplonjava\view\v_thongke$1.class
 baitaplonjava\view\v_login.class
 baitaplonjava\controller\c_thongke$action_thongke.class
@@ -51,6 +56,8 @@ baitaplonjava\controller\c_trangthaisach$1.class
 baitaplonjava\view\v_trangchu.class
 baitaplonjava\controller\c_login.class
 baitaplonjava\view\v_theloai.class
+baitaplonjava\controller\c_khosach$action_xuatfile.class
+baitaplonjava\controller\c_khosach$action_them.class
 baitaplonjava\model\m_docgia.class
 baitaplonjava\controller\c_phieumuon$action_timkiem.class
 baitaplonjava\controller\c_phieumuon$action_xuatfile.class
@@ -66,12 +73,16 @@ baitaplonjava\controller\c_phieumuon$1.class
 baitaplonjava\controller\c_login$login_listener.class
 baitaplonjava\controller\c_trangthaisach$action_xuatfile.class
 baitaplonjava\controller\c_thongke.class
+baitaplonjava\controller\c_khosach$action_xoa.class
 baitaplonjava\model\m_tacgia.class
 baitaplonjava\view\v_khosach.class
+baitaplonjava\controller\c_sach$action_sua.class
 baitaplonjava\model\m_login.class
 baitaplonjava\controller\c_trangthaisach$action_xoa.class
 baitaplonjava\view\v_sach.class
+baitaplonjava\controller\c_khosach$action_timkiem.class
 baitaplonjava\controller\c_khosach$1.class
+baitaplonjava\controller\c_sach$action_reset.class
 baitaplonjava\model\m_trangthaisach.class
 baitaplonjava\controller\c_phieutra.class
 baitaplonjava\controller\c_trangchu.class
@@ -104,4 +115,5 @@ baitaplonjava\controller\c_tacgia$action_sua.class
 baitaplonjava\model\m_nhanvien.class
 baitaplonjava\view\v_docgia.class
 baitaplonjava\view\v_trangthaisach$1.class
+baitaplonjava\controller\c_khosach$action_sua.class
 baitaplonjava\model\m_phieutra.class
