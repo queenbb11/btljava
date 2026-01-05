@@ -108,7 +108,7 @@ public class v_sach extends JFrame {
         btnthem    = new JButton("Thêm Mới");
         btnsua     = new JButton("Sửa");
         btnxoa     = new JButton("Xóa");
-        btnreset   = new JButton("Reset");      // ⬅️ đổi từ Lưu -> Reset
+        btnreset   = new JButton("Reset");     
         btnxuatfile= new JButton("Xuất File");
         btnback    = new JButton("Quay Lại");
 

@@ -14,16 +14,14 @@ public class c_khosach {
     private v_khosach v;
     private v_trangchu trangchu;
     private int k = -1; // dòng đang chọn
-
     // DB
     private final String url  = "jdbc:mysql://localhost:3306/baitaplon";
     private final String user = "root";
-    private final String pass = "1234567890";
+    private final String pass = "123456789";
 
     public c_khosach(v_khosach view, v_trangchu viewtrangchu) {
         this.v = view;
         this.trangchu = viewtrangchu;
-
         // Gắn sự kiện nút giống kiểu c_theloai, c_sach
         v.bt_them(e     -> new action_them().actionPerformed(e));
         v.bt_sua(e      -> new action_sua().actionPerformed(e));
@@ -58,7 +56,6 @@ public class c_khosach {
         v.model.setRowCount(0);
         try (Connection c = getConnection();
              ResultSet rs = c.createStatement().executeQuery("SELECT * FROM Khosach ORDER BY MaK, MaS")) {
-
             while (rs.next()) {
                 v.model.addRow(new Object[]{
                         rs.getString("MaK"),
@@ -68,7 +65,6 @@ public class c_khosach {
                         rs.getInt("SoluongT")
                 });
             }
-
         } catch (Exception e) {
             JOptionPane.showMessageDialog(v, "Lỗi tải dữ liệu kho: " + e.getMessage());
         }
@@ -271,7 +267,9 @@ public class c_khosach {
         try (Connection conn = getConnection()) {
             v.cbMaS.removeAllItems();
             ResultSet rsS = conn.createStatement().executeQuery("SELECT MaS FROM Sach");
-            while (rsS.next()) v.cbMaS.addItem(rsS.getString("MaS"));
+            while (rsS.next())v.cbMaS.addItem(rsS.getString("MaS"));
+            //ResultSet rsS = conn.createStatement().executeQuery("SELECT MaS,TenS FROM Sach");
+           // while (rsS.next()) v.cbMaS.addItem(rsS.getString("MaS") + " - " + rsS.getString("TenS")); lấy thêm tens
         } catch (Exception e) {
             JOptionPane.showMessageDialog(v, "Lỗi load combobox: " + e.getMessage());
         }
@@ -279,54 +277,63 @@ public class c_khosach {
 
     // =============== XUẤT FILE CSV ===============
     class action_xuatfile implements java.awt.event.ActionListener {
-        @Override
-        public void actionPerformed(java.awt.event.ActionEvent e) {
+    @Override
+    public void actionPerformed(java.awt.event.ActionEvent e) {
 
-            if (v.model.getRowCount() == 0) {
-                JOptionPane.showMessageDialog(v, "Không có dữ liệu để xuất!");
-                return;
+        // 1. Không có dữ liệu thì không xuất
+        if (v.model.getRowCount() == 0) {
+            JOptionPane.showMessageDialog(v, "Không có dữ liệu để xuất!");
+            return;
+        }
+
+        // 2. Chọn nơi lưu file
+        JFileChooser chooser = new JFileChooser();
+        chooser.setDialogTitle("Chọn nơi lưu file kho sách");
+        chooser.setSelectedFile(new java.io.File("khosach.csv"));
+
+        int choose = chooser.showSaveDialog(v);
+        if (choose != JFileChooser.APPROVE_OPTION) return;
+
+        java.io.File file = chooser.getSelectedFile();
+
+        try (
+            // 3. Ghi UTF-8 + BOM 
+            java.io.OutputStreamWriter osw =
+                new java.io.OutputStreamWriter(
+                    new java.io.FileOutputStream(file),
+                    java.nio.charset.StandardCharsets.UTF_8
+                );
+            java.io.BufferedWriter bw = new java.io.BufferedWriter(osw)
+        ) {
+            // BOM UTF-8 để Excel đọc đúng tiếng Việt
+            bw.write("\uFEFF");
+
+            // 4. Ghi HEADER
+            bw.write("MaKho;MaSach;Nhap;Xuat;Ton");
+            bw.newLine();
+
+            // 5. Ghi DATA từng dòng từ JTable
+            for (int i = 0; i < v.table.getRowCount(); i++) {
+                String maKho = v.table.getValueAt(i, 0).toString();
+                String maSach = v.table.getValueAt(i, 1).toString();
+                String nhap   = v.table.getValueAt(i, 2).toString();
+                String xuat   = v.table.getValueAt(i, 3).toString();
+                Object tonObj = v.table.getValueAt(i, 4);
+                String ton    = (tonObj != null) ? tonObj.toString() : "";
+
+                String line = maKho + ";" + maSach + ";" + nhap + ";" + xuat + ";" + ton;
+                bw.write(line);
+                bw.newLine();
             }
 
-            JFileChooser chooser = new JFileChooser();
-            chooser.setDialogTitle("Chọn nơi lưu file kho sách");
-            chooser.setSelectedFile(new java.io.File("khosach.csv"));
+            JOptionPane.showMessageDialog(v, "Xuất file kho sách thành công!");
 
-            if (chooser.showSaveDialog(v) != JFileChooser.APPROVE_OPTION) return;
-
-            java.io.File file = chooser.getSelectedFile();
-            String path = file.getAbsolutePath();
-            if (!path.toLowerCase().endsWith(".csv")) {
-                path += ".csv";
-            }
-            try (java.io.FileOutputStream fos = new java.io.FileOutputStream(path)) {
-                // BOM UTF-8
-                fos.write(0xEF);
-                fos.write(0xBB);
-                fos.write(0xBF);
-                try (java.io.OutputStreamWriter osw =
-                             new java.io.OutputStreamWriter(fos, java.nio.charset.StandardCharsets.UTF_8);
-                     java.io.PrintWriter pw = new java.io.PrintWriter(osw)) {
-                    // Tiêu đề
-                    pw.println("MaKho;MaSach;Nhap;Xuat;Ton");
-                    // Dữ liệu
-                    for (int i = 0; i < v.table.getRowCount(); i++) {
-                        StringBuilder row = new StringBuilder();
-                        for (int j = 0; j < v.table.getColumnCount(); j++) {
-                            Object val = v.table.getValueAt(i, j);
-                            row.append(val != null ? val.toString() : "");
-                            if (j < v.table.getColumnCount() - 1) row.append(";");
-                        }
-                        pw.println(row.toString());
-                    }
-                }
-
-                JOptionPane.showMessageDialog(v, "Xuất file kho sách thành công!");
-
-            } catch (Exception ex) {
-                JOptionPane.showMessageDialog(v, "Lỗi xuất file: " + ex.getMessage());
-            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            JOptionPane.showMessageDialog(v, "Lỗi xuất file kho sách: " + ex.getMessage());
         }
     }
+}
 
     // =============== QUAY LẠI TRANG CHỦ ===============
     private void quaylai() {

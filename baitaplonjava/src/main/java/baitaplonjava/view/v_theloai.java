@@ -154,6 +154,11 @@ public class v_theloai extends JFrame {
             JOptionPane.showMessageDialog(this, "Vui lòng nhập đầy đủ thông tin!");
             return null;
         }
+        if (MaTL.length()>10){
+            JOptionPane.showMessageDialog(this, "Mã thể loại kh được nhập quá 10 kí tự!");
+            return null;
+        }
+        
         return new m_theloai(MaTL, TenTL);
     }
 }

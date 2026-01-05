@@ -206,9 +206,6 @@ public class c_trangchu implements ActionListener {
         viewtrangchu.setVisible(false); 
     }
     
-    
-    
-    
     // Hàm xử lý Đăng Xuất
     private void handleDangXuat() {
         int confirm = JOptionPane.showConfirmDialog(viewtrangchu, 

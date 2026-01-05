@@ -1,5 +1,4 @@
 package baitaplonjava.controller;
-
 import baitaplonjava.model.m_theloai;
 import baitaplonjava.view.v_theloai;
 import baitaplonjava.view.v_trangchu;
@@ -11,11 +10,10 @@ public class c_theloai {
     private v_theloai v;
     private v_trangchu trangchu;
     private int k = -1; // dòng đang chọn
-
     // DB
     private final String url  = "jdbc:mysql://localhost:3306/baitaplon";
     private final String user = "root";
-    private final String pass = "1234567890";
+    private final String pass = "123456789";
 
     public c_theloai(v_theloai view, v_trangchu viewtrangchu) {
         this.v = view;
@@ -51,13 +49,11 @@ public class c_theloai {
 
     // =============== LOAD DATA ===============
     public void loadData() {
-        v.model.setRowCount(0);
+        v.model.setRowCount(0);//xóa dl cũ trên jtable
         try (Connection conn = getConnection()) {
-
             String sql = "SELECT MaTL, TenTL FROM Theloai ORDER BY MaTL";
             PreparedStatement ps = conn.prepareStatement(sql);
             ResultSet rs = ps.executeQuery();
-
             while (rs.next()) {
                 v.model.addRow(new Object[]{
                         rs.getString("MaTL"),
@@ -69,16 +65,13 @@ public class c_theloai {
             JOptionPane.showMessageDialog(v, "Lỗi tải dữ liệu: " + e.getMessage());
         }
     }
-
     // =============== HIỂN THỊ LÊN FORM ===============
     private void hienThiLenForm() {
         if (k < 0) return;
-
         v.txtMaTL.setText(v.table.getValueAt(k, 0).toString());
         v.txtTenTL.setText(v.table.getValueAt(k, 1).toString());
         v.txtMaTL.setEditable(false);
     }
-
     // =============== RESET FORM ===============
     private void resetForm() {
         v.txtMaTL.setText("");
@@ -89,25 +82,20 @@ public class c_theloai {
         k = -1;
         v.txtMaTL.requestFocus();
     }
-
     // =============== THÊM ===============
     class action_them implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-
             m_theloai tl = v.get_theloai();
             if (tl == null) return;
-
             String ma = tl.getMaTL().trim();
             String ten = tl.getTenTL().trim();
-
             if (ma.isEmpty() || ten.isEmpty()) {
                 JOptionPane.showMessageDialog(v, "Mã và tên thể loại không được để trống!");
                 return;
             }
 
             try (Connection conn = getConnection()) {
-
                 // check trùng mã trong DB
                 String check = "SELECT MaTL FROM Theloai WHERE MaTL = ?";
                 PreparedStatement psCheck = conn.prepareStatement(check);
@@ -116,7 +104,6 @@ public class c_theloai {
                     JOptionPane.showMessageDialog(v, "Mã thể loại đã tồn tại trong CSDL!");
                     return;
                 }
-
                 String sql = "INSERT INTO Theloai (MaTL, TenTL) VALUES (?, ?)";
                 PreparedStatement ps = conn.prepareStatement(sql);
                 ps.setString(1, ma);
@@ -209,25 +196,19 @@ public class c_theloai {
     class action_timkiem implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-
             String key = v.txttimkiem.getText().trim();
-
             if (key.isEmpty()) {
                 loadData();
                 resetForm();
                 return;
             }
-
             v.model.setRowCount(0);
-
             try (Connection conn = getConnection()) {
-
                 String sql = "SELECT MaTL, TenTL FROM Theloai WHERE MaTL LIKE ? OR TenTL LIKE ?";
                 PreparedStatement ps = conn.prepareStatement(sql);
                 String p = "%" + key + "%";
                 ps.setString(1, p);
                 ps.setString(2, p);
-
                 ResultSet rs = ps.executeQuery();
                 while (rs.next()) {
                     v.model.addRow(new Object[]{
@@ -235,7 +216,6 @@ public class c_theloai {
                             rs.getString("TenTL")
                     });
                 }
-
             } catch (Exception ex) {
                 ex.printStackTrace();
                 JOptionPane.showMessageDialog(v, "Lỗi tìm kiếm thể loại!");

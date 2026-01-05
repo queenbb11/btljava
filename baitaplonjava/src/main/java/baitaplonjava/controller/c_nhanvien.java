@@ -17,7 +17,7 @@ public class c_nhanvien {
 // ==============================kết nối DB========================================================================================================================
     private final String url = "jdbc:mysql://localhost:3306/baitaplon?useUnicode=true&characterEncoding=UTF-8";
     private final String user = "root";
-    private final String pass = "1234567890";
+    private final String pass = "123456789";
 
     private final SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 // ==============================Gắn sự kiện cho nút================================================================================================================

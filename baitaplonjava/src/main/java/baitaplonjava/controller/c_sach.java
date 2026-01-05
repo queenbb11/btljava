@@ -9,7 +9,6 @@ import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.sql.*;
 import javax.swing.*;
-
 public class c_sach {
     private v_sach v;
     private v_trangchu trangchu;
@@ -18,7 +17,7 @@ public class c_sach {
     // Thông tin DB
     private final String url  = "jdbc:mysql://localhost:3306/baitaplon";
     private final String user = "root";
-    private final String pass = "1234567890";
+    private final String pass = "123456789";
 
     public c_sach(v_sach view, v_trangchu viewtrangchu) {
         this.v = view;
@@ -273,9 +272,7 @@ public class c_sach {
             }
 
             v.model.setRowCount(0);
-
             try (Connection conn = getConnection()) {
-
                 String sql = """
                     SELECT * FROM Sach
                     WHERE MaS LIKE ? OR TenS LIKE ?
@@ -307,84 +304,85 @@ public class c_sach {
 
     // =============== XUẤT FILE CSV ===============
     class action_xuatfile implements ActionListener {
-        @Override
-        public void actionPerformed(ActionEvent e) {
+    @Override
+    public void actionPerformed(ActionEvent e) {
 
-            if (v.model.getRowCount() == 0) {
-                JOptionPane.showMessageDialog(v, "Không có dữ liệu để xuất!");
-                return;
+        if (v.model.getRowCount() == 0) {
+            JOptionPane.showMessageDialog(v, "Không có dữ liệu để xuất!");
+            return;
+        }
+
+        JFileChooser fc = new JFileChooser();
+        fc.setDialogTitle("Chọn nơi lưu file");
+        fc.setSelectedFile(new java.io.File("sach.csv"));
+
+        int choose = fc.showSaveDialog(v);
+        if (choose != JFileChooser.APPROVE_OPTION) return;
+
+        java.io.File file = fc.getSelectedFile();
+
+        try (
+            // Ghi UTF-8 + BOM 
+            java.io.OutputStreamWriter osw =
+                new java.io.OutputStreamWriter(
+                    new java.io.FileOutputStream(file),
+                    java.nio.charset.StandardCharsets.UTF_8
+                );
+            java.io.BufferedWriter bw = new java.io.BufferedWriter(osw)
+        ) {
+            // Ghi BOM UTF-8
+            bw.write("\uFEFF");
+
+            // HEADER (tùy đang có mấy cột trong table Sách)
+            bw.write("MaS;TenS;MaTL;MaNXB;MaTG;Namxuatban;Mota");
+            bw.newLine();
+
+            // DATA
+            for (int i = 0; i < v.table.getRowCount(); i++) {
+                String maS   = v.table.getValueAt(i, 0).toString();
+                String tenS  = v.table.getValueAt(i, 1).toString();
+                String maTL  = v.table.getValueAt(i, 2).toString();
+                String maNXB = v.table.getValueAt(i, 3).toString();
+                String maTG  = v.table.getValueAt(i, 4).toString();
+                String namXB = v.table.getValueAt(i, 5).toString();
+                String mota  = v.table.getValueAt(i, 6) != null
+                               ? v.table.getValueAt(i, 6).toString()
+                               : "";
+
+                // Nối lại thành 1 dòng
+                String line = maS + ";" + tenS + ";" + maTL + ";" +
+                              maNXB + ";" + maTG + ";" + namXB + ";" + mota;
+
+                bw.write(line);
+                bw.newLine();
             }
-
-            JFileChooser fc = new JFileChooser();
-            fc.setDialogTitle("Chọn nơi lưu file");
-            fc.setSelectedFile(new java.io.File("sach.csv"));
-
-            int choose = fc.showSaveDialog(v);
-            if (choose != JFileChooser.APPROVE_OPTION) return;
-
-            java.io.File file = fc.getSelectedFile();
-            String path = file.getAbsolutePath();
-            if (!path.toLowerCase().endsWith(".csv")) {
-                path += ".csv";
-            }
-
-            try (FileOutputStream fos = new FileOutputStream(path)) {
-                // BOM UTF-8
-                fos.write(0xEF);
-                fos.write(0xBB);
-                fos.write(0xBF);
-
-                try (OutputStreamWriter osw = new OutputStreamWriter(fos, StandardCharsets.UTF_8);
-                     PrintWriter pw = new PrintWriter(osw)) {
-
-                    // HEADER
-                    pw.println("MaS;TenS;MaTL;MaNXB;MaTG;Namxuatban;Mota");
-
-                    // DATA
-                    for (int i = 0; i < v.table.getRowCount(); i++) {
-                        StringBuilder row = new StringBuilder();
-                        for (int j = 0; j < v.table.getColumnCount(); j++) {
-                            Object val = v.table.getValueAt(i, j);
-                            row.append(val != null ? val.toString() : "");
-                            if (j < v.table.getColumnCount() - 1) row.append(";");
-                        }
-                        pw.println(row.toString());
-                    }
-                    pw.flush();
-                }
-
-                JOptionPane.showMessageDialog(v, "Xuất file sách thành công!");
-
-            } catch (Exception ex) {
-                ex.printStackTrace();
-                JOptionPane.showMessageDialog(v, "Lỗi xuất file sách!");
-            }
+            JOptionPane.showMessageDialog(v, "Xuất file sách thành công!");
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            JOptionPane.showMessageDialog(v, "Lỗi xuất file sách: " + ex.getMessage());
         }
     }
-
+}
     // =============== LOAD DỮ LIỆU CHO COMBOBOX ===============
     private void loadComboBoxData() {
         try (Connection conn = getConnection()) {
-
             v.cbMaTL.removeAllItems();
             v.cbMaTG.removeAllItems();
             v.cbMaNXB.removeAllItems();
-
             ResultSet rsTL = conn.createStatement().executeQuery("SELECT MaTL FROM Theloai");
             while (rsTL.next()) v.cbMaTL.addItem(rsTL.getString("MaTL"));
-
+             //vi dụ muón lấy thêm TenTL
+            // ResultSet rsTL = conn.createStatement().executeQuery("SELECT MaTL, TenTL FROM Theloai");
+            // while (rsTL.next())  v.cbMaTL.addItem(rsTL.getString("MaTL") + " - " + rsTL.getString("TenTL"));
             ResultSet rsTG = conn.createStatement().executeQuery("SELECT MaTG FROM Tacgia");
             while (rsTG.next()) v.cbMaTG.addItem(rsTG.getString("MaTG"));
-
             ResultSet rsNXB = conn.createStatement().executeQuery("SELECT MaNXB FROM Nhaxuatban");
             while (rsNXB.next()) v.cbMaNXB.addItem(rsNXB.getString("MaNXB"));
-
         } catch (Exception e) {
             e.printStackTrace();
             JOptionPane.showMessageDialog(v, "Lỗi load dữ liệu combobox Sách: " + e.getMessage());
         }
     }
-
     // =============== QUAY LẠI ===============
     private void quaylai() {
         v.dispose();
