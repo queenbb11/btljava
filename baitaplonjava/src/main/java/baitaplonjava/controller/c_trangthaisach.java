@@ -26,7 +26,7 @@ public class c_trangthaisach {
         this.v = viewTS;
         this.trangchu = viewtrangchu;
 
-        // Gán các sự kiện theo đúng mẫu hàm của bạn
+        // Gán các sự kiện 
         v.bt_them_action_listenner(new action_them());
         v.bt_sua_action_listenner(new action_sua());
         v.bt_xoa_action_listenner(new action_xoa());

@@ -35,9 +35,6 @@ public class v_nhanvien extends JFrame {
         title.setBorder(new EmptyBorder(20, 0, 10, 0));
         add(title, BorderLayout.NORTH);
 
-        
-        
-        
         JPanel center = new JPanel();
         center.setLayout(new BoxLayout(center, BoxLayout.Y_AXIS));
         center.setBorder(new EmptyBorder(10, 30, 10, 30));
@@ -66,7 +63,7 @@ public class v_nhanvien extends JFrame {
 
         JPanel search = new JPanel(new FlowLayout(FlowLayout.LEFT));
         txttimkiem = txt();
-        txttimkiem.setPreferredSize(new Dimension(1200, 40));
+        txttimkiem.setPreferredSize(new Dimension(1000, 30));
         btntimkiem = btn("Tìm kiếm");
         search.add(txttimkiem);
         search.add(btntimkiem);
@@ -140,7 +137,7 @@ public class v_nhanvien extends JFrame {
 
     private JButton btn(String s) {
         JButton b = new JButton(s);
-        b.setPreferredSize(new Dimension(120, 40));
+        b.setPreferredSize(new Dimension(120, 30));
         return b;
     }
     

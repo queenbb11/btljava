@@ -3,14 +3,12 @@ package baitaplonjava.controller;
 import baitaplonjava.view.v_nhanvien;
 import baitaplonjava.view.v_trangchu;
 import baitaplonjava.model.m_nhanvien;
-
 import javax.swing.*;
 import java.awt.event.*;
 import java.sql.*;
 import java.text.SimpleDateFormat;
 
 public class c_nhanvien {
-
     private v_nhanvien v;
     private v_trangchu home;
     private int row = -1;
@@ -18,7 +16,6 @@ public class c_nhanvien {
     private final String url = "jdbc:mysql://localhost:3306/baitaplon?useUnicode=true&characterEncoding=UTF-8";
     private final String user = "root";
     private final String pass = "123456789";
-
     private final SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 // ==============================Gắn sự kiện cho nút================================================================================================================
     public c_nhanvien(v_nhanvien view, JFrame h) {
@@ -32,9 +29,7 @@ public class c_nhanvien {
         v.btntimkiem.addActionListener(e -> timkiem());
         v.btnxuatfile.addActionListener(e -> xuatFileCSV());
         v.btnR.addActionListener(e -> resetForm());
-
         v.btnback.addActionListener(e -> back());
-
         v.table.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent e) {
                 row = v.table.getSelectedRow();
@@ -100,7 +95,6 @@ public class c_nhanvien {
         resetForm();
     }
 // ================================================== SỬA ===============================================================================
-
     private void sua() {
         if (row == -1) return;
 
@@ -116,7 +110,6 @@ public class c_nhanvien {
             ps.setString(6, v.txtDiaChi.getText());
             ps.setString(7, v.txtMaNV.getText());
             ps.executeUpdate();
-
             v.model.setValueAt(v.txtTenNV.getText(), row, 1);
             v.model.setValueAt(v.cbGioiTinh.getSelectedItem(), row, 2);
             v.model.setValueAt(sdf.format(v.dateNS.getValue()), row, 3);
@@ -129,7 +122,6 @@ public class c_nhanvien {
         }
     }
 // ================================================== XÓA ===============================================================================
-
     private void xoa() {
         if (row == -1) return;
 
@@ -145,40 +137,16 @@ public class c_nhanvien {
 
         } catch (Exception e) {
             JOptionPane.showMessageDialog(v, "Không xóa được");
-        }
-        
+        } 
     }
     
 // ================================================== LƯU ===============================================================================
-
-//    private void luu() {
-//        try (Connection c = conn()) {
-//            for (int i = 0; i < v.model.getRowCount(); i++) {
-//                PreparedStatement ps = c.prepareStatement(
-//                        "INSERT INTO nhanvien VALUES (?,?,?,?,?,?,?)");
-//
-//                ps.setString(1, v.model.getValueAt(i, 0).toString());
-//                ps.setString(2, v.model.getValueAt(i, 1).toString());
-//                ps.setDate(3, new java.sql.Date(sdf.parse(v.model.getValueAt(i, 3).toString()).getTime()));
-//                ps.setString(4, v.model.getValueAt(i, 2).toString());
-//                ps.setString(5, v.model.getValueAt(i, 5).toString());
-//                ps.setString(6, v.model.getValueAt(i, 6).toString());
-//                ps.setString(7, v.model.getValueAt(i, 4).toString());
-//                ps.executeUpdate();
-//            }
-//            JOptionPane.showMessageDialog(v, "Lưu thành công");
-//        } catch (Exception e) {
-//            JOptionPane.showMessageDialog(v, "Lỗi lưu");
-//        }
-//    }
-    
     private void luu() {
     int savedCount = 0;
     try (Connection c = conn()) {
-        // Chuẩn bị câu lệnh kiểm tra tồn tại
+     
         PreparedStatement psCheck = c.prepareStatement("SELECT COUNT(*) FROM nhanvien WHERE MaNV = ?");
         
-        // Chuẩn bị câu lệnh INSERT đúng thứ tự cột trong DB
         PreparedStatement psInsert = c.prepareStatement(
             "INSERT INTO nhanvien (MaNV, TenNV, NgaysinhNV, GioitinhNV, DienthoaiNV, EmailNV, DiachiNV) " +
             "VALUES (?, ?, ?, ?, ?, ?, ?)");
@@ -186,22 +154,20 @@ public class c_nhanvien {
         for (int i = 0; i < v.model.getRowCount(); i++) {
             String maNV = v.model.getValueAt(i, 0).toString();
 
-            // Kiểm tra xem MaNV đã tồn tại trong DB chưa
             psCheck.setString(1, maNV);
             ResultSet rs = psCheck.executeQuery();
             rs.next();
             if (rs.getInt(1) > 0) {
-                continue; // Bỏ qua nếu đã tồn tại (đã được thêm trước đó hoặc sửa/xóa riêng)
+                continue; 
             }
 
-            // Nếu chưa tồn tại → INSERT
             psInsert.setString(1, maNV);
-            psInsert.setString(2, v.model.getValueAt(i, 1).toString()); // TenNV
-            psInsert.setDate(3, new java.sql.Date(sdf.parse(v.model.getValueAt(i, 3).toString()).getTime())); // Ngaysinh
-            psInsert.setString(4, v.model.getValueAt(i, 2).toString()); // Gioitinh
-            psInsert.setString(5, v.model.getValueAt(i, 5).toString()); // Dienthoai (cột 5 trong table)
-            psInsert.setString(6, v.model.getValueAt(i, 6).toString()); // Email (cột 6)
-            psInsert.setString(7, v.model.getValueAt(i, 4).toString()); // Diachi (cột 4)
+            psInsert.setString(2, v.model.getValueAt(i, 1).toString());
+            psInsert.setDate(3, new java.sql.Date(sdf.parse(v.model.getValueAt(i, 3).toString()).getTime())); 
+            psInsert.setString(4, v.model.getValueAt(i, 2).toString()); 
+            psInsert.setString(5, v.model.getValueAt(i, 5).toString()); 
+            psInsert.setString(6, v.model.getValueAt(i, 6).toString());
+            psInsert.setString(7, v.model.getValueAt(i, 4).toString()); 
 
             psInsert.executeUpdate();
             savedCount++;
@@ -307,7 +273,6 @@ public class c_nhanvien {
         home.setVisible(true);
     }
 // ================================================== RESERT ===============================================================================
-
 private void resetForm() {
     v.txtMaNV.setText("");
     v.txtTenNV.setText("");
@@ -320,6 +285,4 @@ private void resetForm() {
     row = -1; 
     v.table.clearSelection();
 }
-
-
 }
